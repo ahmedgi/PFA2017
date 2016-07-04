@@ -1,0 +1,69 @@
+  <!-- modale delete elemnt de module-->
+  <div ng-controller="m_apercuModalController" id="apercuModal" class="modal fade">
+    <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+            </div>
+            <div class="modal-body">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><label for="Université">Universite</label></h3>
+                    </div>
+                    <div class="panel-body">
+                        <pre>{{module.universite}}</pre>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><label for="prerequis">Etablissement</label></h3>
+                    </div>
+                    <div class="panel-body">
+                        <pre>{{module.etablissement}}</pre>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><label for="objectifs">Département</label></h3>
+                    </div>
+                    <div class="panel-body">
+                        <pre>{{module.departement}}</pre>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><label for="objectifs">Intitulé du module</label></h3>
+                    </div>
+                    <div class="panel-body">
+                        <pre>{{module.intitulee}}</pre>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><label for="objectifs">IDENTIFICATION DU COORDONNATEUR DU MODULE</label></h3>
+                    </div>
+                    <div class="panel-body">
+                        <pre>{{module.coordonnateur.nom}} {{module.coordonnateur.prenom}}</pre>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><label for="objectifs">DIDACTIQUE DU MODULE</label></h3>
+                    </div>
+                    <div class="panel-body">
+                        <pre>{{module.didactique}}</pre>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><label for="objectifs">Note minimale</label></h3>
+                    </div>
+                    <div class="panel-body">
+                        <pre>{{module.note_minimal}}</pre>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+            </div>
+    </div>
+  </div>
+  </div>

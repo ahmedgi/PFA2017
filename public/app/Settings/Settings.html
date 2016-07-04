@@ -1,0 +1,121 @@
+<button type="button" class="btn btn-info" ng-click="add()" ng-disabled="addVisible"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+
+    <input type="text" ng-model="q" class="search-input" placeholder="search..." />
+
+
+    <div class="panel panel-default" >
+
+  <!-- Table -->
+  <table class="table">
+      <tr>
+        <th >Nom</th>
+        <th >Prenom</th>
+        <th >Tel</th>
+        <th >Grade</th>
+        <th >Options</th>
+      </tr>
+      <tr ng-show="addVisible">
+        <td><input type="text" class="form-control" ng-model="user.nNom"/></td>
+        <td><input type="text" class="form-control" ng-model="user.nPrenom"/></td>
+        <td><input type="text" class="form-control" ng-model="user.nTel"/></td>
+        <td><input type="text" class="form-control" ng-model="user.nGrade"/></td>
+        <td>
+            <button class="btn btn-success" ng-click="valider()">Add</button>
+            <button class="btn btn-warning" ng-click="hideAdd()">Hide</button>
+        </td>
+      </tr>
+      <tr ng-repeat="a in items | filter:q | orderBy:'nom' track by $index">
+        <td ng-show="isEditable[$index]" ><input class="form-control" type="text" ng-model="tmpEdit[$index].nom" /></td>
+        <td ng-show="isEditable[$index]"><input class="form-control" type="text" ng-model="tmpEdit[$index].prenom" /></td>
+        <td ng-show="isEditable[$index]"><input class="form-control" type="text" ng-model="tmpEdit[$index].tel" /></td>
+        <td ng-show="isEditable[$index]"><input class="form-control" type="text" ng-model="tmpEdit[$index].grade"/></td>
+        <td ng-show="isEditable[$index]">
+            <button class="btn btn-success" ng-click="confirm($index,a)">Confirmer</button>
+            <button class="btn btn-info" ng-click="annuler($index)">Annuler</button>
+        </td>
+
+        <td ng-hide="isEditable[$index]" >{{a.nom}}</td>
+        <td ng-hide="isEditable[$index]" >{{a.prenom}}</td>
+        <td ng-hide="isEditable[$index]" >{{a.tel}}</td>
+        <td ng-hide="isEditable[$index]" >{{a.grade}}</td>
+        <td ng-hide="isEditable[$index]" >
+          <button class="btn btn-warning" ng-click="editer(a,$index)">editer</button>
+          <button class="btn btn-danger" ng-click="delete(a)" data-toggle="modal" data-target="#myModal">delete</button>
+          <div class="dropdown">
+            <button class="btn btn-info dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" ><span class="glyphicon glyphicon-cog" /></button>
+            
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                <li ng-click="privilege(a)" data-toggle="modal" data-target="#myModal"><a>Privileges</a></li>
+                <li ng-click="matiere(a)" data-toggle="modal" data-target="#myModal"><a>Matiere</a></li>
+              </ul>
+        </div>
+        </td>
+      </tr>
+  </table>
+</div>
+
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+
+      <div ng-switch="lightboxContentSwitch">
+    
+            <div ng-switch-when="delete" id="switchDelete" class="alert alert-danger center-block text-center">
+                <div class="modal-header">
+                  <h1>Attention!</h1>
+                </div>
+                <div class="modal-body">
+                  <h3>Voulez vous vraiment supprimer {{activeObj.nom}} {{activeObj.prenom}}</h3>
+                </div>
+                <div class="modal-footer">
+                  <button class="btn btn-danger" ng-click="confirmDelete(activeObj)" data-dismiss="modal">Confirmer</button>
+                  <button class="btn btn-info" data-dismiss="modal">Annuler</button>
+                </div>
+            </div>
+
+            <div ng-switch-when="settings" id="switchSettings" class="alert alert-info center-block text-center">
+                <div class="modal-header">
+                  <h1 class="text-center">{{activeObj.nom}} {{activeObj.prenom}}</h1>
+                </div>
+                <div class="modal-body">
+                  <input type="checkbox" class="form-controller" id="professeur" ng-model="masks.prof" ng-change="confirmPrivilege()"/>
+                  <label for="professeur">Professeur</label><br/>
+
+                  <input type="checkbox" class="form-controller" id="chefFillier" ng-model="masks.filliere"/>
+                  <label for="chefFillier">chef de Filliere</label><br/>
+                  
+                  <input type="checkbox" class="form-controller" id="chefDepartement" ng-model="masks.departement"/>
+                  <label for="chefDepartement">chef de departement</label><br/>
+
+                  <input type="checkbox" class="form-controller" id="admin" ng-model="masks.admin"/>
+                  <label for="admin">Administrateur</label><br/>
+                  <br/>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-info text-center" ng-click="confirmPrivilege()" data-dismiss="modal">Valider
+                    </button>
+                    <button class="btn btn-warning text-center" data-dismiss="modal">Annuler</button>
+                </div>
+            </div>
+
+            <div ng-switch-when="matiere" id="switchDelete" class="alert alert-info center-block text-center">
+                <div class="modal-header">
+                  <h1>Matieres de {{activeObj.nom}} {{activeObj.prenom}}</h1>
+                </div>
+                <div class="modal-body">
+                  <h3 ng-repeat="a in test">{{a.nom}}</h3>
+                </div>
+                <div class="modal-footer">
+                  <button class="btn btn-danger" ng-click="" data-dismiss="modal">Confirmer</button>
+                  <button class="btn btn-info" data-dismiss="modal">Annuler</button>
+                </div>
+            </div>
+       </div>
+    </div>
+
+  </div>
+</div>

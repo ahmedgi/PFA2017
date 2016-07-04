@@ -1,0 +1,26 @@
+doctype html
+html
+   include ./header.jade
+   body
+    nav.navbar.navbar-inverse
+       div.navbar-header
+        button.navbar-toggle(type = "button" ,data-toggle="collapse",data-target="#list")
+         span.sr-only Toggle navigation
+         span.icon-bar
+         span.icon-bar
+         span.icon-bar
+        a.navbar-brand(href = "#") SauvNotes
+       div.collapse.navbar-collapse(id="list")
+        ul.nav.navbar-nav
+    div.container
+       div.col-md-8.col-xs-8.col-lg-6.offset-3
+        fieldset
+            legend
+              strong Saissisez les infos ci dessous
+            form(action="/admin/create",method="post",data-toggle="validator")
+             div.row
+              div.form-group
+                label(for="name") Nom de la matiere:
+                input.form-control(type="text",name="name",placeholder="your name",data-error="vous devez saisire votre nom pour pouvoir vous authentifier !",required)
+                div.help-block.with-errors
+              button.btn.btn-default(type="submit",value="Login") Creer 

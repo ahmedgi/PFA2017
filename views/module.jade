@@ -1,0 +1,70 @@
+doctype html
+html
+   include ./header.jade
+   script.
+        function doThis(){
+           var se=document.getElementById("op");
+           $('#cof').html(""); 
+           var cof=document.getElementById("cof");
+           for(var i=0;i!=se.selectedOptions.length;i++){
+											 
+            var lab  =document.createElement("label");
+            var title=document.createTextNode(se.selectedOptions.item(i).value+" : ");
+            lab.appendChild(title);
+            var node =document.createElement("input");
+            var att  = document.createAttribute("type");
+            var att1 = document.createAttribute("name");
+            var fc   = document.createAttribute("class");
+            fc.value ="form-control";
+            att.value="text";
+            att1.value=se.selectedOptions.item(i).value;
+            node.setAttributeNode(att);
+            node.setAttributeNode(att1);
+            cof.appendChild(lab);
+            cof.appendChild(node);
+            cof.appendChild(document.createElement("br"));
+           }
+        }
+   body
+    nav.navbar.navbar-inverse
+       div.navbar-header
+        button.navbar-toggle(type = "button" ,data-toggle="collapse",data-target="#list")
+         span.sr-only Toggle navigation
+         span.icon-bar
+         span.icon-bar
+         span.icon-bar
+        a.navbar-brand(href = "#") SauvNotes
+       div.collapse.navbar-collapse(id="list")
+        ul.nav.navbar-nav
+           li
+             a(href="/telecharger") ajouter une matiere
+           li
+             a(href="/admin") administration
+           li
+             a(href="/list") afficher mes notes
+           li
+             a(href="/modifier") modifier mes notes
+           li
+             a(href="/logout") se deconnecter
+    div.container
+       div.col-md-8.col-xs-8.col-lg-6.offset-3
+        fieldset
+            legend
+              strong saisissez une matière
+            form(action="/module",method="post",data-toggle="validator")
+             div.row
+              div.form-group
+                label(for="pwd") un nom pour le module:
+                input.form-control(type="text", name="nommodule",placeholder="nom du module")
+                div.help-block.with-errors
+              div.form-group
+                label.control-label(for="pwd") selectionnez les matières:
+                select.form-control#op(onchange="doThis()",name="mats",multiple)
+                  each mat in listeMat
+                   option(value="#{mat}") #{mat}
+                   
+                div.help-block.with-errors
+              label(for="coef") les coeficients:
+              div.form-group#cof
+               
+              button.btn.btn-default(type="submit",value="Login") Ajouter 

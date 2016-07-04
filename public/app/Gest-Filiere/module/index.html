@@ -1,0 +1,50 @@
+<style>
+        
+        
+        .tr_incomplet{
+            background: none repeat scroll 0 0 #EFEBD6!important;
+            color: black!important;
+        }
+        .tr_complet {
+            background: none repeat scroll 0 0 red!important;
+            color: black!important;
+        }
+        .tr_active {
+            background: none repeat scroll 0 0 #4285f4!important;
+            color: whitesmoke!important;
+        }
+        
+        thead {
+            background : none repeat scroll 0 0  #eeeeee!important;
+            border-bottom: 1px solid rgba(0,0,0,.07)!important;
+
+        }
+       
+        #app_header {
+           margin: 0!important;
+           margin-bottom: 1px!important;
+            
+           background : none repeat scroll 0 0  #eeeeee!important;
+           
+          
+           -webkit-box-shadow: 0 2px 4px rgba(0,0,0,.2);
+           box-shadow: 0 2px 4px rgba(0,0,0,.2);
+            
+           border: solid transparent!important;
+           border-width: 1px 1px 1px 6px!important;
+           border-bottom: 1px solid transparent!important;
+        }
+   </style>
+
+<div class="">  
+    <!--Header-->
+    <div ng-include  src= "'./Gest-Filiere/module/header.html'"></div>  
+    <!-- EModules TAble-->
+    <div ng-include  src= "'./Gest-Filiere/module/moduleTable.html'"></div>
+    <!--CRUD Modals-->
+    <div ng-include  src= "'./Gest-Filiere/module/creeModal.html'"></div>
+    <div ng-include  src= "'./Gest-Filiere/module/deleteModal.html'"></div>
+    <div ng-include  src= "'./Gest-Filiere/module/shareModal.html'"></div>
+    <div ng-include  src= "'./Gest-Filiere/module/editeModal.html'"></div>
+    <div ng-include  src= "'./Gest-Filiere/module/apercuModal.html'"></div>  
+</div>

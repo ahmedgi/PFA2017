@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fr" ng-app="pfaApp">
+<head>
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+	<meta charset="utf-8">
+	<!-- BootStrap -->
+	<link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />	
+	<link href="../bower_components/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet" />
+	<!-- Custom CSS -->
+    <link href="css/simple-sidebar.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet" />
+	<link rel="stylesheet" href="Settings/Settingss.css"/>
+    
+	<title>Acceuil</title>        
+     
+</head>
+
+<body>
+<header>
+
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+			
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#">Scholar-Gest</a>
+			</div>
+			
+			
+			<ul class="nav nav-pills">
+				<li><a class="active" href="#/home"> <span class="glyphicon glyphicon-home" ></span> acceuil</a></li>
+				<li><a ui-sref="Gest-Charges"><span class="glyphicon glyphicon-calendar"></span> Gestion de charge</a></li>
+				<li><a ui-sref="Gest-Filiere"><span class="glyphicon glyphicon-file"></span> Gestion de filière</a></li>
+				<li><a ui-sref="Gest-Delib"><span class="glyphicon glyphicon-ok"></span> Gestion des délibérations</a></li>
+				<li><a ui-sref="Gest-Scolarite"><span class="glyphicon glyphicon-folder-open"/> Gestion de scolarité</a></li>
+				<li class="nav navbar-nav navbar-right" ><a href="#/Settings"><span class="glyphicon glyphicon-cog"  aria-hidden="true" /> Settings </a>	</li>
+	
+			</ul>
+			
+			
+		</div>
+	</nav>
+
+</header>
+
+ <div ui-view></div>
+
+ 
+ <footer >
+	
+	  <div class="container-fluid">
+		<nav class="navbar navbar-default navbar-fixed-bottom">
+		  <a class="navbar-brand" href="#/">Scholar-Gest</a>
+		</nav>
+	  </div>
+	
+ </footer>
+
+	<!-- jQuery -->
+    <script src="../bower_components/jquery/dist/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script src="../bower_components/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+    
+	<!--Angular-->
+	<script src="../bower_components/angular/angular.min.js"></script>
+    <script src="../bower_components/angular-route/angular-route.js"></script>
+    <script src="../bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+	<script src="js/app.js"></script>
+	
+    <!--Settings -->
+	<script src="Settings/service.js"></script>
+	<script src="Settings/controller.js"></script>
+	
+    <!-- Gestion Filiere -->
+    <script src="Gest-Filiere/controller.js"></script>
+    <script src="Gest-Filiere/CDN/contextMenu/contextMenu.js"></script>
+</body>
+</html>

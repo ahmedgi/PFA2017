@@ -1,0 +1,110 @@
+doctype html
+html
+   include ./header.jade
+   -var list=liste;
+   script.
+      var list="#{liste}";
+      var sendit1=document.getElementById("send1");
+      var newMask;
+      var name="";
+       console.log(list);
+       function sent(){     
+        $.get(
+           "/admin_data",
+           {"role":newMask,"name":name},
+           function(result){
+             alert("message:"+result);
+             document.location.reload(true);
+           });
+        }
+        function doThis(selected){
+           var sendit0=document.getElementById("send0");
+           if(typeof newMask!='undefined'){
+            switch(selected.value){
+             case "prof" : newMask=(selected.checked)?newMask|1:newMask&(~1);
+               break;
+             case "cf"   : newMask=(selected.checked)?newMask|2:newMask&(~2);
+               break;
+             case "cd"   : newMask=(selected.checked)?newMask|4:newMask&(~4);
+               break;
+             case "admin": newMask=(selected.checked)?newMask|8:newMask&(~8);
+               break;
+             default     : newMask=-1;
+               break;
+            }
+            sendit0.setAttribute("value",newMask);
+            console.log(newMask);
+           }
+        }
+        var showThis=function(){
+           var sh=document.getElementById("sh");
+           var se=document.getElementsByClassName("rol");
+           sh.style.visibility='hidden';
+           var gn=document.getElementById("gn");
+           var m=0;
+           var l=list.split(',');
+           for(var i in l){
+             if(gn.value==l[i].split(':')[0]){
+              m=parseInt(l[i].split(':')[1]+"");
+              newMask=parseInt(l[i].split(':')[1]+"");
+              se[0].checked=(m&1)?true:false;
+              se[1].checked=(m&2)?true:false;
+              se[2].checked=(m&4)?true:false;
+              se[3].checked=(m&8)?true:false;
+              sh.style.visibility='visible';
+              name=l[i].split(':')[0];
+              document.getElementById("send1").setAttribute("value",l[i].split(':')[0]);
+              break;
+             }
+           }
+        }
+   body
+    nav.navbar.navbar-inverse
+       div.navbar-header
+        button.navbar-toggle(type = "button" ,data-toggle="collapse",data-target="#list")
+         span.sr-only Toggle navigation
+         span.icon-bar
+         span.icon-bar
+         span.icon-bar
+        a.navbar-brand(href ="#") SauvNotes
+       div.collapse.navbar-collapse(id="list")
+        ul.nav.navbar-nav
+           li
+             a(href="/telecharger") ajouter une matiere
+           li
+             a(href="/admin") administration
+           li
+             a(href="/list") afficher mes notes
+           li
+             a(href="/modifier") modifier mes notes
+           li
+             a(href="/logout") se deconnecter
+    div.container
+      div.row
+       div.col-md-6.col-xs-6.offset-3
+         label. entrez le nom d'un prof
+         input.form-control#gn(type="text")
+         br
+         button.btn.btn-default#but(type="submit",value="chercher" , onclick="showThis()") chercher
+      div.row#sh(style="visibility:hidden")
+       div.col-md-6.col-xs-12.offset-4
+         
+          div.checkbox
+           label
+            input.rol(type="checkbox",onclick="doThis(this)",value="prof")
+            |prof
+          div.checkbox
+           label
+            input.rol(type="checkbox",onclick="doThis(this)",value="cf")
+            |chef de filiere
+          div.checkbox
+           label
+            input.rol(type="checkbox",onclick="doThis(this)",value="cd")
+            |chef de departement
+          div.checkbox
+           label
+            input.rol(type="checkbox",onclick="doThis(this)",value="admin")
+            |admin
+          input#send0(name="role",type="hidden",value="" )
+          input#send1(name="name",type="hidden",value="")
+          input.btn.btn-default#ajx(type="submit" , value="ok",onclick="sent()")

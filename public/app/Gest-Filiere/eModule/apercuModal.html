@@ -1,0 +1,127 @@
+  <!-- modale delete elemnt de module-->
+  <div ng-controller="e_apercuModalController" id="apercuModal" class="modal fade">
+    <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+            </div>
+            <div class="modal-body">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><label for="intitulee">Intitulée</label></h3>
+                    </div>
+                    <div class="panel-body">
+                        <pre>{{eModule.intitulee}}</pre>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><label for="prerequis">PRE-REQUIS PEDAGOGIQUES</label></h3>
+                    </div>
+                    <div class="panel-body">
+                        <pre>{{eModule.prerequis}}</pre>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><label for="objectifs">OBJECTIFS</label></h3>
+                    </div>
+                    <div class="panel-body">
+                        <pre>{{eModule.objectif}}</pre>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><label>COMPOSITION</label></h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <label>Enseignement <span class="label label-info">Volume horaire</span></label>
+                                <div class="col-sm-12 col-xs-18">
+                                <div class="col-sm-3 col-xs-4">
+                                    <pre class="text-center">{{eModule.volume_horaire.cour}}</pre>
+                                    <div class="help">Cour</div>
+                                </div>
+                                <div class="col-sm-3 col-xs-4">
+                                    <pre class="text-center">{{eModule.volume_horaire.td}}</pre>
+                                    <div class="help">TD</div>
+                                </div>
+                                <div class="col-sm-3 col-xs-4">
+                                    <pre class="text-center">{{eModule.volume_horaire.tp}}</pre>
+                                    <div class="help">TP</div>
+                                </div>
+                                <div class="col-sm-3 col-xs-6">
+                                    <h5 class="text-center">TOTAL : {{eModule.volume_horaire.cour+eModule.volume_horaire.td+eModule.volume_horaire.tp}}</h6>
+                                </div>
+                            </div>
+                       </div>
+                       <div class="clearfix"></div>
+                       <br>
+                       <div class="form-group">
+                            <label  for='libellee'>Activités pratiques <span class="label label-info">Durée en jours</span></label>
+                            <div ng-repeat="activitee in eModule.activitees_pratique" class="form-group">
+                                    <div class="form-group col-sm-12">
+                                       <div class="form-group">
+                                            <label  for="libellee">Libellée</label>
+                                            <pre>{{activitee.libellee}}</pre>
+                                       </div>
+                                        <div class="form-group">
+                                            <label  for="libellee">Objectif</label>
+                                            <pre>{{activitee.objectif}}</pre>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div class="col-sm-2">
+                                            <pre class="text-center">{{activitee.travaux_terrain}}</pre>
+                                            <div class="help">Travaux de terrain</div>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <pre class="text-center">{{activitee.projet}}</pre>
+                                            <div class="help">Projets Hors PFE</div>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <pre class="text-center">{{activitee.stage}}</pre>
+                                            <div class="help">Stage</div>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <pre class="text-center">{{activitee.visite_etude}}</pre>
+                                            <div class="help">Visites d'études</div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <h6 class="text-center">TOTAL : {{activitee.travaux_terrain+activitee.projet+activitee.stage+activitee.visite_etude}}</h6>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <br>
+                            </div>
+                       </div>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><label for="objectifs">CONTENU <span class="label label-info">Description du programme</span></label></h3>
+                    </div>
+                    <div class="panel-body">
+                        <pre>{{eModule.description_programme}}</pre>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><label for="objectifs">EVALUATION</label></h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                               <label class="col-sm-12">Modalités d’évaluation</label>
+                               <pre>{{eModule.modalitee_evaluation}}</pre>
+                        </div>
+                        <div class="form-group">
+                                <label class="col-sm-12">Note du module</label>
+                                <pre>{{eModule.note}}</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+            </div>
+    </div>
+  </div>
+  </div>

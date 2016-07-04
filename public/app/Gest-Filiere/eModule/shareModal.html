@@ -1,0 +1,49 @@
+<!-- modale share elemnt de module-->
+  <div ng-controller="e_shareModalController" id="shareModal" class="modal fade">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Partager un element de module</h4>
+        </div>
+        <div class="modal-body">
+          <form role="form">
+                <div class="form-group">
+                    <label for="sendToList">partager avec :</label>
+                    <div class="form-inline">
+                        <select id="sendToList" class="selectpicker show-tick" multiple title="..." data-live-search="true" ng-options="prof.nom  for prof in profs()"  ng-model="share.req.sendTo">                 
+                        </select>
+                    </div>
+                    <h4 ng-repeat="currentSendTo in share.currentSendTo">
+                            <span  class="label label-info">
+                                {{currentSendTo._id.nom}}
+                                <button type="button" class="btn btn-info btn-xs" ng-click="share.removeCurrentST($index)">
+                                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                </button>
+                            </span> 
+                        </h4> 
+                </div>
+                <div class="form-group" ng-repeat="item in share.req.sendTo" ng-init="item.permision = 'r'">
+                        <label>
+                             {{item.nom}}
+                        </label>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="glyphicon glyphicon-{{item.permision=='w'?'edit':'eye-open'}}"></span> {{item.permision=='w'?'Modifier':'Consulter'}} <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li ng-click="item.permision = 'r';share.validation.WTaken = false"><a href="#/eModule"><span class="glyphicon glyphicon-eye-open"></span><label>Consulter</label></a></li>
+                                <li ng-click="item.permision = 'w';share.validation.WTaken = true" ng-hide="share.validation.WTaken"><a href="#/eModule"><span class="glyphicon glyphicon-edit"></span><label>Modifier</label></a></li>
+                            </ul>
+                       </div>
+                </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+           <button class="btn btn-default" ng-disabled="!share.req.sendTo.length" ng-click="share.submit()">Partger</button>   
+           <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="share.annuler()">annuler</button>
+        </div>
+    </div>
+  </div>
+  </div>
+  

@@ -1,0 +1,54 @@
+<div class="panel panel-default" >
+
+  <!-- Table -->
+  <table class="table">
+      <tr>
+        <th >Nom</th>
+        <th >Module</th>
+        <th >Professeur</th>
+        <th >Options</th>
+      </tr>
+      <tr ng-repeat="a in matieres">
+      	<td >
+             {{a.nom}}
+        </td>
+        <td>
+          Unkown
+        </td>
+        <td>
+          {{a.profs}}
+        </td>
+        <td>
+          <button class="btn btn-info"  aria-expanded="true" data-toggle="modal" data-target="#myModal" ng-click="options($index)"><span class="glyphicon glyphicon-cog" /></button>
+        </td>
+      </tr>
+  </table>
+</div>
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+
+            <div id="switchDelete" class="alert alert-info center-block text-center">
+                <div class="modal-header">
+                  <h1></h1>
+                </div>
+                <div class="modal-body">
+                  <div ng-repeat="p in profs track by $index">
+                    <label>{{p.nom}} {{p.prenom}}</label>
+                    <input name="radio" type="radio"  ng-model="radio.id"  ng-value="p.id" />
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button class="btn btn-success" data-dismiss="modal" ng-click="confirmer()">Confirmer</button>
+                  <button class="btn btn-info" data-dismiss="modal">Annuler</button>
+                </div>
+            </div>
+
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,32 @@
+doctype html
+html
+   include ./header.jade
+   body
+    nav.navbar.navbar-inverse
+       div.navbar-header
+        button.navbar-toggle(type = "button" ,data-toggle="collapse",data-target="#list")
+         span.sr-only Toggle navigation
+         span.icon-bar
+         span.icon-bar
+         span.icon-bar
+        a.navbar-brand(href = "#") SauvNotes
+       div.collapse.navbar-collapse(id="list")
+         ul.nav.navbar-nav
+           li
+             a(href="/admin") administration 
+           li
+             a(href="/telecharger") ajouter une matiere
+           li
+             a(href="/list") afficher mes notes
+           li
+             a(href="/modifier") modifier mes notes
+           li
+             a(href="/module") creer un module
+           li
+             a(href="/logout") se deconnecter
+
+    div.container
+        p
+         span.glyphicon.glyphicon-remove(style="color:red;font-size:80px;")
+          strong ERROR
+         h1.=err

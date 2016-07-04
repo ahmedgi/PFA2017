@@ -1,0 +1,28 @@
+{
+	"data":[
+		{
+			"email":"tbouchentouf@gmail.com",
+			"nom":"Bouchentouf",
+			"prenom":"Toumi",
+			"tel":"06060606",
+			"grade":"pes",
+			"mask":"2"
+		},
+		{
+			"email":"jberrich@gmail.com",
+			"nom":"Berrich",
+			"prenom":"Jamal",
+			"tel":"07070707",
+			"grade":"ph",
+			"mask":"3"
+		},
+		{
+			"email":"tiffouri@gmail.com",
+			"nom":"Ettifouri",
+			"prenom":"Mohammes",
+			"tel":"05050505",
+			"grade":"ingenieur",
+			"mask":"9"
+		}
+	]
+}

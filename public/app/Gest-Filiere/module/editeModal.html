@@ -1,0 +1,97 @@
+<!-- modale edite elemnt de module-->
+  <div ng-controller="m_editeModalController" id="editeModal" class="modal fade">
+    <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+            </div>
+            <div class="modal-body">
+              <form name='editeForm' role="form" novalidate>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><label for="universite">Université</label></h3>
+                    </div>
+                    <div class="panel-body">
+                        <input class="form-control" id="universite" name="universite" placeholder="Université" rows="4" ng-model="edite.req.universite"/>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><label for="etablissement">Etablissement</label></h3>
+                    </div>
+                    <div class="panel-body">
+                        <input class="form-control" id="etablissement" name="etablissement" placeholder="Etablissement" rows="4" ng-model="edite.req.etablissement"/>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><label for="departement">Département</label></h3>
+                    </div>
+                    <div class="panel-body">
+                        <input class="form-control" id="departement" name="departement" placeholder="departement" rows="4" ng-model="edite.req.departement"/>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><label for="intitulee">Intitulée</label></h3>
+                    </div>
+                    <div class="panel-body">
+                       <div class="form-group" ng-class="{ 'has-error' : edite.validation.taken || (editeForm.intitulee.$invalid &&  editeForm.intitulee.$touched)}"> 
+                        <input id="intitulee" class="form-control" type="text" name="intitulee" placeholder="Intituléé" ng-model="edite.req.intitulee" ng-focus="edite.validation.taken = false" ng-minlength="3" required>
+                        <p ng-show="edite.validation.taken" class="help-block">intitulee existe deja !!.</p>
+                        <p ng-show="editeForm.intitulee.$error.minlength && editeForm.intitulee.$touched" class="help-block">intitulee trop court !!.</p>
+                        <p ng-show="editeForm.intitulee.$invalid &&  editeForm.intitulee.$touched" class="help-block">intitulee obligatoire !!.</p> 
+                      </div>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><label for="didactique">Didactique du module</label></h3>
+                    </div>
+                    <div class="panel-body">
+                        <textarea class="form-control" id="didactique" name="departement" placeholder="Didactique du module" rows="4" ng-model="edite.req.didactique"></textarea>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><label for="didactique">Liste des élements du module</label></h3>
+                    </div>
+                    <div class="panel-body">
+                        <select id="eModules" class="selectpicker show-tick" multiple  data-selected-text-format="count" title="..." data-live-search="true" ng-options="eModule.intitulee  for eModule in eModules()"  ng-model="edite.req.eModules">                 
+                        </select>
+                        {{edite.req.eModules}}
+                        <h4 ng-repeat="currentEModule in edite.currentEModules">
+                            <span  class="label label-info">
+                                {{currentEModule.intitulee}}
+                                <button type="button" class="btn btn-info btn-xs" ng-click="edite.removeCurrentEM($index)">
+                                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                </button>
+                            </span> 
+                        </h4> 
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><label for="didactique">Liste des élements du module</label></h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                             <label class="col-sm-12">Note Minimal</label>
+                             <input class="form-control" type="text" name="note Minimal"   ng-model="edite.req.note_minimal">
+                         </div>
+                    </div>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" ng-click="edite.submit(editeForm.$pristine)" ng-disabled="editeForm.$invalid">Editer</button>   
+                <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="edite.annuler()">annuler</button>
+                <div class="col-xs-6 col-sm-3">
+                    <select class="form-control" ng-model="edite.req.status">
+                          <option>complet</option>
+                          <option>incomplet</option>
+                    </select>
+                </div>
+            </div>
+    </div>
+  </div>
+ </div>

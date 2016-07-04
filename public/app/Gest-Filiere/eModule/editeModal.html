@@ -1,0 +1,123 @@
+<!-- modale edite elemnt de module-->
+  <div ng-controller="e_editeModalController" id="editeModal" class="modal fade">
+    <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+            </div>
+            <div class="modal-body">
+              <form name='editeForm' role="form" novalidate>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><label for="intitulee">Intitulée</label></h3>
+                    </div>
+                    <div class="panel-body">
+                       <div class="form-group" ng-class="{ 'has-error' : edite.validation.taken || (editeForm.intitulee.$invalid &&  editeForm.intitulee.$touched)}"> 
+                        <input id="intitulee" class="form-control" type="text" name="intitulee" placeholder="Intituléé" ng-model="edite.req.intitulee" ng-focus="edite.validation.taken = false" ng-minlength="3" required>
+                        <p ng-show="edite.validation.taken" class="help-block">intitulee existe deja !!.</p>
+                        <p ng-show="editeForm.intitulee.$error.minlength && editeForm.intitulee.$touched" class="help-block">intitulee trop court !!.</p>
+                        <p ng-show="editeForm.intitulee.$invalid &&  editeForm.intitulee.$touched" class="help-block">intitulee obligatoire !!.</p> 
+                      </div>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><label for="prerequis">PRE-REQUIS PEDAGOGIQUES</label></h3>
+                    </div>
+                    <div class="panel-body">
+                        <textarea class="form-control" id="prerequis" name="prerequis" placeholder="PRE-REQUIS PEDAGOGIQUES" rows="4" ng-model="edite.req.prerequis"></textarea>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><label for="objectifs">OBJECTIFS</label></h3>
+                    </div>
+                    <div class="panel-body">
+                        <textarea class="form-control" id="objectifs" name="objectifs" placeholder="objectifs" rows="4" ng-model="edite.req.objectif"></textarea>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><label>COMPOSITION</label></h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <label>Enseignement <span class="label label-info">Volume horaire</span></label>
+                            <div class="col-sm-12 col-xs-18">
+                            <div class="col-sm-3 col-xs-4"><input type="number" class="form-control" placeholder="0" ng-model="edite.req.volume_horaire.cour"><div class="help">Cour</div></div>
+                            <div class="col-sm-3 col-xs-4"><input type="number" class="form-control" placeholder="0" ng-model="edite.req.volume_horaire.td"><div class="help">TD</div></div>
+                            <div class="col-sm-3 col-xs-4"><input type="number" class="form-control" placeholder="0" ng-model="edite.req.volume_horaire.tp"><div class="help">TP</div></div>
+                            <div class="col-sm-3 col-xs-6"><h6>TOTAL : {{edite.req.volume_horaire.cour+edite.req.volume_horaire.td+edite.req.volume_horaire.tp}}</h6></div>
+                            </div>
+                       </div>
+                       <div class="clearfix"></div>
+                       <br>
+                       <div class="form-group">
+                            <label  for='libellee'>Activités pratiques <span class="label label-info">Durée en jours</span></label>
+                            <div ng-repeat="activitee in edite.req.activitees_pratique" class="form-group">
+                                    <div class="form-group col-sm-12">
+                                       <div class="form-group">
+                                            <label  for="libellee">Libellée</label>
+                                            <button type="button" class="btn btn-danger pull-right" ng-click="edite.req.activitees_pratique.splice($index,1)">
+                                                   <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                                            </button>
+                                            <input class="form-control" type="text" name="libellee" ng-model="activitee.libellee">
+                                       </div>
+                                        <div class="form-group">
+                                            <label  for="libellee">Objectif</label>
+                                            <textarea class="form-control" name="objectif" placeholder="objectif" rows="2" ng-model="activitee.objectif"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div class="col-sm-2"><input type="number" class="form-control" placeholder="0" ng-model="activitee.travaux_terrain"><div class="help">Travaux de terrain</div></div>
+                                        <div class="col-sm-2"><input type="number" class="form-control" placeholder="0" ng-model="activitee.projet"><div class="help">Projets Hors PFE</div></div>
+                                        <div class="col-sm-2"><input type="number" class="form-control" placeholder="0" ng-model="activitee.stage"><div class="help">Stage</div></div>
+                                        <div class="col-sm-2"><input type="number" class="form-control" placeholder="0" ng-model="activitee.visite_etude"><div class="help">Visites d'études</div></div>
+                                        <div class="col-sm-3"><h6>TOTAL : {{activitee.travaux_terrain+activitee.projet+activitee.stage+activitee.visite_etude}}</h6></div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <br>
+                            </div>
+                            <button type="button" class="btn btn-default pull-right" ng-click="edite.addActivite()">
+                                  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                            </button>
+                       </div>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><label for="objectifs">CONTENU</label></h3>
+                    </div>
+                    <div class="panel-body">
+                      <textarea class="form-control" type="text" name="description" placeholder="Description sommaire du programmes" rows="5" ng-model="edite.req.description_programme"></textarea>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><label for="objectifs">EVALUATION</label></h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                               <label class="col-sm-12">Modalités d’évaluation</label>
+                               <textarea class="form-control" type="text" name="modaliteeEvaluation" placeholder="..." rows="5" ng-model="edite.req.modalitee_evaluation"></textarea>
+                        </div>
+                        <div class="form-group">
+                                <label class="col-sm-12">Note du module</label>
+                                <textarea class="form-control" type="text" name="note" placeholder="..." rows="3" ng-model="edite.req.note"></textarea>
+                        </div>
+                    </div>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-default" ng-click="edite.submit(editeForm.$pristine)" ng-disabled="editeForm.$invalid">Editer</button>   
+                <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="edite.annuler()">annuler</button>
+                <div class="col-xs-6 col-sm-3">
+                    <select class="form-control" ng-model="edite.req.status">
+                          <option>complet</option>
+                          <option>incomplet</option>
+                    </select>
+                </div>
+            </div>
+    </div>
+  </div>
+ </div>

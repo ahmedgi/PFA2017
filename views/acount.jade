@@ -1,0 +1,65 @@
+doctype html
+html
+   include ./header.jade
+   script.
+    var mask=0;
+    function doThis(){
+           mask=0;
+           var se   =document.getElementById("op");
+           var sec_mask =document.getElementById("hid");
+           for(var i=0;i!=se.selectedOptions.length;i++){
+             switch(se.selectedOptions.item(i).value){
+               case "prof":
+                    mask=mask|1;
+                    break;
+               case "cf"  :
+                    mask=mask|2;
+                    break;
+               case "cd"  :
+                    mask=mask|4;
+                    break;
+               case "admin"  :
+                    mask=mask|8;
+                    break;                    
+             }
+           }
+           sec_mask.setAttribute("value",mask);
+           //console.log(""+sec_mask.value);
+    }
+   body
+    nav.navbar.navbar-inverse
+       div.navbar-header
+        button.navbar-toggle(type = "button" ,data-toggle="collapse",data-target="#list")
+         span.sr-only Toggle navigation
+         span.icon-bar
+         span.icon-bar
+         span.icon-bar
+        a.navbar-brand(href = "#") SauvNotes
+       div.collapse.navbar-collapse(id="list")
+        ul.nav.navbar-nav
+    div.container
+       div.col-md-8.col-xs-8.col-lg-6.offset-3
+        fieldset
+            legend
+              strong Saissisez les infos ci dessous
+            form(action="/admin/create",method="post",data-toggle="validator")
+             div.row
+              div.form-group
+                label(for="name") Nom:
+                input.form-control(type="text",name="name",placeholder="your name",data-error="vous devez saisire votre nom pour pouvoir vous authentifier !",required)
+                div.help-block.with-errors
+              div.form-group
+                label(for="email") email:
+                input.form-control(type="text", name="email",id="email",placeholder="votre email",data-error="saississez un email valide",required)
+                div.help-block.with-errors
+              div.form-group
+                 label.control-label(for="pwd") selectionnez les rôles:
+                select.form-control#op(onchange="doThis()",name="mats",multiple)
+                   option(value="prof") prof 
+                   option(value="cf") chef de filiere 
+                   option(value="cd") chef de departement
+                   option(value="admin") Administrateur
+                div.help-block.with-errors
+              div.form-group
+                 input.form-control#hid(name="role",type="hidden",value="")
+              button.btn.btn-default(type="submit",value="Login",) Creer 

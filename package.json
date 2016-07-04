@@ -1,0 +1,24 @@
+{
+  "name": "mean",
+  "version": "0.0.1",
+  "private": "true",
+  "dependencies": {
+    "async": "*",
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "*",
+    "connect-ensure-login": "*",
+    "connect-mongo": "*",
+    "csvtojson": "*",
+    "express": "*",
+    "express-session": "*",
+    "jade": "*",
+    "mongodb": "*",
+    "mongoose": "^4.4.16",
+    "multer": "*",
+    "nodemailer": "^2.4.2",
+    "passport": "*",
+    "passport-local": "*",
+    "socket.io": "*"
+  },
+  "author": "me"
+}
