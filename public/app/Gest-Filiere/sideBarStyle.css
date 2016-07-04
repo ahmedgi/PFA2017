@@ -15,7 +15,7 @@
 }
 
 #wrapper.toggled {
-    padding-left: 220px;
+    padding-left: 222px;
 }
 
 #sidebar-wrapper {
@@ -23,7 +23,7 @@
     left: 220px;
     width: 0;
     height: 100%;
-    margin-left: -220px;
+    margin-left: -222px;
     overflow-y: auto;
     overflow-x: hidden;
     background: #1a1a1a;
@@ -164,12 +164,12 @@
 
 .hamburger {
   position: fixed;
-  top: 10px;  
   z-index: 999;
   display: block;
   width: 28px;
   height: 32px;
   margin-left: 2px;
+  margin-top: 9px;
   background: transparent;
   border: none;
 }
@@ -281,10 +281,6 @@
     display: none;
     width: 100%;
     height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
     background-color: rgba(250,250,250,.8);
     z-index: 1;
 }
