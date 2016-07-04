@@ -1,7 +1,6 @@
 var app = angular.module('pfaApp');
 
 app.controller("GestDelibCtrl",function($rootScope,$http,$scope,delibNoteFactory){
-alert('ok');
 	$scope.data={};
 	//$scope.data.element={};
 	$scope.data.editToggle=[];
