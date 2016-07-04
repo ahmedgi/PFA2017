@@ -3,22 +3,22 @@
 					{
 						"id":145,
 						"nom":"Java",
-						"profs":[2]
+						"prof":[2]
 					},
 					{
-						"id":145,
-						"nom":"Java",
-						"profs":[3]
+						"id"  :145,
+						"nom" :"Java",
+						"prof":""
 					},
 					{
-						"id":145,
-						"nom":"Java",
-						"profs":[1]
+						"id"  :145,
+						"nom" :"Java",
+						"prof":[1]
 					},
 					{
-						"id":122,
-						"nom":"PHP",
-						"profs":[3]
+						"id"  :122,
+						"nom" :"PHP",
+						"prof":[3]
 					}
-				]
+		]
 }

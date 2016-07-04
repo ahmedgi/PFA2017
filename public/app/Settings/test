@@ -1,0 +1,8 @@
+<html>
+ <body>
+  <form methode="post" action="http://10.3.21.81:801/create">
+      <input type="text" name="name" />
+
+  </form>
+ </body>
+</html>

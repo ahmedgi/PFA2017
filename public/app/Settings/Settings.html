@@ -11,6 +11,7 @@
         <th >Nom</th>
         <th >Prenom</th>
         <th >Tel</th>
+        <th >Email</th>
         <th >Grade</th>
         <th >Options</th>
       </tr>
@@ -18,6 +19,7 @@
         <td><input type="text" class="form-control" ng-model="user.nNom"/></td>
         <td><input type="text" class="form-control" ng-model="user.nPrenom"/></td>
         <td><input type="text" class="form-control" ng-model="user.nTel"/></td>
+        <td><input type="text" class="form-control" ng-model="user.nEmail"/></td>
         <td><input type="text" class="form-control" ng-model="user.nGrade"/></td>
         <td>
             <button class="btn btn-success" ng-click="valider()">Add</button>
@@ -25,9 +27,10 @@
         </td>
       </tr>
       <tr ng-repeat="a in items | filter:q | orderBy:'nom' track by $index">
-        <td ng-show="isEditable[$index]" ><input class="form-control" type="text" ng-model="tmpEdit[$index].nom" /></td>
+        <td ng-show="isEditable[$index]"><input class="form-control" type="text" ng-model="tmpEdit[$index].nom" /></td>
         <td ng-show="isEditable[$index]"><input class="form-control" type="text" ng-model="tmpEdit[$index].prenom" /></td>
         <td ng-show="isEditable[$index]"><input class="form-control" type="text" ng-model="tmpEdit[$index].tel" /></td>
+        <td ng-show="isEditable[$index]"><input class="form-control" type="text" ng-model="tmpEdit[$index].email"/></td>
         <td ng-show="isEditable[$index]"><input class="form-control" type="text" ng-model="tmpEdit[$index].grade"/></td>
         <td ng-show="isEditable[$index]">
             <button class="btn btn-success" ng-click="confirm($index,a)">Confirmer</button>
@@ -37,10 +40,11 @@
         <td ng-hide="isEditable[$index]" >{{a.nom}}</td>
         <td ng-hide="isEditable[$index]" >{{a.prenom}}</td>
         <td ng-hide="isEditable[$index]" >{{a.tel}}</td>
+        <td ng-hide="isEditable[$index]" >{{a.email}}</td>
         <td ng-hide="isEditable[$index]" >{{a.grade}}</td>
         <td ng-hide="isEditable[$index]" >
           <button class="btn btn-warning" ng-click="editer(a,$index)">editer</button>
-          <button class="btn btn-danger" ng-click="delete(a)" data-toggle="modal" data-target="#myModal">delete</button>
+          <button class="btn btn-danger"  ng-click="delete(a)" data-toggle="modal" data-target="#myModal">delete</button>
           <div class="dropdown">
             <button class="btn btn-info dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" ><span class="glyphicon glyphicon-cog" /></button>
             
@@ -82,7 +86,7 @@
                   <h1 class="text-center">{{activeObj.nom}} {{activeObj.prenom}}</h1>
                 </div>
                 <div class="modal-body">
-                  <input type="checkbox" class="form-controller" id="professeur" ng-model="masks.prof" ng-change="confirmPrivilege()"/>
+                  <input type="checkbox" class="form-controller" id="professeur" ng-model="masks.prof"/>
                   <label for="professeur">Professeur</label><br/>
 
                   <input type="checkbox" class="form-controller" id="chefFillier" ng-model="masks.filliere"/>
@@ -96,8 +100,7 @@
                   <br/>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-info text-center" ng-click="confirmPrivilege()" data-dismiss="modal">Valider
-                    </button>
+                    <button class="btn btn-info text-center" ng-click="confirmPrivilege()" data-dismiss="modal">Valider</button>
                     <button class="btn btn-warning text-center" data-dismiss="modal">Annuler</button>
                 </div>
             </div>

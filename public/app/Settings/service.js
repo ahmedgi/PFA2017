@@ -5,37 +5,49 @@ app
         return $http
 		({
 	        method : "GET",
-	        url : "Settings/prof.json"
-	    }).then(function mySucces(response) {
-	        return response.data.data;
+	        url : "/profs"//Settings/prof.json
+	    }).then(function mySucces(res) {
+               if(res.data.info=="non_auto"){
+                  //alert("vous n'avez pas le droit");
+                  console.log("vous n'avez pas le droit");
+                  return [];
+                }
+	               else return res.data.data;
 	        
 		});          
-    }
+ }
 
 	this.getListMatiere = function(){            
         return $http
 		({
 	        method : "GET",
-	        url : "Settings/matiere.json"
-	    }).then(function mySucces(response) {
-	        return response.data.matieres;
+	        url    : "/matieres"//Settings/matiere.json
+	  }).then(function mySucces(res) {
+         if(res.data.info=="non_auto"){
+                  alert("vous n'avez pas le droit");
+                  return [];
+         }else
+	        return res.data.matieres;
 	        
-		});          
-    }    
+		    });          
+ }    
 	return this;
 });
-
 app.factory("affectionFactory",function($http){
 
 		this.getListMatiere = function(){            
         return $http
-		({
+		  ({
 	        method : "GET",
-	        url : "Settings/matiereAffectation.json"
-	    }).then(function mySucces(response) {
-	        return response.data.matieres;
+	        url    : "/matieres"//Settings/matiereAffectation.json
+	    }).then(function mySucces(res) {
+         if(res.data.info=="non_auto"){
+                  alert("vous n'avez pas le droit");
+                  return [];
+         }else
+	        return res.data.matieres;
 	        
-		});          
-    }    
+		      });          
+  }    
     return this;
 });

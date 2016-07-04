@@ -1,0 +1,20 @@
+{
+	"matiere":
+				{
+					"nom":"php",
+					"resultats":[
+									{
+										"nom": "Ayachi Mohammed",
+										"note":"19.5"
+									},
+									{
+										"nom": "Oualid Bouh",
+										"note":"19.5"
+									},
+									{
+										"nom": "BJ Mouad",
+										"note":"19.5"
+									}
+								]
+				}
+}

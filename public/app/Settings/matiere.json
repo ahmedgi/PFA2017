@@ -1,19 +1,20 @@
 {
 	"matieres":[
 				{
-					"nom":"JAVA",
+     "id"    
+					"nom"   :"JAVA",
 					"idProf":1
 				},
 				{
-					"nom":"PHP",
+					"nom"   :"PHP",
 					"idProf":2
 				},
 				{
-					"nom":"JEE",
+					"nom"   :"JEE",
 					"idProf":2
 				},
 				{
-					"nom":"C++",
+					"nom"   :"C++",
 					"idProf":3
 				}
 	]

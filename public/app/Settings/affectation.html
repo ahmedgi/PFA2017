@@ -13,10 +13,10 @@
              {{a.nom}}
         </td>
         <td>
-          Unkown
+            {{a.module}} 
         </td>
         <td>
-          {{a.profs}}
+            {{a.nomProf}}
         </td>
         <td>
           <button class="btn btn-info"  aria-expanded="true" data-toggle="modal" data-target="#myModal" ng-click="options($index)"><span class="glyphicon glyphicon-cog" /></button>
@@ -39,7 +39,7 @@
                 <div class="modal-body">
                   <div ng-repeat="p in profs track by $index">
                     <label>{{p.nom}} {{p.prenom}}</label>
-                    <input name="radio" type="radio"  ng-model="radio.id"  ng-value="p.id" />
+                    <input name="radio" type="radio"  ng-model="radio.id"  ng-value="p._id" />
                   </div>
                 </div>
                 <div class="modal-footer">
