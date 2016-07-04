@@ -93,7 +93,14 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			url : '/Gest-Filiere',
             templateUrl: 'Gest-Filiere/index.html',
             controller: 'gestionFilierController'
-			}).
+			}).state('Gest-Filiere.eModule', {
+            url: "/eModule",
+            templateUrl: "./Gest-Filiere/eModule"
+            })
+            .state('Gest-Filiere.module', {
+            url: "/module",
+            templateUrl: "./Gest-Filiere/module"
+            }).
 			state ('Gest-Scolarite', {
 			url : '/Gest-Scolarite',
             templateUrl: 'Gest-Scolarite/GestScolar.html',

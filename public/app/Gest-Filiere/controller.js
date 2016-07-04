@@ -2,19 +2,6 @@ var serverip = 'localhost:801'
 
 var app = angular.module('pfaApp');
 
-app.config(function($stateProvider, $urlRouterProvider) {
-
-  $stateProvider
-    .state('Gest-Filiere.eModule', {
-      url: "/eModule",
-      templateUrl: "./Gest-Filiere/eModule/index.html"
-    })
-    .state('Gest-Filiere.module', {
-      url: "/module",
-      templateUrl: "./Gest-Filiere/module/index.html"
-    })
-    });
-
 //Prof Services
 app.service('profService',function($http,$window){
     this.getProfs = function(req){
@@ -25,7 +12,7 @@ app.service('profService',function($http,$window){
                     })
             promise.then(function(response){
                     if(response.data.info == 'non_auto'){
-                       $window.location.href = 'http://'+serverip+'/#/login';
+                       $window.location.href = 'http://'+serverip+'/app/login';
                     }
                 })
            return promise;
@@ -39,7 +26,7 @@ app.service('profService',function($http,$window){
                     });
         promise.then(function(response){
                     if(response.data.info == 'non_auto'){
-                       $window.location.href = 'http://'+serverip+'/#/login';
+                       $window.location.href = 'http://'+serverip+'/app/login';
                     }
                 })
         return promise;
@@ -106,7 +93,7 @@ app.service('moduleService',function($http,$window){
                 });
          promise.then(function(response){
                     if(response.data.info == 'non_auto'){
-                       $window.location.href = 'http://'+serverip+'/#/login';
+                       $window.location.href = 'http://'+serverip+'/app/login';
                     }
                 })
         return promise;
@@ -120,7 +107,7 @@ app.service('moduleService',function($http,$window){
                 });
        promise.then(function(response){
                     if(response.data.info == 'non_auto'){
-                       $window.location.href = 'http://'+serverip+'/#/login';
+                       $window.location.href = 'http://'+serverip+'/app/login';
                     }
                 })
        return promise;
@@ -134,7 +121,7 @@ app.service('moduleService',function($http,$window){
                 });
         promise.then(function(response){
                     if(response.data.info == 'non_auto'){
-                       $window.location.href = 'http://'+serverip+'/#/login';
+                       $window.location.href = 'http://'+serverip+'/app/login';
                     }
                 })
        return promise;
@@ -148,7 +135,7 @@ app.service('moduleService',function($http,$window){
                 });
         promise.then(function(response){
                     if(response.data.info == 'non_auto'){
-                       $window.location.href = 'http://'+serverip+'/#/login';
+                       $window.location.href = 'http://'+serverip+'/app/login';
                     }
                 })
        return promise;
@@ -162,7 +149,7 @@ app.service('moduleService',function($http,$window){
                     })
         promise.then(function(response){
                     if(response.data.info == 'non_auto'){
-                       $window.location.href = 'http://'+serverip+'/#/login';
+                       $window.location.href = 'http://'+serverip+'/app/login';
                     }
                 })
        return promise;
@@ -242,7 +229,7 @@ app.service('moduleNotifService',function($http,$window){
                     })
             promise.then(function(response){
                     if(response.data.info == 'non_auto'){
-                       $window.location.href = 'http://'+serverip+'/#/login';
+                       $window.location.href = 'http://'+serverip+'/app/login';
                     }
                 })
            return promise;
@@ -256,7 +243,7 @@ app.service('moduleNotifService',function($http,$window){
                     })
            promise.then(function(response){
                     if(response.data.info == 'non_auto'){
-                       $window.location.href = 'http://'+serverip+'/#/login';
+                       $window.location.href = 'http://'+serverip+'/app/login';
                     }
                 })
            return promise;
@@ -319,7 +306,7 @@ app.service('eModuleService',function($http,$window){
                 });
                promise.then(function(response){
                     if(response.data.info == 'non_auto'){
-                       $window.location.href = 'http://'+serverip+'/#/login';
+                       $window.location.href = 'http://'+serverip+'/app/login';
                     }
                 })
              return promise;
@@ -333,7 +320,7 @@ app.service('eModuleService',function($http,$window){
                 });
         promise.then(function(response){
                     if(response.data.info == 'non_auto'){
-                       $window.location.href = 'http://'+serverip+'/#/login';
+                       $window.location.href = 'http://'+serverip+'/app/login';
                     }
                 })
        return promise;
@@ -347,7 +334,7 @@ app.service('eModuleService',function($http,$window){
                 });
        promise.then(function(response){
                     if(response.data.info == 'non_auto'){
-                       $window.location.href = 'http://'+serverip+'/#/login';
+                       $window.location.href = 'http://'+serverip+'/app/login';
                     }
                 })
        return promise;
@@ -361,7 +348,7 @@ app.service('eModuleService',function($http,$window){
                 });
         promise.then(function(response){
                     if(response.data.info == 'non_auto'){
-                       $window.location.href = 'http://'+serverip+'/#/login';
+                       $window.location.href = 'http://'+serverip+'/app/login';
                     }
                 })
        return promise;
@@ -375,7 +362,7 @@ app.service('eModuleService',function($http,$window){
                     })
        promise.then(function(response){
                     if(response.data.info == 'non_auto'){
-                       $window.location.href = 'http://'+serverip+'/#/login';
+                       $window.location.href = 'http://'+serverip+'/app/login';
                     }
                 })
        return promise;
@@ -460,7 +447,7 @@ app.service('eModuleNotifService',function($http,$window){
                     });
             promise.then(function(response){
                     if(response.data.info == 'non_auto'){
-                       $window.location.href = 'http://'+serverip+'/#/login';
+                       $window.location.href = 'http://'+serverip+'/app/login';
                     }
                 })
             return promise;
@@ -475,7 +462,7 @@ app.service('eModuleNotifService',function($http,$window){
                     });
             promise.then(function(response){
                     if(response.data.info == 'non_auto'){
-                       $window.location.href = 'http://'+serverip+'/#/login';
+                       $window.location.href = 'http://'+serverip+'/app/login';
                     }
                 })
            return promise;
