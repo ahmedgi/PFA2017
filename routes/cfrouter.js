@@ -9,7 +9,7 @@ var cfrouter = express.Router();
 var async    = require('async');
 var conEnsure= require('connect-ensure-login');
 //-----models-------------------------------
-var User     = require   ("../models/User");
+var User = require("../models/databaseModels").profs
 var Rat      = require   ("../models/rattrappage");
 var Matiere  = require   ("../models/Matiere");
 var Notes    = require   ("../models/Notes");

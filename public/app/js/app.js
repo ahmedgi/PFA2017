@@ -145,8 +145,4 @@ routeAppControllers.controller('GestScolarCtrl', ['$scope',
     }
 ]);
 
-routeAppControllers.controller('loginController', ['$scope',
-    function($scope){
-        alert('ok');
-    }
-]);
+
