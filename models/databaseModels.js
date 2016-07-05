@@ -167,6 +167,10 @@ var moduleSchema = mongoose.Schema(
          grade : String,
          email : String,
          password : String,
+         login          :{type:String,required:true,unique:true},
+         filiere        :{type:String}, //si l'user est un chef de filiere ===specifier la filiere
+         security_mask  :Number,
+         active_semestre:Number,
          notification : {
                 eModuleNotif : [
                 {

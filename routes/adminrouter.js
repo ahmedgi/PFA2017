@@ -106,7 +106,7 @@ adminrouter.get('/profs',/* conEnsure.ensureLoggedIn(2,"/login_"), */function(re
    });
 });
 //-----------get-Subject-List------------------------------
-adminrouter.get('/matieres',conEnsure.ensureLoggedIn(2,"/login_"),function(req,res){
+adminrouter.get('/matieres',/*conEnsure.ensureLoggedIn(2,"/login_"),*/function(req,res){
   var tsend={};
   var ijson={};
   tsend.matieres=[];
