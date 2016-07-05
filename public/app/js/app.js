@@ -110,6 +110,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
             url : '/Settings',
 			templateUrl: 'Settings/Settings.html',
             controller: 'SettingsCtrl'
+			}).
+			state ('affectation', {
+            url : '/affectation',
+			templateUrl: 'Settings/affectation.html',
+            controller: 'affectationCont'
 			})
     });
 /**

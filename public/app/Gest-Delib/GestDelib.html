@@ -1,9 +1,9 @@
 
-<section class="navigation-side-bar" ng-switch="step" class="col-lg-6">
+<section class="navigation-side-bar" ng-switch="step" class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
 
 	<div ng-switch-when="1" class="list-group">
     <!--<a class="btn btn-warning" href="#/Gest-Delib-Remp">Uploader des notes</a>-->
-    <h1>Choisir la classe</h1>
+    <h1>Choisir la filière</h1>
 
 	  <a class="list-group-item" ng-click="incrementStep();chooseFiliere('GI')">GI</a>
 	  <a class="list-group-item" ng-click="incrementStep();chooseFiliere('GSEIR')">GSEIR</a>
@@ -16,7 +16,7 @@
 
 
 	<div ng-switch-when="2" class="list-group">
-    <h1>Choisir la classe</h1>
+    <h1>Choisir le niveau</h1>
     <a class="list-group-item" ng-click="incrementStep();chooseAnnee(1)">1 ere annee</a>
 	  <a class="list-group-item" ng-click="incrementStep();chooseAnnee(2)">2 eme annee</a>
 	  <a class="list-group-item" ng-click="incrementStep();chooseAnnee(3)">3 eme annee</a>
@@ -32,18 +32,17 @@
 
 </section>
 
-<section class="note-section" >
-
+<section class="note-section " class="col-lg-6 col-md-6 col-sm-6 col-xs-6" >
 <div ng-show="Utils.keys(data.notes).length==0 && ready">
   <form>
     
-    <input type="file" ng-file-select="selected($file)" />
+    <input type="file" fileread="noteFile" enctype="multipart/form-data" method="post" />
     <button class="btn btn-info" ng-click="upload()">Envoyer</button>
   </form>
 </div>
 
 <div ng-show="Utils.keys(data.notes).length!=0 && ready">
-  <h1> Note </h1>
+  <h1> liste des notes </h1>
 
   <table class="table">
       <tr>

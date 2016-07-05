@@ -112,7 +112,7 @@ adminrouter.get('/matieres',/*conEnsure.ensureLoggedIn(2,"/login_"),*/function(r
   tsend.matieres=[];
    Matiere.find({},
     {
-     _id:1,
+    _id:1,
      nom:1,
      _ens:1,
      _mod:1

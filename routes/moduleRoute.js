@@ -1,4 +1,3 @@
-
 var express = require('express');
 var async = require('async')
 var conEnsure= require('connect-ensure-login');
