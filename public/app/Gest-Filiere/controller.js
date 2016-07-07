@@ -154,6 +154,19 @@ app.service('moduleService',function($http,$window){
                 })
        return promise;
               }
+     this.generatePDF = function(req){
+         var promise = $http({
+                        method: 'POST',
+                        url: 'http://'+serverip+'/gestionfiliere/modules/generatePDF',
+                        data : req
+                    })
+        promise.then(function(response){
+                    if(response.data.info == 'non_auto'){
+                       $window.location.href = 'http://'+serverip+'/app/login';
+                    }
+                })
+         return promise;
+     }
 });
 
 app.service('modulesList',function(moduleService,profsList,$rootScope,$filter){
@@ -751,6 +764,7 @@ app.controller('m_editeModalController',function($scope,$rootScope,moduleService
                 etablissement : '',
                 departement : '',
                 intitulee : '',
+                didactique : '',
                 status : '',
                 userId : '',
                 updatedBy : '',
@@ -780,6 +794,7 @@ app.controller('m_editeModalController',function($scope,$rootScope,moduleService
               $scope.edite.req.etablissement = tmpModule.etablissement;
               $scope.edite.req.departement = tmpModule.departement;
               $scope.edite.req.intitulee = tmpModule.intitulee;
+              $scope.edite.req.didactique = tmpModule.didactique;
               $scope.edite.req.status = tmpModule.status; 
               $scope.edite.req.note_minimal = tmpModule.note_minimal;
               $scope.edite.currentEModules = tmpModule.eModules;
@@ -826,8 +841,16 @@ app.controller('m_editeModalController',function($scope,$rootScope,moduleService
         })
 });
 
-app.controller('m_apercuModalController',function($scope,$rootScope,eModuleService,profService,modulesList,profsList){
+app.controller('m_apercuModalController',function($scope,$rootScope,moduleService,profService,modulesList,profsList){
     $scope.module;
+    
+    $scope.generatePDF = function(){
+        moduleService.generatePDF({userId : $scope.user()._id,moduleId : modulesList.getItems()[modulesList.getSelectedItemIndex()]._id })
+            .then(function(response){
+               // var blob = new Blob(response.data, {type: "application/docx;charset=utf-8"});
+                //saveAs(blob, "module.docx");
+            });
+    }
     
     $scope.init = function(moduleId){
              $scope.module = modulesList.getItems()[modulesList.getSelectedItemIndex()];
@@ -1001,9 +1024,10 @@ app.controller('e_editeModalController',function($scope,$rootScope,eModuleServic
         })
 });
 
+
+
 app.controller('e_apercuModalController',function($scope,$rootScope,eModuleService,profService,eModulesList,profsList){
     $scope.eModule;
-    
     $scope.init = function(eModuleId){
              $scope.eModule = eModulesList.getItems()[eModulesList.getSelectedItemIndex()];
               

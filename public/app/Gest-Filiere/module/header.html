@@ -106,14 +106,14 @@
                                                             {{notif.prof.nom}} a supprimer {{notif.intitulee}}
                                                         </h4>
                                                         <h4 ng-if='notif.typee == "share"'  >
-                                                            {{notif.prof.nom}} a partager avec vous {{notif.module.intitulee}}
+                                                            {{notif.prof.nom}} a partager avec vous {{notif.module.intitulee?notif.module.intitulee:notif.intitulee}}
                                                             <span class="glyphicon glyphicon-{{getPermision(notif.module._id)=='w'?'edit':'eye-open'}}" aria-hidden="true"></span>
                                                         </h4>
                                                         <h4 ng-if='notif.typee == "update"'>
                                                             {{notif.prof.nom}} a mis a jour {{notif.module.intitulee}}
                                                         </h4>
                                                         <h4 ng-if='notif.typee == "cord"'  >
-                                                            {{notif.prof.nom}} vous a designé coordonnateur du Module : {{notif.module.intitulee}}
+                                                            {{notif.prof.nom}} vous a designé coordonnateur du Module : {{notif.module.intitulee?notif.module.intitulee:notif.intitulee}}
                                                             <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                                                         </h4>
                                                         <h4 ng-if='notif.typee == "eModuleUpdate"'  >

@@ -1,3 +1,5 @@
+var app = angular.module('pfaApp')
+
 app
 .factory("settingFactory",function($http){
 

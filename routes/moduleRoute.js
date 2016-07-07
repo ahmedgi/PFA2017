@@ -2,7 +2,10 @@ var express = require('express');
 var async = require('async')
 var conEnsure= require('connect-ensure-login');
 var databaseModels = require('../models/databaseModels')
-
+var wkhtmltopdf = require('wkhtmltopdf');
+var Mustache =require('mustache');
+var fs = require("fs");
+var Docxtemplater = require('docxtemplater');
 
 
 
@@ -454,5 +457,192 @@ router.post('/remplireModule',conEnsure.ensureLoggedIn(0,"/login_",true),functio
     
 });
 
+//{userId : _id , moduleId}
+router.post('/generatePDF',conEnsure.ensureLoggedIn(0,"/login_",true),function(req,res){
+       res.setHeader('Content-Type', 'application/docx')
+       console.log('generating pdf ');
+       
+       async.waterfall([
+               function(callback){
+                  var query =  databaseModels.modules.findById(req.body.moduleId);
+                   query.populate('coordonnateur');
+                   query.populate('eModules._id');
+                   query.exec(
+                   function(err,module){
+                       if(err) return callback({code : '002',message :"database problem!!"});
+                        callback(null,module);
+                   });
+               },
+               function (module, callback) {
+                   var data = {
+                       universite: '',
+                       etablissement: '',
+                       departement: '',
+                       intitulee: '',
+                       coordonnateur_nom: '',
+                       coordonnateur_prenom: '',
+                       coordonnateur_grade: '',
+                       coordonnateur_specialite: '',
+                       coordonnateur_tel: '',
+                       coordonnateur_mail: '',
+                       prerequis: '',
+                       objectif: '',
+                       eModules: [
+                           /*{
+                               intitulee: '',
+                               cour: '',
+                               td: '',
+                               tp: '',
 
+                           }*/
+                       ],
+                       enseignementCours_total: 0,
+                       enseignementTd_total: 0,
+                       enseignementTp_total: 0,
+                       enseignement_total: 0,
+                       activites: [
+                           /*{
+                               libellee: '',
+                               objectif: '',
+                               travauxTerrain: '',
+                               projet: '',
+                               stage: '',
+                               visiteEtude: '',
+                           }*/
+                       ],
+                       activitesTravauxTerrain_total: 0,
+                       activitesProjet_total: 0,
+                       activitesStage_total: 0,
+                       activitesVisiteEdute_total: 0,
+                       activites_total: 0,
+                       contenu: [
+                          /* {
+                               intitulee: '',
+                               description: '',
+                           }*/
+                       ],
+                       didactique: '',
+                   }
+                   
+                   data.universite = module.universite;
+                   data.departement = module.departement;
+                   data.etablissement = module.etablissement,
+                   data.intitulee = module.intitulee;
+                   data.coordonnateur_nom =  module.coordonnateur.nom,
+                   data.coordonnateur_prenom = module.coordonnateur.prenom,
+                   data.coordonnateur_grade = module.coordonnateur.grade,
+                   data.coordonnateur_specialite = module.coordonnateur.specialite,
+                   data.coordonnateur_tel = module.coordonnateur.tel,
+                   data.coordonnateur_mail = module.coordonnateur.mail,
+                   data.didactique = module.didactique,
+                   data.note_minimal = module.note_minimal;
+                   
+                   
+                   for(var i = 0 ;i < module.eModules.length ; i++){
+                      data.prerequis = data.prerequis.concat("\n"+module.eModules[i]._id.prerequis);
+                      data.objectif = data.objectif.concat("\n"+module.eModules[i]._id.objectif);
+                      
+                      data.enseignementCours_total += module.eModules[i]._id.volume_horaire.cour;
+                      data.enseignementTd_total += module.eModules[i]._id.volume_horaire.td;
+                      data.enseignementTp_total += module.eModules[i]._id.volume_horaire.tp;
+                      
+                      data.eModules.push({
+                         intitulee : module.eModules[i]._id.intitulee, 
+                         cour :  module.eModules[i]._id.volume_horaire.cour,
+                         td : module.eModules[i]._id.volume_horaire.td,
+                         tp : module.eModules[i]._id.volume_horaire.tp
+                      });
+                      
+                      for(var j = 0 ; j <  module.eModules[i]._id.activitees_pratique.length ; j++){
+                          data.activitesTravauxTerrain_total += module.eModules[i]._id.activitees_pratique[j].travaux_terrain;
+                          data.activitesProjet_total += module.eModules[i]._id.activitees_pratique[j].projet;
+                          data.activitesStage_total += module.eModules[i]._id.activitees_pratique[j].stage;
+                          data.activitesVisiteEdute_total += module.eModules[i]._id.activitees_pratique[j].visite_etude;
+                          data.activites.push({
+                              libellee: module.eModules[i]._id.activitees_pratique[j].libellee,
+                              objectif: module.eModules[i]._id.activitees_pratique[j].objectif,
+                              travauxTerrain: module.eModules[i]._id.activitees_pratique[j].travaux_terrain,
+                              projet: module.eModules[i]._id.activitees_pratique[j].projet,
+                              stage: module.eModules[i]._id.activitees_pratique[j].stage,
+                              visiteEtude: module.eModules[i]._id.activitees_pratique[j].visite_etude,
+                          })
+                      }
+                      
+                      data.contenu.push({
+                          intitulee : module.eModules[i]._id.intitulee,
+                          description : module.eModules[i]._id.description_programme,
+                      })
+                   }
+                   
+                   data.enseignement_total = data.enseignementCours_total+data.enseignementTd_total+data.enseignementTp_total;
+                   data.activites_total = data.activitesTravauxTerrain_total+data.activitesProjet_total+data.activitesStage_total+data.activitesVisiteEdute_total;
+                   
+                   fs.readFile("./pdfTemplates/origin.docx", function (err, content) {
+                       if (err){
+                            console.log('errour template')
+                            callback(err);
+                       }
+                       else {
+                           var doc = new Docxtemplater(content);
+                           //set the templateVariables
+                           doc.setData(data);
+                           //apply them (replace all occurences of {first_name} by Hipp, ...)
+                           doc.render();
+                           var buf = doc.getZip().generate({ type: "nodebuffer" });
+                           fs.writeFileSync("./pdfTemplates/mustache.docx", buf);
+                           callback(null,buf);
+                       }
+                   });
+               }
+           ],
+           function(err,data){
+               if(err){ 
+                    res.send(JSON.stringify(err,null,'\t'));
+                    console.log(JSON.stringify(err,null,'\t'))
+               }
+               else{
+                    res.sendfile("./pdfTemplates/mustache.docx")
+                    //res.send(data);
+               }
+               
+               
+           });
+       
+       
+       
+    /*
+       var content = fs
+           .readFile("./pdfTemplates/moduleTemplate.docx", function(err,content){
+               if(err) console.log('errour template');
+               else {
+                   var doc = new Docxtemplater(content);
+                   //set the templateVariables
+                   doc.setData({
+                       items : [
+                           {
+                               intitulee : "Francais",
+                               cour : '32',
+                               td : '0',
+                               tp : '0'
+                           },
+                           {
+                               intitulee:'Anglais',
+                               cour : '32',
+                               td : '0',
+                               tp : '0'
+                           }
+                           ]
+                   });
+                   
+                   
+                   //apply them (replace all occurences of {first_name} by Hipp, ...)
+                   doc.render();
+
+                   var buf = doc.getZip()
+                       .generate({ type: "nodebuffer" });
+
+                   fs.writeFileSync("./pdfTemplates/mustache.docx", buf);
+               }
+           });       */
+});
 module.exports = router;

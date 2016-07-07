@@ -11,7 +11,7 @@ app
 	$scope.user      ={};//the tmp information of the prof in the form add prof
 
 	settingFactory.getListProf().then(function(arrItems){//fetch the informations of the profs from the factory
-        $scope.items = arrItems;
+         $scope.items = arrItems;
          $scope.isEditable.push(false);
        });
 
