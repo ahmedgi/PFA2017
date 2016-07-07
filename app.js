@@ -8,8 +8,8 @@ var srv=require('http').createServer();
 var io =require('socket.io').listen(srv);
 var bodyParser=require('body-parser');
 var mongoose=require('mongoose');
-app.listen(801);
-srv.listen(8011);
+app.listen(801,"192.168.1.21");
+srv.listen(8011,"192.168.1.21");
 var settings=require('./settings.js');
 var url =settings.url;
 var passport = require('passport'),
@@ -156,10 +156,8 @@ app.get('/logout',function(req,res){
 	  res.sendFile("/public/index.html",{root:__dirname});
  });
  
- /*
- 
-/* io.sockets.on('connection',function(socket){
+ io.sockets.on('connection',function(socket){
                     console.log("client connecté");
                     trick  = socket;
 });
- */
+ 

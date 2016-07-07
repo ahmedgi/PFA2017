@@ -68,7 +68,7 @@
         </div>
         <div class="collapse navbar-collapse navbar-ex1-collapse">
          <div class="navbar-form">
-              <input type="text" class="form-control " placeholder="Search" ng-change='reportChange()' ng-model='search'>
+              <input type="text" class="form-control " placeholder="Search" ng-change='reportChange()' ng-model='search' ng-hide="true">
               <div class="btn-toolbar  navbar-right">
                    <div class="btn-group" role="group" ng-show = "selectedItemIndex() > -1">
                             <button type="button" class="btn btn-default" data-toggle="modal" data-toggle="tooltip" title='"{{eModulesList()[selectedItemIndex()].intitulee}}"' data-target="#apercuModal" ng-click="apercu()">

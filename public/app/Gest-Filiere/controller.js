@@ -1,4 +1,4 @@
-var serverip = 'localhost:801'
+var serverip = '192.168.1.21:801'
 
 var app = angular.module('pfaApp');
 
@@ -675,7 +675,7 @@ app.controller('m_headerController',function($scope,$rootScope,moduleNotifList,p
         }
 });
 
-app.controller('m_moduleTableController',function($scope,$rootScope,moduleService,profService,modulesList,profsList){
+app.controller('m_moduleTableController',function($scope,$rootScope,moduleService,profService,modulesList,profsList,$window){
         $scope.selectedItemIndex = modulesList.getSelectedItemIndex;
         $scope.getPermision = modulesList.getPermision;
         $scope.moduleTable = {
@@ -703,6 +703,19 @@ app.controller('m_moduleTableController',function($scope,$rootScope,moduleServic
                     $('#shareModal').modal('show');
                   
                 }],
+                null
+                ,
+                ['Télécharger',function($itemScope){
+                    moduleService.generatePDF({ userId: $scope.user()._id, moduleId: modulesList.getItems()[modulesList.getSelectedItemIndex()]._id })
+                        .then(function (response) {
+                            if (response.data.code = '200') {
+                                $window.location.href = 'http://' + serverip + response.data.data.url;
+                            }
+                            else {
+                                alert(response.data.message);
+                            }
+                        });
+                }],
                 null,
                 ['Supprimer',function($itemScope){
                     $scope.moduleTable.selectedId = $itemScope.module._id;
@@ -718,6 +731,18 @@ app.controller('m_moduleTableController',function($scope,$rootScope,moduleServic
                 ['Modifier',function($itemScope){
                     $rootScope.$broadcast('init_editeModal',{});
                     $('#editeModal').modal('show');
+                }],
+                null
+                ,['Télécharger',function($itemScope){
+                    moduleService.generatePDF({ userId: $scope.user()._id, moduleId: modulesList.getItems()[modulesList.getSelectedItemIndex()]._id })
+                        .then(function (response) {
+                            if (response.data.code = '200') {
+                                $window.location.href = 'http://' + serverip + response.data.data.url;
+                            }
+                            else {
+                                alert(response.data.message);
+                            }
+                        });
                 }],
                ],
             menuOptionsr : [
@@ -841,14 +866,18 @@ app.controller('m_editeModalController',function($scope,$rootScope,moduleService
         })
 });
 
-app.controller('m_apercuModalController',function($scope,$rootScope,moduleService,profService,modulesList,profsList){
+app.controller('m_apercuModalController',function($scope,$rootScope,moduleService,profService,modulesList,profsList,$window){
     $scope.module;
     
     $scope.generatePDF = function(){
         moduleService.generatePDF({userId : $scope.user()._id,moduleId : modulesList.getItems()[modulesList.getSelectedItemIndex()]._id })
             .then(function(response){
-               // var blob = new Blob(response.data, {type: "application/docx;charset=utf-8"});
-                //saveAs(blob, "module.docx");
+               if(response.data.code = '200'){
+                   $window.location.href = 'http://'+serverip+response.data.data.url;
+               }
+               else{
+                    alert(response.data.message);
+               }
             });
     }
     

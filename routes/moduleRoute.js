@@ -1,14 +1,11 @@
 var express = require('express');
 var async = require('async')
 var conEnsure= require('connect-ensure-login');
-var databaseModels = require('../models/databaseModels')
-var wkhtmltopdf = require('wkhtmltopdf');
-var Mustache =require('mustache');
+var databaseModels = require('../models/databaseModels');
 var fs = require("fs");
 var Docxtemplater = require('docxtemplater');
-
-
-
+var mime = require('mime-types');
+var io = require('socket.io')
 var router = express.Router();
 
 
@@ -459,7 +456,7 @@ router.post('/remplireModule',conEnsure.ensureLoggedIn(0,"/login_",true),functio
 
 //{userId : _id , moduleId}
 router.post('/generatePDF',conEnsure.ensureLoggedIn(0,"/login_",true),function(req,res){
-       res.setHeader('Content-Type', 'application/docx')
+       res.setHeader('Content-Type', 'application/json')
        console.log('generating pdf ');
        
        async.waterfall([
@@ -526,15 +523,17 @@ router.post('/generatePDF',conEnsure.ensureLoggedIn(0,"/login_",true),function(r
                    
                    data.universite = module.universite;
                    data.departement = module.departement;
-                   data.etablissement = module.etablissement,
+                   data.etablissement = module.etablissement;
                    data.intitulee = module.intitulee;
-                   data.coordonnateur_nom =  module.coordonnateur.nom,
-                   data.coordonnateur_prenom = module.coordonnateur.prenom,
-                   data.coordonnateur_grade = module.coordonnateur.grade,
-                   data.coordonnateur_specialite = module.coordonnateur.specialite,
-                   data.coordonnateur_tel = module.coordonnateur.tel,
-                   data.coordonnateur_mail = module.coordonnateur.mail,
-                   data.didactique = module.didactique,
+                   if(module.coordonnateur){
+                    data.coordonnateur_nom =  module.coordonnateur.nom;
+                    data.coordonnateur_prenom = module.coordonnateur.prenom;
+                    data.coordonnateur_grade = module.coordonnateur.grade,
+                    data.coordonnateur_specialite = module.coordonnateur.specialite;
+                    data.coordonnateur_tel = module.coordonnateur.tel;
+                    data.coordonnateur_mail = module.coordonnateur.mail;
+                   }
+                   data.didactique = module.didactique;
                    data.note_minimal = module.note_minimal;
                    
                    
@@ -589,60 +588,23 @@ router.post('/generatePDF',conEnsure.ensureLoggedIn(0,"/login_",true),function(r
                            //apply them (replace all occurences of {first_name} by Hipp, ...)
                            doc.render();
                            var buf = doc.getZip().generate({ type: "nodebuffer" });
-                           fs.writeFileSync("./pdfTemplates/mustache.docx", buf);
-                           callback(null,buf);
+                           fs.writeFile("./public/app/Gest-Filiere/files/"+module.intitulee+".docx", buf,function(err){
+                              if(err) return callback(err);
+                              callback(null,module.intitulee) 
+                           });
                        }
                    });
                }
            ],
-           function(err,data){
+           function(err,intitulee){
                if(err){ 
                     res.send(JSON.stringify(err,null,'\t'));
                     console.log(JSON.stringify(err,null,'\t'))
                }
                else{
-                    res.sendfile("./pdfTemplates/mustache.docx")
-                    //res.send(data);
+                   res.send(JSON.stringify({code : "200",message:'',data:{url : '/app/Gest-Filiere/files/'+intitulee+'.docx'}},null,'\t'));
+                   console.log(JSON.stringify({code : "000",messagae : 'error file',data : ''},null,'\t'))
                }
-               
-               
            });
-       
-       
-       
-    /*
-       var content = fs
-           .readFile("./pdfTemplates/moduleTemplate.docx", function(err,content){
-               if(err) console.log('errour template');
-               else {
-                   var doc = new Docxtemplater(content);
-                   //set the templateVariables
-                   doc.setData({
-                       items : [
-                           {
-                               intitulee : "Francais",
-                               cour : '32',
-                               td : '0',
-                               tp : '0'
-                           },
-                           {
-                               intitulee:'Anglais',
-                               cour : '32',
-                               td : '0',
-                               tp : '0'
-                           }
-                           ]
-                   });
-                   
-                   
-                   //apply them (replace all occurences of {first_name} by Hipp, ...)
-                   doc.render();
-
-                   var buf = doc.getZip()
-                       .generate({ type: "nodebuffer" });
-
-                   fs.writeFileSync("./pdfTemplates/mustache.docx", buf);
-               }
-           });       */
 });
 module.exports = router;
