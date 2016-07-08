@@ -18,28 +18,40 @@
 
 <body>
 <header>
-
-	<nav class="navbar navbar-default">
-		<div class="container-fluid">
-			
-			<div class="navbar-header">
-				<a class="navbar-brand" href="#">Scholar-Gest</a>
-			</div>
-			
-			
-			<ul class="nav nav-pills">
-				<li><a class="active" href="#/home"> <span class="glyphicon glyphicon-home" ></span> acceuil</a></li>
+	
+	 <!-- Static navbar -->
+      <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Scholar-Gest</a>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li><a class="active" href="#/home"> <span class="glyphicon glyphicon-home" ></span> acceuil</a></li>
 				<li><a ui-sref="Gest-Charges"><span class="glyphicon glyphicon-calendar"></span> Gestion de charge</a></li>
 				<li><a ui-sref="Gest-Filiere.module"><span class="glyphicon glyphicon-file"></span> Gestion de filière</a></li>
 				<li><a ui-sref="Gest-Delib"><span class="glyphicon glyphicon-ok"></span> Gestion des délibérations</a></li>
 				<li><a ui-sref="Gest-Scolarite"><span class="glyphicon glyphicon-folder-open"/> Gestion de scolarité</a></li>
-				<li class="nav navbar-nav navbar-right" ><a href="#/Settings"><span class="glyphicon glyphicon-cog"  aria-hidden="true" /> Settings </a>	</li>
-	
-			</ul>
-			
-			
-		</div>
-	</nav>
+              
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+				<li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-cog"  aria-hidden="true" /> <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><a href="#/Settings"> Settings </a></li>
+                  <li><a href="#">Loggout</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div><!--/.container-fluid -->
+      </nav>
 
 </header>
 
