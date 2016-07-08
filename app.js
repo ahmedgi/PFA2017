@@ -9,7 +9,7 @@ var server = http.createServer(app)
 var io =require('socket.io')(server);
 var bodyParser=require('body-parser');
 var mongoose=require('mongoose');
-server.listen(801,"192.168.1.21");
+server.listen(801,"192.168.1.13");
 var settings=require('./settings.js');
 var url =settings.url;
 var passport = require('passport'),

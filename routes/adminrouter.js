@@ -20,7 +20,7 @@ var Module =require("../models/Module");
         mregx =new  RegExp(/^([0-9]{1}|1[0-5])$/),
         gregx =new  RegExp(/^([a-zA-Z_]+)$/),
         nom   =req.body.nom,
-								email =req.body.email,
+		email =req.body.email,
         tel   =req.body.tel,
         grade =req.body.grade,
         passwd="0000000",//req.body.passwd,
@@ -38,13 +38,14 @@ var Module =require("../models/Module");
        subject:"mot de passe",
        text:"votre mot de pass: "+passwd
     };
-				if        (nom|| nom.gtrim()==""||!nregx.test(nom))
-					 res.json({err:"vous devez entrez un nom valide"});
-    else if (typeof prenom=="undefined" || prenom.gtrim()==""||!pnregx.test(prenom))
-      res.json({err:"vous devez entrez un prenom valide"});
-    else if (typeof grade  =="undefined" || grade.gtrim()==""||!gregx.test(grade))
-      res.json({err:"vous n'êtes pas serieux"});
-    else if (!email || !eregx.test(email)){
+    console.log("#########################"+nom)
+    if (nom.gtrim() == "" || !nregx.test(nom))
+        res.json({ err: "vous devez entrez un nom valide" });
+    else if (typeof prenom == "undefined" || prenom.gtrim() == "" || !pnregx.test(prenom))
+        res.json({ err: "vous devez entrez un prenom valide" });
+    else if (typeof grade == "undefined" || grade.gtrim() == "" || !gregx.test(grade))
+        res.json({ err: "vous n'êtes pas serieux" });
+    else if (!email || !eregx.test(email)) {
       res.json({err:"email invalide !!"});
     }
 				else{
@@ -156,6 +157,7 @@ adminrouter.get('/matieres',/*conEnsure.ensureLoggedIn(2,"/login_"),*/function(r
 
 
 adminrouter.post("/admin_data",/* conEnsure.ensureLoggedIn(8,"/login"), */function(req,res){
+   console.log("789789#"+JSON.stringify(req.body))
    try{
      var mask=req.body.security_mask;
      var mr=new RegExp(/^[0-9]{1,2}$/);
@@ -182,14 +184,15 @@ adminrouter.post("/admin_data",/* conEnsure.ensureLoggedIn(8,"/login"), */functi
    }
 });
 
-adminrouter.get("/delete_user",function(req,res){
-   User.findOne({_id:user_id},function(err,user){
-     if(!err){
+adminrouter.post("/delete_user",function(req,res){
+   console.log("pppp"+JSON.stringify(req.body))
+   User.findOne({_id:req.body.user_id},function(err,user){
+     if(!err&&user){
         async.parallel([
          //-----détacher les matières----------
           function(matDone){
-           if(user.matieres.length){
-            Matiere.update({_ens:user_id},{$set:{_ens:null}},{multi:true},function(err,mats){
+           if(user.matieres&&user.matieres.length){
+            Matiere.update({_ens:req.body.user_id},{$set:{_ens:null}},{multi:true},function(err,mats){
                  if(!err)matDone(null);
                  else matDone({err:"unknown error while deleting !"});
             });
@@ -197,25 +200,59 @@ adminrouter.get("/delete_user",function(req,res){
           },
          //-----détacher les modules-----------
           function(modDone){
-           if(user.modules.length){
-            Module.update({_resp:user_id},{$set:{_resp:null}},{multi:true},function(err,mats){
+           if(user.modules&&user.modules.length){
+            Module.update({_resp:req.body.user_id},{$set:{_resp:null}},{multi:true},function(err,mats){
                  if(!err)matDone(null);
                  else matDone({err:"unknown error while deleting !"});
             });
            }else modDone(null);
-          }
+          },
+          function(callback){
+            User.remove({_id:req.body.user_id},function(err){
+                if(err) return callback({code : "010",message:"Prob database !",data:''})
+                callback(null);
+            })
+          },
         ],function(err,result){
            if(!err) res.json({ok:"user successfully removed !"});
            else res.json(err);
         });
-       
-       res.json({ok:"user removed  !"});
-       
      }
      else res.json({err:"can't remove user!!"});
    });
 });
+
 adminrouter.post("/update_user",function(req,res){
+   var nregx =new  RegExp(/^[a-zA-Z_]{3,}$/),
+        pnregx=new  RegExp(/^[a-zA-Z_]{3,}$/),
+        eregx =new  RegExp(/^[^]+@gmail.com$/),
+        mregx =new  RegExp(/^([0-9]{1}|1[0-5])$/),
+        gregx =new  RegExp(/^([a-zA-Z_]+)$/);
+   if (req.body.nom.gtrim() == "" || !nregx.test(req.body.nom))
+        res.json({ err: "vous devez entrez un nom valide" });
+    else if (req.body.prenom.gtrim() == "" || !pnregx.test(req.body.prenom))
+        res.json({ err: "vous devez entrez un prenom valide" });
+    else if (req.body.grade.gtrim() == "" || !gregx.test(req.body.grade))
+        res.json({ err: "vous n'êtes pas serieux" });
+    else if (!eregx.test(req.body.email)) {
+      res.json({err:"email invalide !!"});
+    }else{
+   User.findOne({_id:req.body._id},function(err,user){
+       if(err) res.json({err:"error database!!"})
+       else if(!user) res.json({err:"error user not found!!"})
+       else {
+           user.setAtt('nom',req.body.nom);
+           user.setAtt('prenom',req.body.prenom);
+           user.setAtt('tel',req.body.tel);
+           user.setAtt('grade',req.body.grade);
+           user.setAtt('email',req.body.email);
+           user.save(function(err){
+               if(err) res.json({err:"saving prof Prob"})
+               else  res.json({ok:"prof updated"})
+           })
+       }
+   })
+    }
    
 });
 

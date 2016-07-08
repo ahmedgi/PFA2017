@@ -68,7 +68,7 @@ app
   {
    method:"POST",
    data  :obj,
-   url   :"/"
+   url   :"/update_user"
   }
   );
 	}
@@ -85,10 +85,11 @@ app
 
 	$scope.confirmDelete=function(obj){//when click on confirmer(after delete), it delete the active prof
 		$scope.items.splice($scope.items.indexOf(obj),1);
-  $http({
-			method:'GET',
-			params:{user_id:obj._id},
-			url   :'/delete_user'
+        alert("hnaya")
+        $http({
+			method:'POST',
+			data:{user_id:obj._id},
+			url   :'http://192.168.1.13:801/delete_user'
 		}).then(function success(res){alert(JSON.stringify(res.data));},function err(res){alert(res.data.err);});
 		$scope.hideLightbox();
 	};
@@ -113,7 +114,7 @@ app
 		if($scope.masks.filliere){$scope.activeObj.security_mask|=2;}
 		if($scope.masks.departement){$scope.activeObj.security_mask|=4;}
 		if($scope.masks.admin){$scope.activeObj.security_mask|=8;}
-  console.log(JSON.stringify($scope.activeObj.security_mask));
+  alert(JSON.stringify($scope.activeObj.security_mask));
   $http({
 			method:'POST',
 			data:$scope.activeObj,

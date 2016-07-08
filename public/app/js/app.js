@@ -26,7 +26,11 @@
 ]);
  
  app.run(function($rootScope){
+<<<<<<< HEAD
       var socket = io('http://localhost:801');
+=======
+      var socket = io('http://192.168.1.13:801');
+>>>>>>> 764759e5801531ec86733d42ed1e3d75f6fcdad4
       $rootScope.socket = socket;
  })
 /**

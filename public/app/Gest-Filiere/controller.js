@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 var serverip = 'localhost:801'
+=======
+var serverip = '192.168.1.13:801'
+>>>>>>> 764759e5801531ec86733d42ed1e3d75f6fcdad4
 
 
 
