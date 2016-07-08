@@ -47,6 +47,28 @@ router.post("/creeModule",conEnsure.ensureLoggedIn(0,"/login_",true),function(re
                        callback(null,module._id);
                    });
                },
+               //-----------------------double link-------------------
+                function(moduleId,callback){
+                   databaseModels.modules.find({_id:moduleId})
+                   .populate({path:'eModules',model:'eModules'})
+                   .exec(function(err,mod){
+                      if(!err){
+                       async.each(mod.eModules,function(elm,done){
+                        elm._mod=moduleId;
+                        elm.save(function(err){
+                          if(!err) done();
+                          else done({t:1});
+                        });
+                       }
+                       ,function(err){
+                        if(!err)callback(null,moduleId);
+                        else return callback({code : '128',message :"strange error !"});
+                       });   
+                       
+                      }
+                    });
+               },
+               //-------------------------------------------------------
                function(moduleId,callback){
                    var newNotif = new databaseModels.moduleNotif({
                                                                 intitulee :req.body.intitulee,

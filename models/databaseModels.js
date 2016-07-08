@@ -210,7 +210,11 @@ profSchema.methods.addNotif = function(notif,notifType){
     this.notification[notifType].push(notif);
 }
 
-
+profSchema.methods.setAtt = function(att,value){
+    if(value){
+        this[att] = value;
+    }
+}
  
  
  

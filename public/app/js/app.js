@@ -26,7 +26,7 @@
 ]);
  
  app.run(function($rootScope){
-      var socket = io('http://192.168.1.21:801');
+      var socket = io('http://192.168.1.13:801');
       $rootScope.socket = socket;
  })
 /**
