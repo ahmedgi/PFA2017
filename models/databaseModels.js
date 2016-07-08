@@ -85,7 +85,7 @@ var moduleSchema = mongoose.Schema(
                             ref : 'prof'
                         },
                     didactique : String,
-                    note_minimal : { type: Number, min: 0 , max : 10},
+                    note_minimal : { type: Number, min: 0 , max : 12},
                     eModules : [
                            {
                               _id :  {

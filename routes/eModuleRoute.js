@@ -3,7 +3,7 @@ var express = require('express');
 var async = require('async')
 var conEnsure= require('connect-ensure-login');
 var databaseModels = require('../models/databaseModels')
-
+var socket = require('../socketHandler');
     
 var router = express.Router();
 
@@ -29,11 +29,11 @@ router.post("/creeEmodule",conEnsure.ensureLoggedIn(0,"/login_",true),function(r
                function(callback){
                    var eModule = new databaseModels.eModules({
                                         intitulee : req.body.intitulee,
-                                        createdBy : req.user._id,
+                                        createdBy : req.body.userId,
                                         sendTo : req.body.sendTo,
                                         creationDate : new Date(),
                                         lastUpdate : new Date(),
-                                        updatedBy : req.user._id,
+                                        updatedBy : req.body.userId,
                                         status : 'incomplet'
                                         });
                       eModule.save(function(err){
@@ -44,7 +44,7 @@ router.post("/creeEmodule",conEnsure.ensureLoggedIn(0,"/login_",true),function(r
                    var newNotif = new databaseModels.eModuleNotif({
                                                                 intitulee :req.body.intitulee,
                                                                 eModule : eModuleId,
-                                                                prof : req.user._id,
+                                                                prof : req.body.userId,
                                                                 status : "unseen",
                                                                 typee : 'share',
                                                                 date : new Date() 
@@ -61,7 +61,8 @@ router.post("/creeEmodule",conEnsure.ensureLoggedIn(0,"/login_",true),function(r
                                databaseModels.profs.findById(element._id,function(err,prof){
                                if(!prof) return callback(errorMessage('005',"prof n'existe pas!"));
                                if(!err){
-                                  if(prof._id != req.user._id){
+                                  if(prof._id != req.body.userId){
+                                     socket.emit(prof._id,'newEmoduleNotif',notifId);
                                      prof.addNotif(notifId,'eModuleNotif');
                                      prof.save(function(err){
                                          //if(err) return callback(errorMessage('006','erreur add notif to prof'))
@@ -121,7 +122,7 @@ router.post("/shareEmodule",conEnsure.ensureLoggedIn(0,"/login_",true),function(
                    var newNotif = new databaseModels.eModuleNotif({
                                                                 intitulee :req.body.intitulee,
                                                                 eModule : req.body.eModuleId,
-                                                                prof : req.user._id,
+                                                                prof : req.body.userId,
                                                                 status : "unseen",
                                                                 typee : 'share',
                                                                 date : new Date() 
@@ -138,7 +139,8 @@ router.post("/shareEmodule",conEnsure.ensureLoggedIn(0,"/login_",true),function(
                                databaseModels.profs.findById(element._id,function(err,prof){
                                if(!prof) return callback(errorMessage('005',"prof n'existe pas!"));
                                if(!err){
-                                  if(prof._id != req.user._id){
+                                  if(prof._id != req.body.userId){
+                                     socket.emit(prof._id,'newEmoduleNotif',notifId);
                                      prof.addNotif(notifId,'eModuleNotif');
                                      prof.save(function(err){
                                          //if(err) return callback(errorMessage('006','erreur add notif to prof'))
@@ -214,7 +216,7 @@ router.post('/remplireEmodule',conEnsure.ensureLoggedIn(0,"/login_",true),functi
                    
                    eModule.save(function(err){
                        if(err) return callback({code : '002',message:"database problem!"});
-                       callback(null,eModule._id,eModule.createdBy,eModule.sendTo,req.user._id);
+                       callback(null,eModule._id,eModule.createdBy,eModule.sendTo,req.body.userId);
                    });
                    
                },
@@ -244,6 +246,7 @@ router.post('/remplireEmodule',conEnsure.ensureLoggedIn(0,"/login_",true),functi
                             if(!prof){callback(null,notifId)}
                             else if(err){callback(null,notifId)}
                             else{
+                                 socket.emit(prof._id,'newEmoduleNotif',notifId);
                                  prof.addNotif(notifId,'eModuleNotif');
                                  prof.save(function(err){
                                     callback(null,notifId)
@@ -261,6 +264,7 @@ router.post('/remplireEmodule',conEnsure.ensureLoggedIn(0,"/login_",true),functi
                                databaseModels.profs.findById(element.id,function(err,prof){
                                if(!err&&prof){
                                    if(prof._id != userId){
+                                           socket.emit(prof._id,'newEmoduleNotif',notifId);
                                            prof.addNotif(notifId,'eModuleNotif');
                                            prof.save(function(err){
                                                callback(null);
@@ -280,7 +284,7 @@ router.post('/remplireEmodule',conEnsure.ensureLoggedIn(0,"/login_",true),functi
                            })
                        },
                        function(callback){
-                           databaseModels.modules.find({'eModules._id' : { $in : eModuleId}},'createdBy coordonnateur sendTo',function(err,modules){
+                           databaseModels.modules.find({'eModules._id' : { $in : eModuleId}},'intitulee createdBy coordonnateur sendTo',function(err,modules){
                                if(modules){
                                    callback(null,modules)
                                }else{
@@ -293,7 +297,7 @@ router.post('/remplireEmodule',conEnsure.ensureLoggedIn(0,"/login_",true),functi
                            modules,
                            function(module,callback){
                                        var newNotif = new databaseModels.moduleNotif({
-                                                                intitulee :req.body.intitulee,
+                                                                intitulee :module.intitulee,
                                                                 module : module._id,
                                                                 eModule : eModuleId,
                                                                 prof : userId,
@@ -317,6 +321,7 @@ router.post('/remplireEmodule',conEnsure.ensureLoggedIn(0,"/login_",true),functi
                                                 else if(err){callback(null)}
                                                 else{
                                                   if(prof._id != userId){ 
+                                                    socket.emit(prof._id,'newModuleNotif',notifId);
                                                     prof.addNotif(notifId,'moduleNotif');
                                                     prof.save(function(err){
                                                         callback(null)
@@ -333,6 +338,7 @@ router.post('/remplireEmodule',conEnsure.ensureLoggedIn(0,"/login_",true),functi
                                                 else if(err){callback(null)}
                                                 else{
                                                    if(prof._id != userId){ 
+                                                    socket.emit(prof._id,'newModuleNotif',notifId);
                                                     prof.addNotif(notifId,'moduleNotif');
                                                     prof.save(function(err){
                                                         callback(null)
@@ -350,6 +356,7 @@ router.post('/remplireEmodule',conEnsure.ensureLoggedIn(0,"/login_",true),functi
                                                 databaseModels.profs.findById(element.id,function(err,prof){
                                                 if(!err&&prof){
                                                     if(prof._id != userId){
+                                                            socket.emit(prof._id,'newEmoduleNotif',notifId);
                                                             prof.addNotif(notifId,'eModuleNotif');
                                                             prof.save(function(err){
                                                                 callback(null);
@@ -420,7 +427,7 @@ router.post("/deleteEmodule",conEnsure.ensureLoggedIn(0,"/login_",true),function
                            var newNotif = new databaseModels.eModuleNotif({
                                                                 intitulee :req.body.intitulee,
                                                                 eModule : req.body.eModuleId,
-                                                                prof : req.user._id,
+                                                                prof : req.body.userId,
                                                                 status : "unseen",
                                                                 typee : 'delete',
                                                                 date : new Date() 
@@ -438,7 +445,8 @@ router.post("/deleteEmodule",conEnsure.ensureLoggedIn(0,"/login_",true),function
                            function(element,callback){
                                databaseModels.profs.findById(element.id,function(err,prof){
                                if(!err&&prof){
-                                   if(prof._id != req.user._id){
+                                   if(prof._id != req.body.userId){
+                                           socket.emit(prof._id,'newEmoduleNotif',notifId);
                                            prof.addNotif(notifId,'eModuleNotif');
                                            prof.save(function(err){
                                                callback(null);

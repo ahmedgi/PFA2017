@@ -24,7 +24,7 @@ router.post("/creeModule",conEnsure.ensureLoggedIn(0,"/login_",true),function(re
            async.waterfall([
                function(callback){
                    databaseModels.modules.find({intitulee : req.body.intitulee},function(err,doc){
-                       if(err) return callback({code : '002',message:"database problem!"})
+                       if(err) return callback({code : '002',message:"database problem!",data : err})
                        if(doc.length>0) return callback({code : '003',message : "Intitulee taken !!"});
                        callback(null);
                    });  
@@ -37,10 +37,10 @@ router.post("/creeModule",conEnsure.ensureLoggedIn(0,"/login_",true),function(re
                                         departement : req.body.departement,
                                         coordonnateur : req.body.cordId,
                                         eModules : req.body.eModules,
-                                        createdBy : req.user._id,
+                                        createdBy : req.body.userId,
                                         creationDate : new Date(),
                                         lastUpdate : new Date(),
-                                        updatedBy : req.user._id,
+                                        updatedBy : req.body.userId,
                                         status : 'incomplet'});
                    module.save(function(err){
                        if(err) return callback({code : '002',message :"database problem!"});
@@ -51,7 +51,7 @@ router.post("/creeModule",conEnsure.ensureLoggedIn(0,"/login_",true),function(re
                    var newNotif = new databaseModels.moduleNotif({
                                                                 intitulee :req.body.intitulee,
                                                                 module : moduleId,
-                                                                prof : req.user._id,
+                                                                prof : req.body.userId,
                                                                 status : "unseen",
                                                                 typee : 'cord',
                                                                 date : new Date() 
@@ -66,7 +66,7 @@ router.post("/creeModule",conEnsure.ensureLoggedIn(0,"/login_",true),function(re
                         if(!prof){callback(null)}
                             else if(err){callback(null)}
                             else{
-                                 socket.emit(req.body.cordId,'newModuleNotif',{});
+                                 socket.emit(req.body.cordId,'newModuleNotif',notifId);
                                  prof.addNotif(notifId,'moduleNotif');
                                  prof.save(function(err){
                                     callback(null)
@@ -111,15 +111,15 @@ router.post("/shareModule",conEnsure.ensureLoggedIn(0,"/login_",true),function(r
                            doc.setAtt('coordonnateur',req.body.cordId);
                            doc.save(function(err){
                                if(err) return callback(err)
-                               else callback(null);
+                               else callback(null,doc.intitulee);
                            })
                        }
                    });  
-               },function(callback){
+               },function(intitulee,callback){
                    var newNotif = new databaseModels.moduleNotif({
-                                                                intitulee :req.body.intitulee,
+                                                                intitulee :intitulee,
                                                                 module : req.body.moduleId,
-                                                                prof : req.user._id,
+                                                                prof : req.body.userId,
                                                                 status : "unseen",
                                                                 typee : 'cord',
                                                                 date : new Date() 
@@ -134,7 +134,7 @@ router.post("/shareModule",conEnsure.ensureLoggedIn(0,"/login_",true),function(r
                         if(!prof){callback(null)}
                             else if(err){callback(null)}
                             else{
-                                 socket.emit(req.body.cordId,'newModuleNotif',{});
+                                 socket.emit(req.body.cordId,'newModuleNotif',notifId);
                                  prof.addNotif(notifId,'moduleNotif');
                                  prof.save(function(err){
                                     callback(null)
@@ -218,7 +218,7 @@ router.post("/deleteModule",conEnsure.ensureLoggedIn(0,"/login_",true),function(
                            var newNotif = new databaseModels.moduleNotif({
                                                                 intitulee :req.body.intitulee,
                                                                 module : req.body.moduleId,
-                                                                prof : req.user._id,
+                                                                prof : req.body.userId,
                                                                 status : "unseen",
                                                                 typee : 'delete',
                                                                 date : new Date() 
@@ -233,7 +233,7 @@ router.post("/deleteModule",conEnsure.ensureLoggedIn(0,"/login_",true),function(
                 function(notifId,coordonnateur,callback){
                                databaseModels.profs.findById(coordonnateur,function(err,prof){
                                if(!err&&prof){
-                                   if(prof._id != req.user._id){
+                                   if(prof._id != req.body.userId){
                                            socket.emit(coordonnateur,'newModuleNotif',{});
                                            prof.addNotif(notifId,'moduleNotif');
                                            prof.save(function(err){
@@ -352,7 +352,7 @@ router.post('/remplireModule',conEnsure.ensureLoggedIn(0,"/login_",true),functio
            async.waterfall([
                function(callback){
                    databaseModels.modules.find({intitulee : req.body.intitulee},function(err,doc){
-                       if(err) return callback({code : '002',message:"database problem!"})
+                       if(err) return callback({code : '002',message:"database problem! remplireModule",data : err})
                        if(doc.length>0&&req.body.moduleId!=doc[0]._id) return callback({code : '003',message : "Intitulee taken !!"});
                        callback(null);
                    });  
@@ -371,12 +371,12 @@ router.post('/remplireModule',conEnsure.ensureLoggedIn(0,"/login_",true),functio
                    module.setAtt('departement',req.body.departement);
                    module.setAtt('didactique',req.body.didactique);
                    module.setAtt('lastUpdate',new Date());                  
-                   module.setAtt('updatedBy',req.user._id);                  
+                   module.setAtt('updatedBy',req.body.userId);                  
                    module.setAtt('status',req.body.status);
                    module.setAtt('eModules',req.body.eModules);
                    module.setAtt('note_minimal',req.body.note_minimal);
                    module.save(function(err){
-                       if(err) return callback({code : '002',message:"database problem!"});
+                       if(err) return callback({code : '002',message:"database problem!",data : err});
                        callback(null,module.createdBy,module.coordonnateur);
                    });
                    
@@ -387,7 +387,7 @@ router.post('/remplireModule',conEnsure.ensureLoggedIn(0,"/login_",true),functio
                    var newNotif = new databaseModels.moduleNotif({
                                                                 intitulee :req.body.intitulee,
                                                                 module : req.body.moduleId,
-                                                                prof : req.user._id,
+                                                                prof : req.body.userId,
                                                                 status : "unseen",
                                                                 typee : 'update',
                                                                 date : new Date() 
@@ -402,7 +402,7 @@ router.post('/remplireModule',conEnsure.ensureLoggedIn(0,"/login_",true),functio
                           })
                        },
                        function(notifId,callback){
-                        if(moduleCreatedBy != req.user._id){
+                        if(moduleCreatedBy != req.body.userId){
                          databaseModels.profs.findById(moduleCreatedBy,function(err,prof){
                             if(!prof){callback(null,notifId)}
                             else if(err){callback(null,notifId)}
@@ -419,7 +419,7 @@ router.post('/remplireModule',conEnsure.ensureLoggedIn(0,"/login_",true),functio
                         }
                        },
                        function(notifId,callback){
-                       if(cordId != req.user._id){    
+                       if(cordId != req.body.userId){    
                                databaseModels.profs.findById(cordId,function(err,prof){
                                if(!err&&prof){
                                     socket.emit(cordId,'newModuleNotif',notifId);
@@ -608,7 +608,7 @@ router.post('/generatePDF',conEnsure.ensureLoggedIn(0,"/login_",true),function(r
                }
                else{
                    res.send(JSON.stringify({code : "200",message:'',data:{url : '/app/Gest-Filiere/files/'+intitulee+'.docx'}},null,'\t'));
-                   console.log(JSON.stringify({code : "000",messagae : 'error file',data : ''},null,'\t'))
+                   console.log(JSON.stringify({code : "200",message:'',data:{url : '/app/Gest-Filiere/files/'+intitulee+'.docx'}},null,'\t'))
                }
            });
 });

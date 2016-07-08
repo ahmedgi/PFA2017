@@ -13,7 +13,7 @@
                     <td>{{$index}}</td>
                     <td>{{module.intitulee}}</td>
                     <td>{{module.createdBy._id==user()._id?'Vous':module.createdBy.nom}}</td>
-                    <td>{{module.lastUpdate}} <h6>{{module.updatedBy.nom}}</h6></td>
+                    <td>{{module.lastUpdate}} <h6>{{module.createdBy._id==user()._id?'Vous':module.updatedBy.nom}}</h6></td>
                  </tr>
             </tbody>
        </table>   

@@ -857,6 +857,7 @@ app.controller('m_editeModalController',function($scope,$rootScope,moduleService
               $scope.edite.req.status = tmpModule.status; 
               $scope.edite.req.note_minimal = tmpModule.note_minimal;
               $scope.edite.currentEModules = tmpModule.eModules;
+              $scope.edite.req.eModules = [];
               
            
               $('.selectpicker').selectpicker()
@@ -1305,7 +1306,7 @@ app.controller('e_headerController',function($scope,$rootScope,eModuleNotifList,
         }
 });
 
-app.controller('gestionFilierController',function($scope,$rootScope,profService,modulesList,profsList,eModulesList,eModuleNotifList,moduleNotifList,moduleNotifService){
+app.controller('gestionFilierController',function($scope,$rootScope,profService,modulesList,profsList,eModulesList,eModuleNotifList,moduleNotifList,moduleNotifService,eModuleNotifService){
         $scope.modulesList = modulesList.getItems;
         $scope.eModulesList = eModulesList.getItems;
         $scope.eModuleNotifCount = eModuleNotifList.getCount;
@@ -1327,18 +1328,68 @@ app.controller('gestionFilierController',function($scope,$rootScope,profService,
        
        
        $rootScope.socket.on('newModuleNotif',function(notifId){
-          
-           moduleNotifService.getNotif({userId : $scope.user()._id,searchQuery : {_id : notifId},populate : [{path : 'prof',select : 'nom prenom'},{path : 'module',select : 'status'}]})
+           moduleNotifService.getNotif({userId : $scope.user()._id,searchQuery : {_id : notifId},populate : [{path : 'prof',select : 'nom prenom'},{path : 'module',select : 'status'},{path : 'eModule',select : 'intitulee status'}]})
                     .then(function(response){
-                        var notify = {
-                            type: 'info',
-                            title: response.data.data[0].prof.nom+' a modifier '+response.data.data[0].intitulee,
-                            content: 'status : '+response.data.data[0].module.status
-                        };
+                        var notif = response.data.data[0];
+                        if(notif.typee == 'update')
+                            var notify = {
+                                type: 'info',
+                                title: notif.prof.nom+' a modifier '+notif.intitulee,
+                                content: 'status : '+notif.module.status
+                            };
+                        else if(notif.typee == 'cord')
+                            var notify = {
+                                type: 'info',
+                                title: notif.prof.nom + ' vous a designé coordonnateur du Module ' + notif.intitulee,
+                                content: 'status : ' + notif.module.status
+                            };
+                       else if(notif.typee == 'share')
+                            var notify = {
+                                type: 'info',
+                                title: notif.prof.nom + ' a partagé avec vous' + notif.intitulee,
+                                content: 'status : ' + notif.module.status
+                            };
+                       else if(notif.typee == 'eModuleUpdate')
+                            var notify = {
+                                type: 'info',
+                                title: notif.prof.nom + ' a modifier ' + notif.intitulee,
+                                content: 'element de module Modifier: '+notif.eModule.intitulee+'\nstatus : ' + notif.module.status
+                            };
+                        
+                            
                         $scope.$emit('notify', notify);
                     })
            
-                    moduleNotifList.load();
+                    moduleNotifList.load().then(function(){
+                        modulesList.load();
+                    });
+                    
+            })
+            
+           $rootScope.socket.on('newEmoduleNotif',function(notifId){
+           eModuleNotifService.getNotif({userId : $scope.user()._id,searchQuery : {_id : notifId},populate : [{path : 'prof',select : 'nom prenom'},{path : 'eModule',select : 'status'}]})
+                    .then(function(response){
+                        var notif = response.data.data[0];
+                        if(notif.typee == 'update')
+                            var notify = {
+                                type: 'info',
+                                title: notif.prof.nom+' a modifier '+notif.intitulee,
+                                content: 'status : '+notif.eModule.status
+                            };
+                        else if(notif.typee == 'share')
+                            var notify = {
+                                type: 'info',
+                                title: notif.prof.nom + ' a partagé avec vous' + notif.intitulee,
+                                content: 'status : ' + notif.eModule.status
+                            };
+                                
+                        $scope.$emit('notify', notify);
+                    })
+           
+                    eModuleNotifList.load().then(function(){
+                        eModulesList.load();
+                    });
+                    
             })
          
 });
