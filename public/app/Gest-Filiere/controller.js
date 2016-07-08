@@ -1,5 +1,7 @@
 var serverip = '192.168.1.21:801'
 
+
+
 var app = angular.module('pfaApp');
 
 //Prof Services
@@ -270,7 +272,8 @@ app.service('moduleNotifList',function($rootScope,moduleNotifService,profService
         return profService.getProfs({userId : profsList.getUser()._id, searchQuery :{ _id : profsList.getUser()._id},responseFields : 'notification.moduleNotif'})
                     .then(function successCallback(response){
                          return moduleNotifService.getNotif({userId : profsList.getUser()._id, searchQuery : {_id : {$in : response.data.data[0].notification.moduleNotif}},populate : [{path : 'module',select : 'intitulee'},{path : 'eModule',select : 'intitulee'},{path : 'prof',select : 'nom'}]})
-                                    .then(function successCallback(response){                                       
+                                    .then(function successCallback(response){
+                                       count = 0;                                       
                                        items = response.data.data;
                                        if(items)
                                        for(var i=0 ; i< items.length ; i++){
@@ -556,20 +559,39 @@ app.controller('m_creeModalController',function($scope,$rootScope,moduleService,
             }
             ,
             submit : function(){
+                //if($scope.cree.req.cordId._id)
                 $scope.cree.req.cordId = $scope.cree.req.cordId._id;
                 moduleService.cree($scope.cree.req)
                               .then(function successCallback(response){
                                         if(response.data.code == '200'){
                                             modulesList.load();
                                             $('#creeModal').modal('hide');
+                                            var notify = {
+                                                type: 'success',
+                                                title: "Module "+$scope.cree.req.intitulee+" cree avec succes ",
+                                                content: ''
+                                            };
+                                            $scope.$emit('notify', notify);
                                         }else if(response.data.code == '003'){
                                             $scope.cree.validation.taken = true;
                                         }else {
-                                             $('#creeModal').modal('hide');
+                                            $('#creeModal').modal('hide');
+                                            var notify = {
+                                                type: 'error',
+                                                title: "une erreur est survenue !!",
+                                                content: ''
+                                            };
+                                            $scope.$emit('notify', notify);
                                         }
                                     },
                                     function errorCallback(response) {
-                                     }
+                                        var notify = {
+                                                type: 'error',
+                                                title: "une erreur est survenue !!",
+                                                content: ''
+                                            };
+                                            $scope.$emit('notify', notify);
+                                    }
                              );
                 
             },
@@ -772,10 +794,22 @@ app.controller('m_deleteModalController',function($scope,$rootScope,moduleServic
                                .then(function successCallback(response){
                                         if(response.data.code == '200'){
                                          modulesList.load();
+                                         var notify = {
+                                                type: 'success',
+                                                title: "Module "+intitulee+" supprimer avec succes ",
+                                                content: ''
+                                            };
+                                            $scope.$emit('notify', notify);
                                         }
                                     },
                                     function errorCallback(response) {
-                                     }
+                                            var notify = {
+                                                type: 'error',
+                                                title: "une erreur est survenue !!",
+                                                content: ''
+                                            };
+                                            $scope.$emit('notify', notify);
+                                    }
                              );
             }
         }
@@ -839,15 +873,33 @@ app.controller('m_editeModalController',function($scope,$rootScope,moduleService
                                         if(response.data.code == '200'){
                                             modulesList.load(); 
                                             $('#editeModal').modal('hide');
+                                            var notify = {
+                                                type: 'success',
+                                                title: "Module "+$scope.edite.req.intitulee+" éditer avec succes ",
+                                                content: ''
+                                            };
+                                            $scope.$emit('notify', notify);
+                                            
                                         }else if(response.data.code == "003"){
                                             $scope.edite.validation.taken = true;
                                             $('#editeModal').scrollTop(0)
                                         }else {
                                             $('#editeModal').modal('hide');
+                                            var notify = {
+                                                type: 'error',
+                                                title: "une erreur est survenue !!",
+                                                content: ''
+                                            };
+                                            $scope.$emit('notify', notify);
                                         }
                                     },
                                     function errorCallback(response) {
-                                            
+                                        var notify = {
+                                            type: 'error',
+                                            title: "une erreur est survenue !!",
+                                            content: ''
+                                        };
+                                        $scope.$emit('notify', notify);
                                      }
                              );
                 
@@ -1253,25 +1305,40 @@ app.controller('e_headerController',function($scope,$rootScope,eModuleNotifList,
         }
 });
 
-app.controller('gestionFilierController',function($scope,$rootScope,profService,modulesList,profsList,eModulesList,eModuleNotifList,moduleNotifList){
+app.controller('gestionFilierController',function($scope,$rootScope,profService,modulesList,profsList,eModulesList,eModuleNotifList,moduleNotifList,moduleNotifService){
         $scope.modulesList = modulesList.getItems;
         $scope.eModulesList = eModulesList.getItems;
         $scope.eModuleNotifCount = eModuleNotifList.getCount;
         $scope.moduleNotifCount = moduleNotifList.getCount; 
         $scope.user = profsList.getUser;
-        
         profsList.getCurrentUser().then(function(){
         profsList.load().then(function(){               
             eModulesList.load().then(function(){        
                 modulesList.load().then(function(){
                     eModuleNotifList.load().then(function(){
                         moduleNotifList.load().then(function(){
-                            
+                                $rootScope.socket.emit("registerUser",$scope.user()._id)
                         })
                     })
                 })
             })
         })
        })  
+       
+       
+       $rootScope.socket.on('newModuleNotif',function(notifId){
+          
+           moduleNotifService.getNotif({userId : $scope.user()._id,searchQuery : {_id : notifId},populate : [{path : 'prof',select : 'nom prenom'},{path : 'module',select : 'status'}]})
+                    .then(function(response){
+                        var notify = {
+                            type: 'info',
+                            title: response.data.data[0].prof.nom+' a modifier '+response.data.data[0].intitulee,
+                            content: 'status : '+response.data.data[0].module.status
+                        };
+                        $scope.$emit('notify', notify);
+                    })
+           
+                    moduleNotifList.load();
+            })
          
 });

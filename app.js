@@ -2,14 +2,14 @@
 *
 *
 **/
+var http = require('http')
 var express=require("express");
 var app=express();
-var srv=require('http').createServer();
-var io =require('socket.io').listen(srv);
+var server = http.createServer(app)
+var io =require('socket.io')(server);
 var bodyParser=require('body-parser');
 var mongoose=require('mongoose');
-app.listen(801,"192.168.1.21");
-srv.listen(8011,"192.168.1.21");
+server.listen(801,"192.168.1.21");
 var settings=require('./settings.js');
 var url =settings.url;
 var passport = require('passport'),
@@ -17,6 +17,8 @@ var passport = require('passport'),
 var conEnsure=require('connect-ensure-login');
 
 var fs = require('fs');
+var socket = require('./socketHandler');
+socket.start(io);
 //-----routers-------------
 var prouter=require('./routes/prouter.js');
 var cfrouter=require('./routes/cfrouter.js');
@@ -155,9 +157,5 @@ app.get('/logout',function(req,res){
  app.get("*",function(req,res){
 	  res.sendFile("/public/index.html",{root:__dirname});
  });
- 
- io.sockets.on('connection',function(socket){
-                    console.log("client connecté");
-                    trick  = socket;
-});
+
  

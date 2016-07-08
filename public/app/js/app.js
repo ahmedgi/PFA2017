@@ -1,3 +1,4 @@
+/* global io */
 'use strict';
 
 /**
@@ -9,10 +10,10 @@
  * Main module of the application.
  */
  
- 
  /*
  	Declaration du module angualr  
  */
+ 
  
  
  var app = angular.module('pfaApp',[
@@ -20,9 +21,14 @@
     'ngRoute',
     'routeAppControllers',
     'ui.bootstrap.contextMenu',
-    'ui.router'
+    'ui.router',
+    'angularNotify'
 ]);
-  
+ 
+ app.run(function($rootScope){
+      var socket = io('http://192.168.1.21:801');
+      $rootScope.socket = socket;
+ })
 /**
  * Configuration du module principal : App
  */
