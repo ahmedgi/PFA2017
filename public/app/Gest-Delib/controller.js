@@ -1,4 +1,3 @@
-var app = angular.module('pfaApp');
 
 app.controller("GestDelibCtrl",function($rootScope,$http,$scope,delibNoteFactory){
 	$scope.data={};
@@ -115,4 +114,6 @@ app.controller("replissageNotes",function($scope,$http){
 });
 
 
-
+app.controller("anneeScolaireCtrl",function($scope,anneeScolaireFactory){
+	anneeScolaireFactory.getListAnnee();
+});

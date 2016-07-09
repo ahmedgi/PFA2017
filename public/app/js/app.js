@@ -26,11 +26,7 @@
 ]);
  
  app.run(function($rootScope){
-<<<<<<< HEAD
       var socket = io('http://localhost:801');
-=======
-      var socket = io('http://192.168.1.13:801');
->>>>>>> 764759e5801531ec86733d42ed1e3d75f6fcdad4
       $rootScope.socket = socket;
  })
 /**
@@ -95,10 +91,26 @@ app.config(function($stateProvider, $urlRouterProvider) {
             controller: 'GestChargesCtrl'
             }).
 		    state ('Gest-Delib', {
-		    url : '/Gest-Delib',
+            url : '/Gest-Delib',
+            templateUrl: 'Gest-Delib/index.html',
+            controller: 'GestDelibCtrl'
+            }).
+            
+            state ('Gest-Delib.affectation', {
+            url : '/affectation',
+            templateUrl: '/Gest-Delib/affectation.html',
+            controller: 'GestDelibCtrl'
+            }).
+            state ('Gest-Delib.deliberation', {
+            url : '/deliberation',
             templateUrl: 'Gest-Delib/GestDelib.html',
             controller: 'GestDelibCtrl'
-			}).
+            }).
+            state ('Gest-Delib.anneeScolaire', {
+            url : '/anneeScolaire',
+            templateUrl: 'Gest-Delib/anneeScolaire.html',
+            controller: 'anneeScolaireCtrl'
+            }).
 			state ('Gest-Filiere', {
 			url : '/Gest-Filiere',
             templateUrl: 'Gest-Filiere/index.html',

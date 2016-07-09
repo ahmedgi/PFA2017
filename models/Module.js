@@ -2,7 +2,7 @@ var mongoose=require("mongoose");
 var Schema=mongoose.Schema;
 
 var modSchema=new Schema({
-   _resp   :{type:Schema.Types.ObjectId,ref:"User"},
+   _resp   :{type:Schema.Types.ObjectId,ref:"profs"},
    nom     :String,
    niveau  :Number,
    filiere :String,
