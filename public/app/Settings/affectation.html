@@ -1,3 +1,9 @@
+<div class="navbar navbar-default" role="navigation" >
+         
+            <input type="text" ng-model="c" class="search-input" placeholder="search..." />
+            <a class="btn btn-primary" ui-sref="Settings" >menu principale</a>
+          
+ </div>
 <div class="panel panel-default" >
 
   <!-- Table -->
@@ -8,7 +14,7 @@
         <th >Professeur</th>
         <th >Options</th>
       </tr>
-      <tr ng-repeat="a in matieres">
+      <tr ng-repeat="a in matieres | filter:{nom:c} | orderBy:'nom' track by $index">
       	<td >
              {{a.nom}}
         </td>
