@@ -1,10 +1,12 @@
-<button type="button" class="btn btn-info" ng-click="add()" ng-disabled="addVisible"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
-
-    <input type="text" ng-model="q" class="search-input" placeholder="search..." />
-    
-    <a class="btn btn-primary" ui-sref="affectation" >affectation</a>
-
-    <div class="panel panel-default" >
+<div class="navbar navbar-default" role="navigation" >
+         
+            <button type="button" class="btn btn-info" ng-click="add()" ng-disabled="addVisible"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+            <input type="text" ng-model="q" class="search-input" placeholder="search..." />
+            <a class="btn btn-primary" ui-sref="affectation" >affectation</a>
+          
+ </div>
+ 
+<div class="panel panel-default" >
 
   <!-- Table -->
   <table class="table">
@@ -27,7 +29,7 @@
             <button class="btn btn-warning" ng-click="hideAdd()">Hide</button>
         </td>
       </tr>
-      <tr ng-repeat="a in items | filter:q | orderBy:'nom' track by $index">
+      <tr ng-repeat="a in items | filter:{nom:q} | orderBy:'nom' track by $index">
         <td ng-show="isEditable[$index]"><input class="form-control" type="text" ng-model="tmpEdit[$index].nom" /></td>
         <td ng-show="isEditable[$index]"><input class="form-control" type="text" ng-model="tmpEdit[$index].prenom" /></td>
         <td ng-show="isEditable[$index]"><input class="form-control" type="text" ng-model="tmpEdit[$index].tel" /></td>
@@ -123,3 +125,4 @@
 
   </div>
 </div>
+

@@ -9,6 +9,8 @@ var Rat    =require("../models/rattrappage");
 var Matiere=require("../models/Matiere");
 var Notes  =require("../models/Notes");
 var Module =require("../models/Module");
+var AnneeScolaire=require("../models/AnneeScolaire");
+var dbModel = require("../models/databaseModels");
 
 //==================================creer un compte=======================================
 
@@ -121,7 +123,7 @@ adminrouter.get('/matieres',/*conEnsure.ensureLoggedIn(2,"/login_"),*/function(r
    .populate(
     {
      path  :"_ens",
-	 model : "profs",
+	   model : "prof",
      select:"login"     
     })
    .populate(
@@ -251,7 +253,80 @@ adminrouter.post("/update_user",function(req,res){
 
 //---------------------Annee Scolaire----------------------------
 adminrouter.get('/anneeScolaire',function(req,res){
-  res.send({"data":"aaaaaa"});
+
+  AnneeScolaire.find({}).populate({
+    path:"fillieres",
+    model:"filieres",
+    select:"intitulee"
+  }).exec(function(err,anneeData){
+      if(!err){
+        res.status(200).json(anneeData);
+      }
+    });
+
 });
 
+function exportData(filliereIDs,callback){
+  
+
+}
+
+function ImportData(modules,callback){
+    
+}
+
+adminrouter.post('/creeAnneeScolaire',function(req,res){
+  if(req.body.description && req.body.annee && req.body.fillieres){
+
+    async.waterfall([function(callback){
+      //----recuperer tous data des filliere pour trouver les modules
+      dbModel.filiere.find({_id:{$in : req.body.fillieres}})
+      .populate({
+        
+          path:"annee1.s1",
+          model:"modules"
+        
+      })
+      .exec(function(err,res){
+        console.log("aaaaaaaaaaaa"+res);
+        if(err){
+          callback(err);
+        }else{
+          callback(null,res);  
+        }
+        
+      });
+    },function(data,callback){
+      //remplire la collection modules
+      console.log("-----0"+data);
+
+      callback(null);   
+    }],
+      function(err,res){
+
+      });
+
+    var annee=new AnneeScolaire(req.body);
+    annee.save(function(err){
+      if(err){
+        res.json({"err":"save err"});
+      }else{
+        res.json({"ok":"ok save success !"});
+      }
+    });
+  }
+
+});
+
+adminrouter.get('/getFillieres',function(req,res){
+
+    dbModel.filiere.find({createdBy:req.user._id},"intitulee",function(err,result){
+      if(err){
+        res.json({"err":"err get fillieres"});
+      }else{
+        res.json(result);
+      }
+      });
+    });
 module.exports=adminrouter;
+

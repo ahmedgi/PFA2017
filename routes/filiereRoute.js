@@ -16,7 +16,7 @@ var okMessage = function(code,message,data){
 var router = express.Router();
 
 //{userId : id,searchQuery : {key : value},responseFields : "filed1 filed2 ..",populate : [{path : '',select:''}]}
-router.post("/getFiliere",conEnsure.ensureLoggedIn(0,"/login_",true),function(req,res){
+router.post("/getFiliere",conEnsure.ensureLoggedIn(0,"/login_",false),function(req,res){
            res.setHeader('Content-Type', 'application/json');
            console.log("response is : ");
            console.log(JSON.stringify(req.body))
