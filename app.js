@@ -26,6 +26,7 @@ var adminrouter=require('./routes/adminrouter.js');
 var eModuleRouteHandler = require('./routes/eModuleRoute');
 var moduleRouteHandler = require('./routes/moduleRoute');
 var profRouteHandler = require('./routes/profRoute');
+var filiereRouteHandler = require('./routes/filiereRoute');
 //-----models---------------
 //var User=require("./models/User");
 var User = require("./models/databaseModels").profs
@@ -109,6 +110,7 @@ app.use('/',adminrouter);
 app.use('/gestionfiliere/eModules',eModuleRouteHandler);
 app.use('/gestionfiliere/modules',moduleRouteHandler);
 app.use('/gestionfiliere/profs',profRouteHandler);
+app.use('/gestionfiliere/filiere',filiereRouteHandler);
 //================================
 
 /* app.get("/login",function(req,res){
