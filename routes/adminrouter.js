@@ -121,6 +121,7 @@ adminrouter.get('/matieres',/*conEnsure.ensureLoggedIn(2,"/login_"),*/function(r
    .populate(
     {
      path  :"_ens",
+	 model : "profs",
      select:"login"     
     })
    .populate(
@@ -248,5 +249,9 @@ adminrouter.post("/update_user",function(req,res){
    
 });
 
+//---------------------Annee Scolaire----------------------------
+adminrouter.get('/anneeScolaire',function(req,res){
+  res.send({"data":"aaaaaa"});
+});
 
 module.exports=adminrouter;

@@ -102,3 +102,9 @@ body {
 .navbar {
   margin-bottom : 0px !important ;
 }
+
+@media (min-width: 1025px) and (max-width: 2000px) {
+   .collapse {
+       display: none !important;
+   }
+}

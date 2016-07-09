@@ -89,7 +89,7 @@ app
         $http({
 			method:'POST',
 			data:{user_id:obj._id},
-			url   :'http://192.168.1.13:801/delete_user'
+			url   :'http://localhost:801/delete_user'
 		}).then(function success(res){alert(JSON.stringify(res.data));},function err(res){alert(res.data.err);});
 		$scope.hideLightbox();
 	};
