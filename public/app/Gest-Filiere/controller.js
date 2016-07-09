@@ -1,5 +1,5 @@
 
-var serverip = '192.168.1.13:801'
+var serverip = 'localhost:801'
 
 
 

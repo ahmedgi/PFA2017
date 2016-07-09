@@ -1,4 +1,4 @@
-<button class="btn btn-info"  data-target="#myModal" data-toggle="modal">create</button>
+<button class="btn btn-info"  data-target="#myModal" data-toggle="modal" ng-click="fetchFillieres()">create</button>
 
 <div class="table-responsive" >
        <table class="table table-hover ">
@@ -41,9 +41,12 @@
                   </textarea>
                   
                   <label >Choix de filliére</label><br/>
-                  <select multiple="" class="form-control" ng-model="data.fillieres">
-                    <option value="volvo">Volvo</option>
-                    <option value="volvo">Volvo</option>
+                  
+                  <!--select id="mmm" class="selectpicker show-tick" multiple title="..." data-live-search="true" ng-options="filliere.intitulee for filliere in data.fillieres" ng-model="sss">                 
+                  </select-->
+
+                  <select multiple="" class="form-control" ng-model="multipleSelect">
+                    <option ng-repeat="a in data.fillieres" ng-value="a._id">{{a.intitulee}}</option>
                   </select>
                 </div>
                 <div class="modal-footer">

@@ -120,10 +120,22 @@ app.controller("anneeScolaireCtrl",function($scope,anneeScolaireFactory){
        });
 
 	$scope.createAnnnee=function(){
-		anneeScolaireFactory.getCreatAnnee({"description":$scope.data.description,"annee":$scope.data.annee});	
-
+		anneeScolaireFactory.getCreatAnnee({
+			"description":$scope.data.description,
+			"annee":$scope.data.annee,
+			"fillieres":$scope.multipleSelect
+		});	
+		alert($scope.multipleSelect);
 		anneeScolaireFactory.getListAnnee().then(function(arrItems){
 		$scope.data.annees=arrItems;
        });	
+	}
+
+	$scope.fetchFillieres=function(){
+		anneeScolaireFactory.getListFilliere().then(function(arrItems){
+			$scope.data.fillieres=arrItems;
+			console.log(arrItems);
+			//$('.selectpicker').selectpicker('refrech')
+		});
 	}
 });
