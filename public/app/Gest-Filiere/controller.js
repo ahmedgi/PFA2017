@@ -8,7 +8,7 @@ var app = angular.module('pfaApp');
 
 //filiere Service
 app.service('filiereService',function($http){
-    this.getFiliere = function(req){
+    this.get = function(req){
         var promise = $http({
                         method: 'POST',
                         url: 'http://'+serverip+'/gestionfiliere/filiere/getFiliere',
@@ -17,7 +17,7 @@ app.service('filiereService',function($http){
          return promise;
     };
     
-    this.creeFiliere = function(req){
+    this.cree = function(req){
         var promise = $http({
                         method: 'POST',
                         url: 'http://'+serverip+'/gestionfiliere/filiere/creeFiliere',
@@ -26,7 +26,7 @@ app.service('filiereService',function($http){
          return promise;
     }
     
-    this.editeFiliere = function(req){
+    this.edite = function(req){
         var promise = $http({
                         method: 'POST',
                         url: 'http://'+serverip+'/gestionfiliere/filiere/editeFiliere',
@@ -34,7 +34,7 @@ app.service('filiereService',function($http){
                     })
          return promise;
     }
-    this.deleteFiliere = function(req){
+    this.delete = function(req){
         var promise = $http({
                         method: 'POST',
                         url: 'http://'+serverip+'/gestionfiliere/filiere/deleteFiliere',
@@ -46,9 +46,9 @@ app.service('filiereService',function($http){
 
 app.service('filiereList',function(filiereService,$rootScope,profsList){
     var items = [];
-    
+    var selectedItemIndex =  -1;
     var load  = function(){
-                    return filiereService.getFiliere({ userId: profsList.getUser()._id, searchQuery: {createdBy : profsList.getUser()._id}})
+                    return filiereService.get({ userId: profsList.getUser()._id, searchQuery: {createdBy : profsList.getUser()._id}})
                         .then(function successCallback(response) {
                             items = response.data.data;
                             $rootScope.$broadcast('filiereListUpdate', {});
@@ -63,9 +63,19 @@ app.service('filiereList',function(filiereService,$rootScope,profsList){
         return items;
     };
     
+     var getSelectedItemIndex = function(){
+        return selectedItemIndex;
+    }
+    
+    var setSelectedItemIndex = function(index){
+        selectedItemIndex = index;
+    }
+    
     return {
         load : load,
-        getItems : getItems
+        getItems : getItems,
+        getSelectedItemIndex : getSelectedItemIndex,
+        setSelectedItemIndex :setSelectedItemIndex
     }
 });
 
@@ -1371,8 +1381,101 @@ app.controller('e_headerController',function($scope,$rootScope,eModuleNotifList,
 
 
 //filiere Controllers
+app.controller('f_filiereTableController',function($scope,$rootScope,moduleService,profService,modulesList,filiereService,filiereList){
+        $scope.selectedItemIndex = filiereList.getSelectedItemIndex;
+        $scope.filiereTable = {
+            items : filiereList.getItems,
+            search : '',
+            selectedIndex : -1,
+            init : function(){  
+                $scope.filiereTable.selectedIndex = -1;
+                filiereList.setSelectedItemIndex(-1);
+                $scope.filiereTable.search = '';
+            },
+            menuOptions : [
+                ['Apercu', function($itemScope){
+                    $rootScope.$broadcast('init_apercuModal',{});
+                    $('#apercuModal').modal('show');
+                }],
+                null,
+                ['Modifier',function($itemScope){
+                   $rootScope.$broadcast('init_editeModal',{});
+                    $('#editeModal').modal('show');
+                }],
+                ['Partager...',function($itemScope){
+                    $scope.moduleTable.selectedId = $itemScope.module._id;
+                    $rootScope.$broadcast('init_shareModal',{});
+                    $('#shareModal').modal('show');
+                  
+                }],
+                null
+                ,
+                ['Télécharger',function($itemScope){
+                    moduleService.generatePDF({ userId: $scope.user()._id, moduleId: modulesList.getItems()[modulesList.getSelectedItemIndex()]._id })
+                        .then(function (response) {
+                            if (response.data.code = '200') {
+                                $window.location.href = 'http://' + serverip + response.data.data.url;
+                            }
+                            else {
+                                alert(response.data.message);
+                            }
+                        });
+                }],
+                null,
+                ['Supprimer',function($itemScope){
+                    $scope.moduleTable.selectedId = $itemScope.module._id;
+                    $('#deleteModal').modal('show');
+                }]
+            ],
+            menuOptionsw : [
+                ['Apercu', function($itemScope){
+                    $rootScope.$broadcast('init_apercuModal',{});
+                    $('#apercuModal').modal('show');
+                }],
+                null,
+                ['Modifier',function($itemScope){
+                    $rootScope.$broadcast('init_editeModal',{});
+                    $('#editeModal').modal('show');
+                }],
+                null
+                ,['Télécharger',function($itemScope){
+                    moduleService.generatePDF({ userId: $scope.user()._id, moduleId: modulesList.getItems()[modulesList.getSelectedItemIndex()]._id })
+                        .then(function (response) {
+                            if (response.data.code = '200') {
+                                $window.location.href = 'http://' + serverip + response.data.data.url;
+                            }
+                            else {
+                                alert(response.data.message);
+                            }
+                        });
+                }],
+               ],
+            menuOptionsr : [
+                ['Apercu', function($itemScope){
+                    $rootScope.$broadcast('init_apercuModal',{});
+                    $('#apercuModal').modal('show');
+                }],
+               ],
+            clicked : function(index,id,_intitulee){
+                $scope.filiereTable.selectedIndex = index;
+                filiereList.setSelectedItemIndex(index);
+            }
+        }
+         
+        $scope.$on('updateSearch',function(event,search){
+            $scope.filiereTable.search = search;
+        })  
+})
 
-app.controller('f_creeModalController',function($scope,$rootScope,filiereService,profService,filiereList,profsList){
+
+app.controller('f_headerController',function($scope,$rootScope,filiereService,profService,filiereList,profsList){
+        $scope.selectedItemIndex = filiereList.getSelectedItemIndex;
+        
+        $scope.cree = function(){
+            $rootScope.$broadcast('init_creeModal',{});
+        }
+})
+app.controller('f_creeController',function($scope,$rootScope,filiereService,profService,filiereList,profsList){
          $scope.filieres = filiereList.getItems;
          $scope.cree = {
             req : {
@@ -1388,7 +1491,7 @@ app.controller('f_creeModalController',function($scope,$rootScope,filiereService
                 $scope.cree.validation.WTaken = false;
                 $scope.cree.validation.taken = false;
                 $scope.cree.req.intitulee = '';
-                $scope.creeModuleForm.intitulee.$setUntouched();
+                $scope.creeFiliereForm.intitulee.$setUntouched();
             }
             ,
             submit : function(){
@@ -1437,7 +1540,7 @@ app.controller('f_creeModalController',function($scope,$rootScope,filiereService
         
 })
 
-app.controller('gestionFilierController',function($scope,$rootScope,profService,modulesList,profsList,eModulesList,eModuleNotifList,moduleNotifList,moduleNotifService,eModuleNotifService){
+app.controller('gestionFilierController',function($scope,$rootScope,profService,modulesList,profsList,eModulesList,eModuleNotifList,moduleNotifList,moduleNotifService,eModuleNotifService,filiereList){
         $scope.modulesList = modulesList.getItems;
         $scope.eModulesList = eModulesList.getItems;
         $scope.eModuleNotifCount = eModuleNotifList.getCount;
@@ -1449,7 +1552,9 @@ app.controller('gestionFilierController',function($scope,$rootScope,profService,
                 modulesList.load().then(function(){
                     eModuleNotifList.load().then(function(){
                         moduleNotifList.load().then(function(){
+                           filiereList.load().then(function(){
                                 $rootScope.socket.emit("registerUser",$scope.user()._id)
+                            });
                         })
                     })
                 })
