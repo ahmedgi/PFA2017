@@ -126,18 +126,20 @@ router.post("/shareModule",conEnsure.ensureLoggedIn(0,"/login_",true),function(r
            console.log("response is : ");
            async.waterfall([
                function(callback){
+                   var oldCordId ;
                    databaseModels.modules.findById(req.body.moduleId,function(err,doc){
                        if(err) return callback({code : '002',message:"database problem!"})
                        else if(doc.length==0) return callback({code : '003',message : "module not existe!!"});
                        else{
+                           oldCordId = doc.coordonnateur;
                            doc.setAtt('coordonnateur',req.body.cordId);
                            doc.save(function(err){
                                if(err) return callback(err)
-                               else callback(null,doc.intitulee);
+                               else callback(null,doc.intitulee,oldCordId);
                            })
                        }
                    });  
-               },function(intitulee,callback){
+               },function(intitulee,oldCordId,callback){
                    var newNotif = new databaseModels.moduleNotif({
                                                                 intitulee :intitulee,
                                                                 module : req.body.moduleId,
@@ -148,6 +150,7 @@ router.post("/shareModule",conEnsure.ensureLoggedIn(0,"/login_",true),function(r
                                                              });
                    newNotif.save(function(err){
                        if(err) return callback({code : '008',message :"prob saving notif"});
+                       socket.emit(oldCordId,'newModuleNotif',newNotif._id);
                        callback(null,newNotif._id)
                    })
                 },

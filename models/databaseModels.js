@@ -215,7 +215,32 @@ profSchema.methods.setAtt = function(att,value){
         this[att] = value;
     }
 }
- 
+
+ var filiereSchema = mongoose.Schema(
+     {
+         intitulee : String,
+         
+         annee1 : {
+             s1 : [],
+             s2 : []
+         },
+         annee2 : {
+             s1 : [],
+             s2 : []
+         },annee3 : {
+             s1 : [],
+             s2 : []
+         },
+         createdBy : {
+                   type : mongoose.Schema.Types.ObjectId,
+                   ref : 'profs'
+                },
+        creationDate : { type: Date, default: Date.now },
+        lastUpdate : { type: Date, default: Date.now },
+        
+         
+     }
+ );
  
  
  module.exports = {

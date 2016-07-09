@@ -2,7 +2,7 @@ var mongoose=require("mongoose");
 var Schema=mongoose.Schema;
 
 var matiereSchema=new Schema({
-   _ens    :{type:Schema.Types.ObjectId,ref:"User"},
+   _ens    :{type:Schema.Types.ObjectId,ref:"profs"},
    _mod    :{type:Schema.Types.ObjectId,ref:"Module"},
    coef    :Number,
    niveau  :Number,

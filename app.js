@@ -155,7 +155,7 @@ app.get('/logout',function(req,res){
 //-------front-end routes
 
  app.get("*",function(req,res){
-	  res.sendFile("/public/index.html",{root:__dirname});
+	  res.sendFile("/public/app/index.html",{root:__dirname});
  });
 
  

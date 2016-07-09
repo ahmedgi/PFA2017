@@ -121,7 +121,6 @@ adminrouter.get('/matieres',/*conEnsure.ensureLoggedIn(2,"/login_"),*/function(r
    .populate(
     {
      path  :"_ens",
-     model :"User",
      select:"login"     
     })
    .populate(
@@ -161,19 +160,12 @@ adminrouter.post("/admin_data",/* conEnsure.ensureLoggedIn(8,"/login"), */functi
    try{
      var mask=req.body.security_mask;
      var mr=new RegExp(/^[0-9]{1,2}$/);
-     var nr=new RegExp(/^[a-zA-Z_-]+$/);
-     var nom =req.body.nom;
-     var prenom =req.body.prenom;
-     var login="";
      if(!mask||!mr.test(mask)){
         res.json({err:"impossible de modifier"});
      }
-     else if(!nom||!prenom||!nr.test(nom)||!nr.test(prenom))
-         res.json({err:"invalide input format !"});
      else{
           mask =parseInt(mask);
-          login=nom+"_"+prenom;
-          User.update({"login":login},{$set:{"security_mask":mask}},function(err,r){
+          User.update({_id:req.body._id},{$set:{"security_mask":mask}},function(err,r){
             if(!err) res.json({ok:"mask successfully modified !"});
             else res.status(500).json({err:"internal server error"});
           });
@@ -223,35 +215,35 @@ adminrouter.post("/delete_user",function(req,res){
 });
 
 adminrouter.post("/update_user",function(req,res){
-   var nregx =new  RegExp(/^[a-zA-Z_]{3,}$/),
-        pnregx=new  RegExp(/^[a-zA-Z_]{3,}$/),
-        eregx =new  RegExp(/^[^]+@gmail.com$/),
-        mregx =new  RegExp(/^([0-9]{1}|1[0-5])$/),
-        gregx =new  RegExp(/^([a-zA-Z_]+)$/);
-   if (req.body.nom.gtrim() == "" || !nregx.test(req.body.nom))
+    var nregx =new  RegExp(/^[a-zA-Z_]{3,}$/),
+            pnregx=new  RegExp(/^[a-zA-Z_]{3,}$/),
+            eregx =new  RegExp(/^[^]+@gmail.com$/),
+            mregx =new  RegExp(/^([0-9]{1}|1[0-5])$/),
+            gregx =new  RegExp(/^([a-zA-Z_]+)$/);
+    if (req.body.nom && (req.body.nom.gtrim() == "" || !nregx.test(req.body.nom)))
         res.json({ err: "vous devez entrez un nom valide" });
-    else if (req.body.prenom.gtrim() == "" || !pnregx.test(req.body.prenom))
+    else if (req.body.prenom && (req.body.prenom.gtrim() == "" || !pnregx.test(req.body.prenom)))
         res.json({ err: "vous devez entrez un prenom valide" });
-    else if (req.body.grade.gtrim() == "" || !gregx.test(req.body.grade))
+    else if (req.body.grade && (req.body.grade.gtrim() == "" || !gregx.test(req.body.grade)))
         res.json({ err: "vous n'êtes pas serieux" });
-    else if (!eregx.test(req.body.email)) {
+    else if (req.body.email && !eregx.test(req.body.email)) {
       res.json({err:"email invalide !!"});
     }else{
-   User.findOne({_id:req.body._id},function(err,user){
-       if(err) res.json({err:"error database!!"})
-       else if(!user) res.json({err:"error user not found!!"})
-       else {
-           user.setAtt('nom',req.body.nom);
-           user.setAtt('prenom',req.body.prenom);
-           user.setAtt('tel',req.body.tel);
-           user.setAtt('grade',req.body.grade);
-           user.setAtt('email',req.body.email);
-           user.save(function(err){
-               if(err) res.json({err:"saving prof Prob"})
-               else  res.json({ok:"prof updated"})
-           })
-       }
-   })
+        User.findOne({_id:req.body._id},function(err,user){
+            if(err) res.json({err:"error database!!"})
+            else if(!user) res.json({err:"error user not found!!"})
+            else {
+                user.setAtt('nom',req.body.nom);
+                user.setAtt('prenom',req.body.prenom);
+                user.setAtt('tel',req.body.tel);
+                user.setAtt('grade',req.body.grade);
+                user.setAtt('email',req.body.email);
+                user.save(function(err){
+                    if(err) res.json({err:"saving prof Prob"})
+                    else  res.json({ok:"prof updated"})
+                })
+            }
+        })
     }
    
 });
