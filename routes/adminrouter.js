@@ -122,7 +122,7 @@ adminrouter.get('/matieres',/*conEnsure.ensureLoggedIn(2,"/login_"),*/function(r
    .populate(
     {
      path  :"_ens",
-	 model : "profs",
+	   model : "profs",
      select:"login"     
     })
    .populate(
@@ -254,18 +254,50 @@ adminrouter.post("/update_user",function(req,res){
 adminrouter.get('/anneeScolaire',function(req,res){
 
   AnneeScolaire.find({}).populate({
-    "path":"fillieres",
-    "model":"filiere",
-    "select":"intitule"
+    path:"fillieres",
+    model:"filiere",
+    select:"intitulee"
   }).exec(function(err,anneeData){
       if(!err){
         res.status(200).json(anneeData);
       }
     });
+
 });
 
+function exportData(filliereIDs,callback){
+  filiere.find({_id:{$in : filliereIDs}})
+  .populate({
+    {
+      path:"annee1.s1",
+      model:"modules",
+    }
+  })
+  .exec(err,res){
+    console.log(res);
+    if(err){
+      callback(err);
+    }else{
+      callback(null,res);  
+    }
+    
+  }
+
+}
+
+function ImportData(modules,callback){
+    console.log("-----0"+modules);
+
+    callback(null);
+}
+
 adminrouter.post('/creeAnneeScolaire',function(req,res){
-  if(req.body.description && req.body.annee){
+  if(req.body.description && req.body.annee && req.body.fillieres){
+
+    async.waterfall([exportData(req.body.fillieres),ImportData],
+      function(err,res){
+
+      });
     var annee=new AnneeScolaire(req.body);
     annee.save(function(err){
       if(err){
