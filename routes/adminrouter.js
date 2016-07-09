@@ -122,7 +122,7 @@ adminrouter.get('/matieres',/*conEnsure.ensureLoggedIn(2,"/login_"),*/function(r
    .populate(
     {
      path  :"_ens",
-	   model : "profs",
+	   model : "prof",
      select:"login"     
     })
    .populate(
