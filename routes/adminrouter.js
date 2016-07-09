@@ -9,6 +9,7 @@ var Rat    =require("../models/rattrappage");
 var Matiere=require("../models/Matiere");
 var Notes  =require("../models/Notes");
 var Module =require("../models/Module");
+var AnneeScolaire=require("../models/AnneeScolaire");
 
 //==================================creer un compte=======================================
 
@@ -251,7 +252,30 @@ adminrouter.post("/update_user",function(req,res){
 
 //---------------------Annee Scolaire----------------------------
 adminrouter.get('/anneeScolaire',function(req,res){
-  res.send({"data":"aaaaaa"});
+
+  AnneeScolaire.find({}).populate({
+    "path":"fillieres",
+    "model":"filiere",
+    "select":"intitule"
+  }).exec(function(err,anneeData){
+      if(!err){
+        res.status(200).json(anneeData);
+      }
+    });
+});
+
+adminrouter.post('/creeAnneeScolaire',function(req,res){
+  if(req.body.description && req.body.annee){
+    var annee=new AnneeScolaire(req.body);
+    annee.save(function(err){
+      if(err){
+        res.json({"err":"save err"});
+      }else{
+        res.json({"ok":"ok save success !"});
+      }
+    });
+  }
+
 });
 
 module.exports=adminrouter;

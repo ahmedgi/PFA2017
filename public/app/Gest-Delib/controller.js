@@ -115,5 +115,15 @@ app.controller("replissageNotes",function($scope,$http){
 
 
 app.controller("anneeScolaireCtrl",function($scope,anneeScolaireFactory){
-	anneeScolaireFactory.getListAnnee();
+	anneeScolaireFactory.getListAnnee().then(function(arrItems){
+		$scope.data.annees=arrItems;
+       });
+
+	$scope.createAnnnee=function(){
+		anneeScolaireFactory.getCreatAnnee({"description":$scope.data.description,"annee":$scope.data.annee});	
+
+		anneeScolaireFactory.getListAnnee().then(function(arrItems){
+		$scope.data.annees=arrItems;
+       });	
+	}
 });
