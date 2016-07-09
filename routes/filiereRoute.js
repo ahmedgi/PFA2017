@@ -97,4 +97,73 @@ router.post("/creeFiliere",conEnsure.ensureLoggedIn(0,"/login_",true),function(r
 });
 
 
+//{filiereId : _Id ,userId : _Id,intitulee : intitulee,status : String}
+router.post("/deleteFiliere",conEnsure.ensureLoggedIn(0,"/login_",true),function(req,res){
+       res.setHeader('Content-Type', 'application/json');
+
+       console.log("response is : ");
+           
+      databaseModels.filiere.remove({_id : req.body.filiereId},function(err){
+          if (err){
+             res.send(JSON.stringify({code : "001",message:"database Prob",data :'' },null,'\t'));
+             console.log(JSON.stringify({code : "001",message:"database Prob",data :'' },null,'\t'));
+          }
+          else{
+             res.send(JSON.stringify({code : "200",message:"",data :'' },null,'\t'));
+             console.log(JSON.stringify({code : "200",message:"",data :'' },null,'\t'));
+          }
+      });
+      
+});
+
+
+//{filiereId : id,userId : id,intitulee : Sting,annee1 : {},annee2 : {},annee3 : {}}
+router.post('/editeFiliere',conEnsure.ensureLoggedIn(0,"/login_",false),function(req,res){
+        res.setHeader('Content-Type', 'application/json');
+           console.log("response is : ");
+           async.waterfall([
+               function(callback){
+                   databaseModels.filiere.find({intitulee : req.body.intitulee},function(err,doc){
+                       if(err) return callback({code : '002',message:"database problem! remplireFiliere",data : err})
+                       if(doc.length>0&&req.body.filiereId!=doc[0]._id) return callback({code : '003',message : "Intitulee taken !!"});
+                       callback(null);
+                   });  
+               },
+               function(callback){
+                  databaseModels.filiere.findById(req.body.filiereId,function(err,filiere){
+                      if(err) return callback({code : '002',message:"database problem!"})
+                      if(!filiere) return callback({code : '004',message : "Filiere not found !!"});
+                      callback(null,filiere);
+                  });
+               },
+               function(filiere,callback){
+                   filiere.setAtt('intitulee',req.body.intitulee);
+                   filiere.setAtt('annee1',req.body.annee1);
+                   filiere.setAtt('annee2',req.body.annee2);
+                   filiere.setAtt('annee3',req.body.annee3);
+                   filiere.setAtt('lastUpdate',new Date());                  
+                   filiere.setAtt('status',req.body.status);                  
+                   filiere.save(function(err){
+                       if(err) return callback({code : '002',message:"database problem!",data : err});
+                       callback(null)
+                   });
+                   
+               },
+           ],
+           function(err,data){
+               if(err){ 
+                    res.send(JSON.stringify(err,null,'\t'));
+                    console.log(JSON.stringify(err,null,'\t'))
+               }
+               else{
+                    res.send(JSON.stringify({code : "200",message:"",data : data},null,'\t'));
+                    console.log(JSON.stringify({code : "200",message:"",data : data},null,'\t'))
+               }    
+           }
+           )
+    
+});
+
+
+
 module.exports = router;

@@ -266,15 +266,21 @@ profSchema.methods.setAtt = function(att,value){
                 },
         creationDate : { type: Date, default: Date.now },
         lastUpdate : { type: Date, default: Date.now },
+        status : String
 
      }
  );
  
+ filiereSchema.methods.setAtt = function(att,value){
+    if(value){
+        this[att] = value;
+    }
+}
  
  module.exports = {
      eModules : mongoose.model('eModules',eModuleSchema),
      modules : mongoose.model('modules',moduleSchema),
-     profs : mongoose.model('profs',profSchema),
+     profs : mongoose.model('prof',profSchema),
      eModuleNotif : mongoose.model('eModuleNotif',eModuleNotifSchema),
      moduleNotif : mongoose.model('moduleNotif',moduleNotifSchema),
      filiere : mongoose.model('filieres',filiereSchema)

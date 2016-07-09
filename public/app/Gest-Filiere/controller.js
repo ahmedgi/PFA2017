@@ -1,5 +1,5 @@
 
-var serverip = '192.168.1.13:801'
+var serverip = 'localhost:801'
 
 
 
@@ -48,7 +48,10 @@ app.service('filiereList',function(filiereService,$rootScope,profsList){
     var items = [];
     var selectedItemIndex =  -1;
     var load  = function(){
-                    return filiereService.get({ userId: profsList.getUser()._id, searchQuery: {createdBy : profsList.getUser()._id}})
+                    return filiereService.get({ userId: profsList.getUser()._id, searchQuery: {createdBy : profsList.getUser()._id},
+                            populate : [{path : 'annee1.s1',select : 'intitulee'},{path : 'annee1.s2',select : 'intitulee'}
+                                        ,{path : 'annee2.s1',select : 'intitulee'},{path : 'annee2.s2',select : 'intitulee'}
+                                        ,{path : 'annee3.s1',select : 'intitulee'},{path : 'annee3.s2',select : 'intitulee'}]})
                         .then(function successCallback(response) {
                             items = response.data.data;
                             $rootScope.$broadcast('filiereListUpdate', {});
@@ -1381,6 +1384,167 @@ app.controller('e_headerController',function($scope,$rootScope,eModuleNotifList,
 
 
 //filiere Controllers
+
+app.controller('f_editeModalController',function($scope,$rootScope,moduleService,profService,modulesList,profsList,filiereService,filiereList){
+    $scope.modules = modulesList.getItems;
+    $scope.edite = {
+            req : {
+                userId : '',
+                filiereId: '',
+                intitulee : '',
+                status : '',
+                annee1 : {
+                    s1 : [],
+                    s2 : []
+                },
+                annee2 : {
+                    s1 : [],
+                    s2 : []
+                },
+                annee3 : {
+                    s1 : [],
+                    s2 : []
+                }
+            },
+            currentModules : {
+                annee1 : {
+                    s1 : [],
+                    s2 : []
+                },
+                annee2 : {
+                    s1 : [],
+                    s2 : []
+                },
+                annee3 : {
+                    s1 : [],
+                    s2 : []
+                }
+            },
+            removeCurrentM : function(index,annee,s){
+                $scope.edite.currentModules[annee][s].splice(index,1);
+            },
+            validation : {
+                 taken : false,
+                 WTaken : false
+            },
+            init : function(filiereId){
+              var tmpFiliere = filiereList.getItems()[filiereList.getSelectedItemIndex()];
+              if(filiereId)
+                    for(var i=0 ; i<filiereList.getItems().length ; i++){
+                        if(filiereList.getItems()[i]._id == filiereId){
+                            tmpFiliere = filiereList.getItems()[i];
+                            break;
+                        } 
+                    }  
+               
+              
+              $scope.edite.req.filiereId = tmpFiliere._id;
+              $scope.edite.req.intitulee = tmpFiliere.intitulee;
+              $scope.edite.req.status = tmpFiliere.status;
+              $scope.edite.req.userId = profsList.getUser()._id;
+              $scope.edite.currentModules.annee1 = tmpFiliere.annee1;
+              $scope.edite.currentModules.annee2 = tmpFiliere.annee2;
+              $scope.edite.currentModules.annee3 = tmpFiliere.annee3;
+              $scope.edite.req.annee1 = {s1 : [],s2 : []};
+              $scope.edite.req.annee2 = {s1 : [],s2 : []};
+              $scope.edite.req.annee3 = {s1 : [],s2 : []};
+              
+              $('.selectpicker').selectpicker()
+              $('.selectpicker').selectpicker('refresh');
+            },
+           submit : function(){
+                 $scope.edite.req.annee1.s1 =  $scope.edite.req.annee1.s1.concat($scope.edite.currentModules.annee1.s1);
+                 $scope.edite.req.annee1.s2 =  $scope.edite.req.annee1.s2.concat($scope.edite.currentModules.annee1.s2);
+                 $scope.edite.req.annee2.s1 =  $scope.edite.req.annee2.s1.concat($scope.edite.currentModules.annee2.s1);
+                 $scope.edite.req.annee2.s2 =  $scope.edite.req.annee2.s2.concat($scope.edite.currentModules.annee2.s2);
+                 $scope.edite.req.annee3.s1 =  $scope.edite.req.annee3.s1.concat($scope.edite.currentModules.annee3.s1);
+                 $scope.edite.req.annee3.s2 =  $scope.edite.req.annee3.s2.concat($scope.edite.currentModules.annee3.s2);
+                if(!$scope.editeForm.$pristine){
+                    $scope.edite.req.lastUpdate = new Date();
+                }
+                filiereService.edite($scope.edite.req)
+                              .then(function successCallback(response){
+                                        if(response.data.code == '200'){
+                                            filiereList.load(); 
+                                            $('#editeModal').modal('hide');
+                                            var notify = {
+                                                type: 'success',
+                                                title: "Filiere "+$scope.edite.req.intitulee+" éditer avec succes ",
+                                                content: ''
+                                            };
+                                            $scope.$emit('notify', notify);
+                                            
+                                        }else if(response.data.code == "003"){
+                                            $scope.edite.validation.taken = true;
+                                            $('#editeModal').scrollTop(0)
+                                        }else {
+                                            alert(JSON.stringify(response.data))
+                                            $('#editeModal').modal('hide');
+                                            var notify = {
+                                                type: 'error',
+                                                title: "une erreur est survenue !!",
+                                                content: ''
+                                            };
+                                            $scope.$emit('notify', notify);
+                                        }
+                                    },
+                                    function errorCallback(response) {
+                                        var notify = {
+                                            type: 'error',
+                                            title: "une erreur est survenue !!",
+                                            content: ''
+                                        };
+                                        $scope.$emit('notify', notify);
+                                     }
+                             );
+                
+            },
+            annuler : function(){
+            }
+            
+        }
+        $scope.$on('init_editeModal',function(event,id){
+            $scope.edite.init(id);
+        })
+       
+        $scope.$on('filiereListUpdate',function(){
+            $('.selectpicker').selectpicker()
+            $('.selectpicker').selectpicker('refresh');
+        })
+});
+
+
+app.controller('f_deleteModalController',function($scope,$rootScope,moduleService,profService,modulesList,filiereList,profsList,filiereService){
+     $scope.delete = {
+            delete : function(){
+                var id = filiereList.getItems()[filiereList.getSelectedItemIndex()]._id;
+                var userId = profsList.getUser()._id;
+                var intitulee = filiereList.getItems()[filiereList.getSelectedItemIndex()].intitulee;
+                filiereService.delete({filiereId : id,userId : userId})
+                               .then(function successCallback(response){
+                                        if(response.data.code == '200'){
+                                         filiereList.load();
+                                         var notify = {
+                                                type: 'success',
+                                                title: "filiere "+intitulee+" supprimer avec succes ",
+                                                content: ''
+                                            };
+                                            $scope.$emit('notify', notify);
+                                        }
+                                    },
+                                    function errorCallback(response) {
+                                            var notify = {
+                                                type: 'error',
+                                                title: "une erreur est survenue !!",
+                                                content: ''
+                                            };
+                                            $scope.$emit('notify', notify);
+                                    }
+                             );
+            }
+        }
+});
+
 app.controller('f_filiereTableController',function($scope,$rootScope,moduleService,profService,modulesList,filiereService,filiereList){
         $scope.selectedItemIndex = filiereList.getSelectedItemIndex;
         $scope.filiereTable = {
@@ -1402,60 +1566,12 @@ app.controller('f_filiereTableController',function($scope,$rootScope,moduleServi
                    $rootScope.$broadcast('init_editeModal',{});
                     $('#editeModal').modal('show');
                 }],
-                ['Partager...',function($itemScope){
-                    $scope.moduleTable.selectedId = $itemScope.module._id;
-                    $rootScope.$broadcast('init_shareModal',{});
-                    $('#shareModal').modal('show');
-                  
-                }],
-                null
-                ,
-                ['Télécharger',function($itemScope){
-                    moduleService.generatePDF({ userId: $scope.user()._id, moduleId: modulesList.getItems()[modulesList.getSelectedItemIndex()]._id })
-                        .then(function (response) {
-                            if (response.data.code = '200') {
-                                $window.location.href = 'http://' + serverip + response.data.data.url;
-                            }
-                            else {
-                                alert(response.data.message);
-                            }
-                        });
-                }],
                 null,
                 ['Supprimer',function($itemScope){
                     $scope.moduleTable.selectedId = $itemScope.module._id;
                     $('#deleteModal').modal('show');
                 }]
             ],
-            menuOptionsw : [
-                ['Apercu', function($itemScope){
-                    $rootScope.$broadcast('init_apercuModal',{});
-                    $('#apercuModal').modal('show');
-                }],
-                null,
-                ['Modifier',function($itemScope){
-                    $rootScope.$broadcast('init_editeModal',{});
-                    $('#editeModal').modal('show');
-                }],
-                null
-                ,['Télécharger',function($itemScope){
-                    moduleService.generatePDF({ userId: $scope.user()._id, moduleId: modulesList.getItems()[modulesList.getSelectedItemIndex()]._id })
-                        .then(function (response) {
-                            if (response.data.code = '200') {
-                                $window.location.href = 'http://' + serverip + response.data.data.url;
-                            }
-                            else {
-                                alert(response.data.message);
-                            }
-                        });
-                }],
-               ],
-            menuOptionsr : [
-                ['Apercu', function($itemScope){
-                    $rootScope.$broadcast('init_apercuModal',{});
-                    $('#apercuModal').modal('show');
-                }],
-               ],
             clicked : function(index,id,_intitulee){
                 $scope.filiereTable.selectedIndex = index;
                 filiereList.setSelectedItemIndex(index);
@@ -1470,9 +1586,13 @@ app.controller('f_filiereTableController',function($scope,$rootScope,moduleServi
 
 app.controller('f_headerController',function($scope,$rootScope,filiereService,profService,filiereList,profsList){
         $scope.selectedItemIndex = filiereList.getSelectedItemIndex;
+        $scope.filiereList
         
         $scope.cree = function(){
             $rootScope.$broadcast('init_creeModal',{});
+        }
+        $scope.edite = function(){
+            $rootScope.$broadcast('init_editeModal',{});
         }
 })
 app.controller('f_creeController',function($scope,$rootScope,filiereService,profService,filiereList,profsList){
@@ -1545,6 +1665,7 @@ app.controller('gestionFilierController',function($scope,$rootScope,profService,
         $scope.eModulesList = eModulesList.getItems;
         $scope.eModuleNotifCount = eModuleNotifList.getCount;
         $scope.moduleNotifCount = moduleNotifList.getCount; 
+        $scope.filiereList = filiereList.getItems
         $scope.user = profsList.getUser;
         profsList.getCurrentUser().then(function(){
         profsList.load().then(function(){               
