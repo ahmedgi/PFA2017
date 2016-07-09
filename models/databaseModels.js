@@ -215,7 +215,60 @@ profSchema.methods.setAtt = function(att,value){
         this[att] = value;
     }
 }
- 
+
+ var filiereSchema = mongoose.Schema(
+     {
+         intitulee : String,
+         annee1 : {
+             s1 : [
+                 {
+                   type : mongoose.Schema.Types.ObjectId,
+                   ref : 'modules'
+                 }
+             ],
+             s2 : [
+                 {
+                   type : mongoose.Schema.Types.ObjectId,
+                   ref : 'modules'
+                 }
+             ]
+         },
+         annee2 : {
+             s1 : [
+                 {
+                   type : mongoose.Schema.Types.ObjectId,
+                   ref : 'modules'
+                 }
+             ],
+             s2 : [
+                 {
+                   type : mongoose.Schema.Types.ObjectId,
+                   ref : 'modules'
+                 }
+             ]
+         },annee3 : {
+             s1 : [
+                 {
+                   type : mongoose.Schema.Types.ObjectId,
+                   ref : 'modules'
+                 }
+             ],
+             s2 : [
+                 {
+                   type : mongoose.Schema.Types.ObjectId,
+                   ref : 'modules'
+                 }
+             ]
+         },
+         createdBy : {
+                   type : mongoose.Schema.Types.ObjectId,
+                   ref : 'profs'
+                },
+        creationDate : { type: Date, default: Date.now },
+        lastUpdate : { type: Date, default: Date.now },
+
+     }
+ );
  
  
  module.exports = {
@@ -223,6 +276,7 @@ profSchema.methods.setAtt = function(att,value){
      modules : mongoose.model('modules',moduleSchema),
      profs : mongoose.model('profs',profSchema),
      eModuleNotif : mongoose.model('eModuleNotif',eModuleNotifSchema),
-     moduleNotif : mongoose.model('moduleNotif',moduleNotifSchema)
+     moduleNotif : mongoose.model('moduleNotif',moduleNotifSchema),
+     filiere : mongoose.model('filieres',filiereSchema)
  }
               

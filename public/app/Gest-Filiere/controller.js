@@ -1,6 +1,83 @@
-var serverip = 'localhost:801'
+
+var serverip = '192.168.1.13:801'
+
+
+
 
 var app = angular.module('pfaApp');
+
+//filiere Service
+app.service('filiereService',function($http){
+    this.get = function(req){
+        var promise = $http({
+                        method: 'POST',
+                        url: 'http://'+serverip+'/gestionfiliere/filiere/getFiliere',
+                        data : req
+                    })
+         return promise;
+    };
+    
+    this.cree = function(req){
+        var promise = $http({
+                        method: 'POST',
+                        url: 'http://'+serverip+'/gestionfiliere/filiere/creeFiliere',
+                        data : req
+                    })
+         return promise;
+    }
+    
+    this.edite = function(req){
+        var promise = $http({
+                        method: 'POST',
+                        url: 'http://'+serverip+'/gestionfiliere/filiere/editeFiliere',
+                        data : req
+                    })
+         return promise;
+    }
+    this.delete = function(req){
+        var promise = $http({
+                        method: 'POST',
+                        url: 'http://'+serverip+'/gestionfiliere/filiere/deleteFiliere',
+                        data : req
+                    })
+         return promise;
+    }
+});
+
+app.service('filiereList',function(filiereService,$rootScope,profsList){
+    var items = [];
+    var selectedItemIndex =  -1;
+    var load  = function(){
+                    return filiereService.get({ userId: profsList.getUser()._id, searchQuery: {createdBy : profsList.getUser()._id}})
+                        .then(function successCallback(response) {
+                            items = response.data.data;
+                            $rootScope.$broadcast('filiereListUpdate', {});
+                        },
+                            function errorCallback(response) {
+
+                            }
+                            );
+    };
+    
+    var getItems = function(){
+        return items;
+    };
+    
+     var getSelectedItemIndex = function(){
+        return selectedItemIndex;
+    }
+    
+    var setSelectedItemIndex = function(index){
+        selectedItemIndex = index;
+    }
+    
+    return {
+        load : load,
+        getItems : getItems,
+        getSelectedItemIndex : getSelectedItemIndex,
+        setSelectedItemIndex :setSelectedItemIndex
+    }
+});
 
 //Prof Services
 app.service('profService',function($http,$window){
@@ -58,9 +135,7 @@ app.service('profsList',function(profService,$rootScope,$window){
                             function errorCallback(response) {
                                 
                             }
-                      );
-
-                
+                      );                
             };
     var getItems = function(){
         return items;
@@ -1304,7 +1379,168 @@ app.controller('e_headerController',function($scope,$rootScope,eModuleNotifList,
         }
 });
 
-app.controller('gestionFilierController',function($scope,$rootScope,profService,modulesList,profsList,eModulesList,eModuleNotifList,moduleNotifList,moduleNotifService,eModuleNotifService){
+
+//filiere Controllers
+app.controller('f_filiereTableController',function($scope,$rootScope,moduleService,profService,modulesList,filiereService,filiereList){
+        $scope.selectedItemIndex = filiereList.getSelectedItemIndex;
+        $scope.filiereTable = {
+            items : filiereList.getItems,
+            search : '',
+            selectedIndex : -1,
+            init : function(){  
+                $scope.filiereTable.selectedIndex = -1;
+                filiereList.setSelectedItemIndex(-1);
+                $scope.filiereTable.search = '';
+            },
+            menuOptions : [
+                ['Apercu', function($itemScope){
+                    $rootScope.$broadcast('init_apercuModal',{});
+                    $('#apercuModal').modal('show');
+                }],
+                null,
+                ['Modifier',function($itemScope){
+                   $rootScope.$broadcast('init_editeModal',{});
+                    $('#editeModal').modal('show');
+                }],
+                ['Partager...',function($itemScope){
+                    $scope.moduleTable.selectedId = $itemScope.module._id;
+                    $rootScope.$broadcast('init_shareModal',{});
+                    $('#shareModal').modal('show');
+                  
+                }],
+                null
+                ,
+                ['Télécharger',function($itemScope){
+                    moduleService.generatePDF({ userId: $scope.user()._id, moduleId: modulesList.getItems()[modulesList.getSelectedItemIndex()]._id })
+                        .then(function (response) {
+                            if (response.data.code = '200') {
+                                $window.location.href = 'http://' + serverip + response.data.data.url;
+                            }
+                            else {
+                                alert(response.data.message);
+                            }
+                        });
+                }],
+                null,
+                ['Supprimer',function($itemScope){
+                    $scope.moduleTable.selectedId = $itemScope.module._id;
+                    $('#deleteModal').modal('show');
+                }]
+            ],
+            menuOptionsw : [
+                ['Apercu', function($itemScope){
+                    $rootScope.$broadcast('init_apercuModal',{});
+                    $('#apercuModal').modal('show');
+                }],
+                null,
+                ['Modifier',function($itemScope){
+                    $rootScope.$broadcast('init_editeModal',{});
+                    $('#editeModal').modal('show');
+                }],
+                null
+                ,['Télécharger',function($itemScope){
+                    moduleService.generatePDF({ userId: $scope.user()._id, moduleId: modulesList.getItems()[modulesList.getSelectedItemIndex()]._id })
+                        .then(function (response) {
+                            if (response.data.code = '200') {
+                                $window.location.href = 'http://' + serverip + response.data.data.url;
+                            }
+                            else {
+                                alert(response.data.message);
+                            }
+                        });
+                }],
+               ],
+            menuOptionsr : [
+                ['Apercu', function($itemScope){
+                    $rootScope.$broadcast('init_apercuModal',{});
+                    $('#apercuModal').modal('show');
+                }],
+               ],
+            clicked : function(index,id,_intitulee){
+                $scope.filiereTable.selectedIndex = index;
+                filiereList.setSelectedItemIndex(index);
+            }
+        }
+         
+        $scope.$on('updateSearch',function(event,search){
+            $scope.filiereTable.search = search;
+        })  
+})
+
+
+app.controller('f_headerController',function($scope,$rootScope,filiereService,profService,filiereList,profsList){
+        $scope.selectedItemIndex = filiereList.getSelectedItemIndex;
+        
+        $scope.cree = function(){
+            $rootScope.$broadcast('init_creeModal',{});
+        }
+})
+app.controller('f_creeController',function($scope,$rootScope,filiereService,profService,filiereList,profsList){
+         $scope.filieres = filiereList.getItems;
+         $scope.cree = {
+            req : {
+                userId : '',
+                intitulee : '',
+            },
+            validation : {
+                 taken : false,
+                 WTaken : false
+            },
+            init : function(){
+                $scope.cree.req.userId = profsList.getUser()._id
+                $scope.cree.validation.WTaken = false;
+                $scope.cree.validation.taken = false;
+                $scope.cree.req.intitulee = '';
+                $scope.creeFiliereForm.intitulee.$setUntouched();
+            }
+            ,
+            submit : function(){
+                filiereService.cree($scope.cree.req)
+                              .then(function successCallback(response){
+                                        if(response.data.code == '200'){
+                                            filiereList.load();
+                                            $('#creeModal').modal('hide');
+                                            var notify = {
+                                                type: 'success',
+                                                title: "Filiere "+$scope.cree.req.intitulee+" cree avec succes ",
+                                                content: ''
+                                            };
+                                            $scope.$emit('notify', notify);
+                                        }else if(response.data.code == '003'){
+                                            $scope.cree.validation.taken = true;
+                                        }else {
+                                            $('#creeModal').modal('hide');
+                                            var notify = {
+                                                type: 'error',
+                                                title: "une erreur est survenue !!",
+                                                content: ''
+                                            };
+                                            $scope.$emit('notify', notify);
+                                        }
+                                    },
+                                    function errorCallback(response) {
+                                        var notify = {
+                                                type: 'error',
+                                                title: "une erreur est survenue !!",
+                                                content: ''
+                                            };
+                                            $scope.$emit('notify', notify);
+                                    }
+                             );
+                
+            },
+            annuler : function(){
+
+            }
+        }
+        
+        $scope.$on('init_creeModal',function(){
+            $scope.cree.init();
+        })
+        
+})
+
+app.controller('gestionFilierController',function($scope,$rootScope,profService,modulesList,profsList,eModulesList,eModuleNotifList,moduleNotifList,moduleNotifService,eModuleNotifService,filiereList){
         $scope.modulesList = modulesList.getItems;
         $scope.eModulesList = eModulesList.getItems;
         $scope.eModuleNotifCount = eModuleNotifList.getCount;
@@ -1316,7 +1552,9 @@ app.controller('gestionFilierController',function($scope,$rootScope,profService,
                 modulesList.load().then(function(){
                     eModuleNotifList.load().then(function(){
                         moduleNotifList.load().then(function(){
+                           filiereList.load().then(function(){
                                 $rootScope.socket.emit("registerUser",$scope.user()._id)
+                            });
                         })
                     })
                 })

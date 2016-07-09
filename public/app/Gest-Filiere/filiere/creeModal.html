@@ -1,0 +1,27 @@
+<!-- Modal Creation Element de Module-->
+ <div ng-controller="f_creeController" class="modal fade" id="creeModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Creé une filiere</h4>
+        </div>
+        <div class="modal-body">
+          <form name='creeFiliereForm' role="form" novalidate>
+                <div class="form-group" ng-class="{ 'has-error' : cree.validation.taken || (creeFiliereForm.intitulee.$invalid &&  creeFiliereForm.intitulee.$touched)}">
+                    <label for="intitulee" >Intitulée:</label>
+                    <input id="intitulee" name="intitulee" type="text" class="form-control" placeholder="intitulée" ng-model="cree.req.intitulee" ng-focus="cree.validation.taken = false" ng-minlength="3" required>
+                    <p ng-show="cree.validation.taken" class="help-block">intitulee existe deja !!.</p>
+                    <p ng-show="creeFiliereForm.intitulee.$error.minlength && creeFiliereForm.intitulee.$touched" class="help-block">intitulee trop court !!.</p>
+                    <p ng-show="creeFiliereForm.intitulee.$invalid &&  creeFiliereForm.intitulee.$touched" class="help-block">intitulee obligatoire !!.</p>                
+                   
+                </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-default" ng-click="cree.submit()" ng-disabled="creeFiliereForm.$invalid">Cree</button>   
+          <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="cree.annuler()">annuler</button>
+        </div>
+      </div>
+    </div>
+  </div>

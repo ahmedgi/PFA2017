@@ -26,7 +26,8 @@
 ]);
  
  app.run(function($rootScope){
-      var socket = io('http://localhost:801');
+      var socket = io('http://192.168.1.13:801');
+
       $rootScope.socket = socket;
  })
 /**
@@ -122,6 +123,10 @@ app.config(function($stateProvider, $urlRouterProvider) {
             .state('Gest-Filiere.module', {
             url: "/module",
             templateUrl: "./Gest-Filiere/module"
+            })
+            .state('Gest-Filiere.filiere', {
+            url: "/filiere",
+            templateUrl: "./Gest-Filiere/filiere"
             }).
 			state ('Gest-Scolarite', {
 			url : '/Gest-Scolarite',
