@@ -221,7 +221,7 @@ profSchema.methods.setAtt = function(att,value){
  module.exports = {
      eModules : mongoose.model('eModules',eModuleSchema),
      modules : mongoose.model('modules',moduleSchema),
-     profs : mongoose.model('prof',profSchema),
+     profs : mongoose.model('profs',profSchema),
      eModuleNotif : mongoose.model('eModuleNotif',eModuleNotifSchema),
      moduleNotif : mongoose.model('moduleNotif',moduleNotifSchema)
  }

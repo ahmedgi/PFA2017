@@ -85,13 +85,11 @@ app
 
 	$scope.confirmDelete=function(obj){//when click on confirmer(after delete), it delete the active prof
 		$scope.items.splice($scope.items.indexOf(obj),1);
-        alert("hnaya")
         $http({
 			method:'POST',
 			data:{user_id:obj._id},
 			url   :'http://localhost:801/delete_user'
 		}).then(function success(res){alert(JSON.stringify(res.data));},function err(res){alert(res.data.err);});
-		$scope.hideLightbox();
 	};
 
 	//----------------------------Privelege Modal-----------------------------------------------------------------------------------------------------------------------------------
