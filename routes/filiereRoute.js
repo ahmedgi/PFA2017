@@ -118,7 +118,7 @@ router.post("/deleteFiliere",conEnsure.ensureLoggedIn(0,"/login_",true),function
 
 
 //{filiereId : id,userId : id,intitulee : Sting,annee1 : {},annee2 : {},annee3 : {}}
-router.post('/editeFiliere',conEnsure.ensureLoggedIn(0,"/login_",false),function(req,res){
+router.post('/editeFiliere',conEnsure.ensureLoggedIn(0,"/login_",true),function(req,res){
         res.setHeader('Content-Type', 'application/json');
            console.log("response is : ");
            async.waterfall([
