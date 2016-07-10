@@ -115,27 +115,111 @@ app.controller("replissageNotes",function($scope,$http){
 
 
 app.controller("anneeScolaireCtrl",function($scope,anneeScolaireFactory){
+
+
 	anneeScolaireFactory.getListAnnee().then(function(arrItems){
 		$scope.data.annees=arrItems;
        });
 
 	$scope.createAnnnee=function(){
-		anneeScolaireFactory.getCreatAnnee({
+
+		anneeScolaireFactory.creatAnnee({
 			"description":$scope.data.description,
 			"annee":$scope.data.annee,
 			"fillieres":$scope.multipleSelect
+		}).then(function(){
+			$scope.data.annees=angular.copy($scope.master);
+
+			anneeScolaireFactory.getListAnnee().then(function(arrItems){
+				$scope.data.annees=arrItems;
+	       });
 		});	
-		alert($scope.multipleSelect);
-		anneeScolaireFactory.getListAnnee().then(function(arrItems){
-		$scope.data.annees=arrItems;
-       });	
+
 	}
 
 	$scope.fetchFillieres=function(){
 		anneeScolaireFactory.getListFilliere().then(function(arrItems){
 			$scope.data.fillieres=arrItems;
-			console.log(arrItems);
-			//$('.selectpicker').selectpicker('refrech')
 		});
+	}
+
+	$scope.changeActiveTo=function(id){
+		anneeScolaireFactory.changeActiveTo(id);
+	}
+});
+
+
+//--------------subject afectation stuff-----------------------
+ 
+ 
+ //--------filter :get prof name by id-------------
+app.filter("getProfName",function(){
+	 return function(collection,id){
+			for(var i=0;i<collection.length;i++){
+				if(collection[i]._id==id){
+					return collection[i].nom+"_"+collection[i].prenom;
+				}
+			}
+		}
+	});
+
+app.controller("affectationCont",function($scope,$filter,$http,affectionFactory,settingFactory,profsList){
+	
+	$scope.matieres=[];
+	//$scope.profs=[];
+	$scope.isAffected=[];
+	$scope.activeAffectation=[];//hold the ids of the prof for the active subject
+	$scope.activeSubject=0;
+
+
+	affectionFactory.getListMatiere().then(function(arrItems){//fetch the informations of the subject from the factory
+         $scope.matieres = arrItems;
+ 	});
+
+	profsList.getCurrentUser().then(function(){
+		profsList.load().then(function(){
+			$scope.profs = profsList.getItems;
+			alert(profsList.getItems());
+		});
+		
+	});
+	/*settingFactory.getListProf().then(function(arrItems){//fetch the informations of the profs from the factory
+         $scope.profs = arrItems;
+ 	});*/
+
+	$scope.options=function(n){// when click on options btn, fetch the profs and check if they are affected to the current subject
+
+	//$scope.isAffected=[];
+		$scope.activeSubject=n;
+		$scope.radio={};
+		$scope.radio.id=0;
+		$scope.radio.id=$scope.matieres[n].idProf;
+
+	}
+ 
+ 
+	$scope.confirmer=function(){//when click on confirm(after options), it save the affectation info
+ 
+		var findProfName=$filter("getProfName");
+		//changing the affectation of the active subject subject
+		$scope.matieres[$scope.activeSubject].idProf=$scope.radio.id;
+		console.log($scope.matieres[$scope.activeSubject]);
+  var data={
+     idprof:$scope.matieres[$scope.activeSubject].idProf,
+     idmat :$scope.matieres[$scope.activeSubject].id
+  };
+  var matiers=$scope.matieres[$scope.activeSubject];
+  $http({
+			method:'POST',
+			data  :data,
+			url   :'/affect'
+		}).then(function success(res){
+       if(res.data.info=="non_auto"){
+         alert(res.data.info); 
+       }else
+       		$scope.matieres[$scope.activeSubject].nomProf=findProfName($scope.profs,$scope.matieres[$scope.activeSubject].idProf);
+     },function err(res){
+     	alert(res.data.err);
+    });
 	}
 });

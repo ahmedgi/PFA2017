@@ -35,21 +35,3 @@ app
  }    
 	return this;
 });
-app.factory("affectionFactory",function($http){
-
-		this.getListMatiere = function(){            
-        return $http
-		  ({
-	        method : "GET",
-	        url    : "/matieres"//Settings/matiereAffectation.json
-	    }).then(function mySucces(res) {
-         if(res.data.info=="non_auto"){
-                  alert("vous n'avez pas le droit");
-                  return [];
-         }else
-	        return res.data.matieres;
-	        
-		      });          
-  }    
-    return this;
-});

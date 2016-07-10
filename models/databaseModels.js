@@ -263,10 +263,9 @@ profSchema.methods.setAtt = function(att,value){
                 },
         creationDate : { type: Date, default: Date.now },
         lastUpdate : { type: Date, default: Date.now },
-        status : String 
+
      }
  );
- 
  filiereSchema.methods.setAtt = function(att,value){
     if(value){
         this[att] = value;

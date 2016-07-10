@@ -4,11 +4,12 @@ var async     =require('async');
 var conEnsure =require('connect-ensure-login');
 var nodemailer=require('nodemailer');
 //-----models---------------
-var User = require("../models/databaseModels").profs
+var User = require("../models/databaseModels").profs;
+var eModule = require("../models/databaseModels").eModule;
 var Rat    =require("../models/rattrappage");
 var Matiere=require("../models/Matiere");
 var Notes  =require("../models/Notes");
-var Module =require("../models/Module");
+var ModuleAnnee =require("../models/Module");
 var AnneeScolaire=require("../models/AnneeScolaire");
 var dbModel = require("../models/databaseModels");
 
@@ -86,10 +87,17 @@ var dbModel = require("../models/databaseModels");
 				}
 });
 
+ /*adminrouter.post('/affect',function(req,res){
+    if(req.body.idProf && req.body.idmat){
+      Matiere.findOneAndUpdate({_id:req.body.idmat},{_ens:req.body.idProf},{upsert: true},function(err){
+        if(err) res.json({"err":"error affect"});
+      });
+    }
+ });*/
+
 //---------get prof list-----------------------------------
 
 adminrouter.get('/profs',/* conEnsure.ensureLoggedIn(2,"/login_"), */function(req,res){
-   console.log("waaaaaaaaa:"+req.user);
    var tsend={};
    User.find({},
    {_id   :1,
@@ -113,46 +121,70 @@ adminrouter.get('/matieres',/*conEnsure.ensureLoggedIn(2,"/login_"),*/function(r
   var tsend={};
   var ijson={};
   tsend.matieres=[];
-   Matiere.find({},
-    {
-    _id:1,
-     nom:1,
-     _ens:1,
-     _mod:1
-    })
-   .populate(
-    {
-     path  :"_ens",
-	   model : "prof",
-     select:"login"     
-    })
-   .populate(
-    {
-     path  :"_mod",
-     model :"Module",
-     select:"nom"
-    }
-    )
-    .exec(function(err,mats){
-     if(!err){
-      async.each(mats,function(mat,done){
-        ijson.id      =mat._id;
-        ijson.nom     =mat.nom;
-        ijson.idProf  =(mat._ens)?mat._ens._id:0;
-        ijson.nomProf =(mat._ens)?mat._ens.login:"non affecté";
-        ijson.module  =(mat._mod)?mat._mod.nom:"non affecté";
-        ijson.idModule=(mat._mod)?mat._mod._id:0;
-        tsend.matieres.push(ijson);
-        ijson={};
-        done();
-      },
-      function(err){
-       if(err)res.status(500).json({err:' server internal error'});
+
+ /* async.waterfall([function(callback){
+    Matiere.find()
+  },],function(err,result){
+
+  });*/
+  console.log("zzzz");
+  AnneeScolaire.findOne({active:true},function(err,annee){
+    console.log(annee);
+      Matiere.find({_anneeScolaire:annee._id}/*,
+      {
+      _id:1,
+       nom:1,
+       _ens:1,
+       _mod:1
+      }*/)
+     .populate(
+      {
+       path  :"_ens",
+       model : "prof",
+       select:"login"     
+      })
+     .populate(
+      {
+       path  :"_mod",
+       model :"ModuleAnnee",
+      // select:"nom"
       }
-      );
-      res.status(200).json(tsend);
-     }else res.status(500).json({err:"can not get matieres !"});
-    });
+      ).populate(
+      {
+       path  :"_anneeScolaire",
+       model :"AnneeScolaire"
+      }
+      ).populate(
+      {
+       path  :"_ref",
+       model :"eModules"
+      }
+      )
+      .exec(function(err,mats){
+       if(!err){
+        async.each(mats,function(mat,done){
+          console.log("------------------------------------------\n");
+          console.log(mat._mod);
+          ijson.id      =mat._id;
+          ijson.nom     =mat._ref.intitulee;
+          ijson.idProf  =(mat._ens)?mat._ens._id:0;
+          ijson.nomProf =(mat._ens)?mat._ens.login:"non affecté";
+          ijson.module  =(mat._mod.nom)?mat._mod.nom:"non affecté";
+          //ijson.module  ="aaaa";
+          ijson.idModule=(mat._mod)?mat._mod._id:0;
+          ijson.annee=(mat._anneeScolaire)?mat._anneeScolaire.annee:0;
+          tsend.matieres.push(ijson);
+          ijson={};
+          done();
+        },
+        function(err){
+         if(err)res.status(500).json({err:' server internal error'});
+        }
+        );
+        res.status(200).json(tsend);
+       }else res.status(500).json({err:"can not get matieres !"});
+      });
+  })
 });
 
 //projet :nodemailerPro
@@ -275,45 +307,384 @@ function ImportData(modules,callback){
     
 }
 
+
+
+
 adminrouter.post('/creeAnneeScolaire',function(req,res){
   if(req.body.description && req.body.annee && req.body.fillieres){
+
+    var annee=new AnneeScolaire(req.body);
 
     async.waterfall([function(callback){
       //----recuperer tous data des filliere pour trouver les modules
       dbModel.filiere.find({_id:{$in : req.body.fillieres}})
-      .populate({
+      .populate([{
         
           path:"annee1.s1",
+          model:"modules"        
+      },{
+          path:"annee1.s2",
+          model:"modules"
+      },{
+        
+          path:"annee2.s1",
           model:"modules"
         
-      })
-      .exec(function(err,res){
-        console.log("aaaaaaaaaaaa"+res);
+      },{
+          path:"annee2.s2",
+          model:"modules"
+      },{
+        
+          path:"annee3.s1",
+          model:"modules"
+        
+      },{
+          path:"annee3.s2",
+          model:"modules"
+      }])
+      .exec(function(err,result){
         if(err){
           callback(err);
         }else{
-          callback(null,res);  
+          callback(null,result);  
         }
         
       });
     },function(data,callback){
       //remplire la collection modules
-      console.log("-----0"+data);
+      console.log("-----0"+JSON.stringify(data,null,"\t"));
+      async.each(
+        data,
+        function(filiere,callback){
+          async.parallel([
+		    //--------- annee 1 s1
+			function(callback){
+			async.each(
+            filiere.annee1.s1,
+            function(module,callback){
+                 var md=new ModuleAnnee({
+                    _resp:module.coordonnateur,
+                    _anneeScolaire:annee._id,
+                    _ref:module._id,
+                    nom:module.intitulee,
+                    niveau:1,
+                    semestre:1,
+                    filliere:filiere._id,
+                    liste : []
+                  });
 
-      callback(null);   
+                 async.each(
+                    module.eModules,
+                    function(eModule,callback){
+                       var matiere=new Matiere({
+                        _mod:md._id,
+                        niveau  :1,
+                        semestre:1,
+                        _ref:eModule._id,
+                        _anneeScolaire:annee._id
+                       });
+
+                       matiere.save(function(err){
+                        if(err) callback(err);
+                        else{
+						md.liste.push(matiere._id);
+                        callback(null);
+						}
+                       });
+                    },
+                    function(err){
+                       if(err) return callback(err)
+					   else{
+							md.save(function(err){
+							callback(null)
+						  })
+					   }
+                    }
+                  );    
+            },
+            function(err){
+                if(err) return callback(err,null)
+				else callback(null)
+            }
+            );
+			},
+			//-----------annee 1 S2---------------
+			function(callback){
+			async.each(
+            filiere.annee1.s2,
+            function(module,callback){
+                 var md=new ModuleAnnee({
+                    _resp:module.coordonnateur,
+                    _anneeScolaire:annee._id,
+                    _ref:module._id,
+                    nom:module.intitulee,
+                    niveau:1,
+                    semestre:2,
+                    filliere:filiere._id,
+                    liste : []
+                  });
+
+                 async.each(
+                    module.eModules,
+                    function(eModule,callback){
+                       var matiere=new Matiere({
+                        _mod:md._id,
+                        niveau  :1,
+                        semestre:2,
+                        _ref:eModule._id,
+                        _anneeScolaire:annee._id
+                       });
+
+                       matiere.save(function(err){
+                        if(err) callback(err);
+                        else{
+						md.liste.push(matiere._id);
+                        callback(null);
+						}
+                       });
+                    },
+                    function(err){
+                       if(err) return callback(err)
+					   else{
+							md.save(function(err){
+							callback(null)
+						  })
+					   }
+                    }
+                  );    
+            },
+            function(err){
+                if(err) return callback(err,null)
+				else callback(null)
+            }
+            );
+			},
+			//--------- annee 2 s1
+			function(callback){
+			async.each(
+            filiere.annee2.s1,
+            function(module,callback){
+                 var md=new ModuleAnnee({
+                    _resp:module.coordonnateur,
+                    _anneeScolaire:annee._id,
+                    _ref:module._id,
+                    nom:module.intitulee,
+                    niveau:2,
+                    semestre:1,
+                    filliere:filiere._id,
+                    liste : []
+                  });
+
+                 async.each(
+                    module.eModules,
+                    function(eModule,callback){
+                       var matiere=new Matiere({
+                        _mod:md._id,
+                        niveau  :2,
+                        semestre:1,
+                        _ref:eModule._id,
+                        _anneeScolaire:annee._id
+                       });
+
+                       matiere.save(function(err){
+                        if(err) callback(err);
+                        else{
+						md.liste.push(matiere._id);
+                        callback(null);
+						}
+                       });
+                    },
+                    function(err){
+                       if(err) return callback(err)
+					   else{
+							md.save(function(err){
+							callback(null)
+						  })
+					   }
+                    }
+                  );    
+            },
+            function(err){
+                if(err) return callback(err,null)
+				else callback(null)
+            }
+            );
+			},
+			//-----------annee 2 S2---------------
+			function(callback){
+			async.each(
+            filiere.annee2.s2,
+            function(module,callback){
+                 var md=new ModuleAnnee({
+                    _resp:module.coordonnateur,
+                    _anneeScolaire:annee._id,
+                    _ref:module._id,
+                    nom:module.intitulee,
+                    niveau:2,
+                    semestre:2,
+                    filliere:filiere._id,
+                    liste : []
+                  });
+
+                 async.each(
+                    module.eModules,
+                    function(eModule,callback){
+                       var matiere=new Matiere({
+                        _mod:md._id,
+                        niveau  :2,
+                        semestre:2,
+                        _ref:eModule._id,
+                        _anneeScolaire:annee._id
+                       });
+
+                       matiere.save(function(err){
+                        if(err) callback(err);
+                        else{
+						md.liste.push(matiere._id);
+                        callback(null);
+						}
+                       });
+                    },
+                    function(err){
+                       if(err) return callback(err)
+					   else{
+							md.save(function(err){
+							callback(null)
+						  })
+					   }
+                    }
+                  );    
+            },
+            function(err){
+                if(err) return callback(err,null)
+				else callback(null)
+            }
+            );
+			},
+			//--------- annee 3 s1
+			function(callback){
+			async.each(
+            filiere.annee3.s1,
+            function(module,callback){
+                 var md=new ModuleAnnee({
+                    _resp:module.coordonnateur,
+                    _anneeScolaire:annee._id,
+                    _ref:module._id,
+                    nom:module.intitulee,
+                    niveau:3,
+                    semestre:1,
+                    filliere:filiere._id,
+                    liste : []
+                  });
+
+                 async.each(
+                    module.eModules,
+                    function(eModule,callback){
+                       var matiere=new Matiere({
+                        _mod:md._id,
+                        niveau  :3,
+                        semestre:1,
+                        _ref:eModule._id,
+                        _anneeScolaire:annee._id
+                       });
+
+                       matiere.save(function(err){
+                        if(err) callback(err);
+                        else{
+						md.liste.push(matiere._id);
+                        callback(null);
+						}
+                       });
+                    },
+                    function(err){
+                       if(err) return callback(err)
+					   else{
+							md.save(function(err){
+							callback(null)
+						  })
+					   }
+                    }
+                  );    
+            },
+            function(err){
+                if(err) return callback(err,null)
+				else callback(null)
+            }
+            );
+			},
+			//-----------annee 3 S2---------------
+			function(callback){
+			async.each(
+            filiere.annee3.s2,
+            function(module,callback){
+                 var md=new ModuleAnnee({
+                    _resp:module.coordonnateur,
+                    _anneeScolaire:annee._id,
+                    _ref:module._id,
+                    nom:module.intitulee,
+                    niveau:3,
+                    semestre:2,
+                    filliere:filiere._id,
+                    liste : []
+                  });
+
+                 async.each(
+                    module.eModules,
+                    function(eModule,callback){
+                       var matiere=new Matiere({
+                        _mod:md._id,
+                        niveau  :3,
+                        semestre:2,
+                        _ref:eModule._id,
+                        _anneeScolaire:annee._id
+                       });
+
+                       matiere.save(function(err){
+                        if(err) callback(err);
+                        else{
+						md.liste.push(matiere._id);
+                        callback(null);
+						}
+                       });
+                    },
+                    function(err){
+                       if(err) return callback(err)
+					   else{
+							md.save(function(err){
+							callback(null)
+						  })
+					   }
+                    }
+                  );    
+            },
+            function(err){
+                if(err) return callback(err,null)
+				else callback(null)
+            }
+            );
+			}
+		  ],
+		  function(err,data){
+		     if(err) return callback(err)
+			 else
+				callback(null)
+		  });
+        },
+        function(err){
+            if(err) return callback(err)
+            callback(null)
+        }
+        );
     }],
-      function(err,res){
-
+      function(err,d){
+			annee.save(function(err){
+			  if(err){
+				res.json({"err":"save err"});
+			  }else{
+				res.json({"ok":"ok save success !"});
+			  }
+			});
       });
-
-    var annee=new AnneeScolaire(req.body);
-    annee.save(function(err){
-      if(err){
-        res.json({"err":"save err"});
-      }else{
-        res.json({"ok":"ok save success !"});
-      }
-    });
   }
 
 });
@@ -328,5 +699,30 @@ adminrouter.get('/getFillieres',function(req,res){
       }
       });
     });
+
+adminrouter.post('/changeActiveTo',function(req,res){
+  console.log(req.body.id);
+  async.series([function(callback){
+    AnneeScolaire.findOneAndUpdate({active:true},{active:false}, {upsert: true},function(err){
+      if(err) res.json({"err":"error change active"});
+      callback(null);
+    });
+  },function(callback){
+    AnneeScolaire.findOne({_id:req.body.id},function(err,annee){
+      console.log(annee);
+        annee.active=true;
+        annee.save(function(err){
+          if(err){res.json({"err":"err change active"});}
+          callback(null);
+        });
+    });
+  }],function(err,result){
+    if(err) res.json({"err":"error change active"});
+    res.json({"ok":"ok"});
+  });
+
+});
+
+
 module.exports=adminrouter;
 

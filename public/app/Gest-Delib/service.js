@@ -22,7 +22,6 @@ app.factory("delibNoteFactory",function($http){
 app.factory("anneeScolaireFactory",function($http){
 
 	this.getListAnnee = function(){ 
-	           
         return $http
 		({
 	        method : 'GET',
@@ -35,7 +34,7 @@ app.factory("anneeScolaireFactory",function($http){
   });          
     }
 
-    this.getCreatAnnee = function(data){ 
+    this.creatAnnee = function(data){ 
 	           
         return $http
 		({
@@ -47,7 +46,23 @@ app.factory("anneeScolaireFactory",function($http){
 	        return response.data;
 		},function(response){
    			//alert("data :"+JSON.stringify(response.data));
-  });          
+  		});          
+    }
+
+    this.changeActiveTo = function(data){ 
+	           
+        return $http
+		({
+	        method : 'POST',
+	        url : 'http://localhost:801/changeActiveTo',
+	        data:{id:data}
+
+	    }).then(function mySucces(response) {
+          	//alert("data :"+JSON.stringify(response.data));
+	        return response.data;
+		},function(response){
+   			//alert("data :"+JSON.stringify(response.data));
+  		});          
     }
 
     this.getListFilliere = function(){ 
@@ -65,4 +80,23 @@ app.factory("anneeScolaireFactory",function($http){
     }
 
 	return this;
+});
+
+app.factory("affectionFactory",function($http){
+
+		this.getListMatiere = function(){            
+        return $http
+		  ({
+	        method : "GET",
+	        url    : "/matieres"//Settings/matiereAffectation.json
+	    }).then(function mySucces(res) {
+         if(res.data.info=="non_auto"){
+                  alert("vous n'avez pas le droit");
+                  return [];
+         }else
+	        return res.data.matieres;
+	        
+		      });          
+  }    
+    return this;
 });
