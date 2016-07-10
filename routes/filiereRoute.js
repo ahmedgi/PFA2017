@@ -137,18 +137,55 @@ router.post('/editeFiliere',conEnsure.ensureLoggedIn(0,"/login_",true),function(
                   });
                },
                function(filiere,callback){
+                   var annee1 = {s1 : [],s2 : []};
+                   var annee2 = {s1 : [],s2 : []};
+                   var annee3 = {s1 : [],s2 : []};
+                   
+                   for(var i = 0 ; i < req.body.annee1.s1.length ; i++){
+                       if(annee1.s1.indexOf(req.body.annee1.s1[i]._id) == -1){
+                           annee1.s1.push(req.body.annee1.s1[i]._id)
+                       }
+                   }
+                   for(var i = 0 ; i < req.body.annee1.s2.length ; i++){
+                       if(annee1.s2.indexOf(req.body.annee1.s2[i]._id) == -1){
+                           annee1.s2.push(req.body.annee1.s2[i]._id)
+                       }
+                   }
+                   for(var i = 0 ; i < req.body.annee2.s1.length ; i++){
+                       if(annee2.s1.indexOf(req.body.annee2.s1[i]._id) == -1){
+                           annee2.s1.push(req.body.annee2.s1[i]._id)
+                       }
+                   }
+                   for(var i = 0 ; i < req.body.annee2.s2.length ; i++){
+                       if(annee2.s2.indexOf(req.body.annee2.s2[i]._id) == -1){
+                           annee2.s2.push(req.body.annee2.s2[i]._id)
+                       }
+                   }
+                   for(var i = 0 ; i < req.body.annee3.s1.length ; i++){
+                       if(annee3.s1.indexOf(req.body.annee3.s1[i]._id) == -1){
+                           annee3.s1.push(req.body.annee3.s1[i]._id)
+                       }
+                   }
+                   for(var i = 0 ; i < req.body.annee3.s2.length ; i++){
+                       if(annee3.s2.indexOf(req.body.annee3.s2[i]._id) == -1){
+                           annee3.s2.push(req.body.annee3.s2[i]._id)
+                       }
+                   }
+                    
+                  
+                   
                    filiere.setAtt('intitulee',req.body.intitulee);
-                   filiere.setAtt('annee1',req.body.annee1);
-                   filiere.setAtt('annee2',req.body.annee2);
-                   filiere.setAtt('annee3',req.body.annee3);
+                   filiere.setAtt('annee1',annee1);
+                   filiere.setAtt('annee2',annee2);
+                   filiere.setAtt('annee3',annee3);
                    filiere.setAtt('lastUpdate',new Date());                  
                    filiere.setAtt('status',req.body.status);                  
                    filiere.save(function(err){
                        if(err) return callback({code : '002',message:"database problem!",data : err});
-                       callback(null)
+                       callback(null);
                    });
                    
-               },
+               }
            ],
            function(err,data){
                if(err){ 

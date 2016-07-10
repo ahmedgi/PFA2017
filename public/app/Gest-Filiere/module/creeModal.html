@@ -19,15 +19,15 @@
                 <div class="form-group">
                     <label for="coordonnateur">Coordonnateur :</label>
                     <div class="form-inline">
-                        <select id="sendToList" class="form-control"  title="..." data-live-search="true" ng-options="prof.nom  for prof in profs()"  ng-model="cree.req.cordId">                 
+                        <select id="sendToList" class="form-control"  title="..." data-live-search="true" ng-options="prof.nom+' '+prof.prenom  for prof in profs()"  ng-model="cree.req.cordId">                 
                         </select>
                     </div>
                 </div>
           </form>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-default" ng-click="cree.submit()" ng-disabled="creeModuleForm.$invalid">Cree</button>   
-          <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="cree.annuler()">annuler</button>
+          <button class="btn btn-default" ng-click="cree.submit()" ng-disabled="creeModuleForm.$invalid">Valider</button>   
+          <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="cree.annuler()">Annuler</button>
         </div>
       </div>
     </div>

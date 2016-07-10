@@ -19,7 +19,6 @@
  var app = angular.module('pfaApp',[
     // Dépendances du "module"
     'ngRoute',
-    'routeAppControllers',
     'ui.bootstrap.contextMenu',
     'ui.router',
     'angularNotify'
@@ -147,31 +146,35 @@ app.config(function($stateProvider, $urlRouterProvider) {
 /**
  * Définition des contrôleurs
  */
-var routeAppControllers = angular.module('routeAppControllers', []);
 
 
 // Contrôleur de la page d'accueil
-routeAppControllers.controller('homeCtrl', ['$scope',
+app.controller('mainController',function($scope,$rootScope,profsList,moduleNotifList,eModuleNotifList){
+      $scope.eModuleNotifCount = eModuleNotifList.getCount;
+      $scope.moduleNotifCount = moduleNotifList.getCount; 
+      profsList.getCurrentUser().then(function(){
+      moduleNotifList.load().then(function(){
+           eModuleNotifList.load().then(function(){
+            })  
+        })
+      }) 
+})
+
+
+app.controller('homeCtrl', ['$scope',
     function($scope){
         $scope.message = "Bienvenue sur la page d'accueil";
     }
 ]);
 
-routeAppControllers.controller('GestChargesCtrl', ['$scope',
+
+app.controller('GestChargesCtrl', ['$scope',
     function($scope){
         $scope.message = "Gestion de charge";
     }
 ]);
 
-routeAppControllers.controller('GestDelibCtrl', ['$scope',
-    function($scope){
-        $scope.message = "Gestion de délibération";
-    }
-]);
-
-
-
-routeAppControllers.controller('GestScolarCtrl', ['$scope',
+app.controller('GestScolarCtrl', ['$scope',
     function($scope){
         $scope.message = "Gestion de scolarité";
     }

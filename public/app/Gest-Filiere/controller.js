@@ -130,7 +130,7 @@ app.service('profsList',function(profService,$rootScope,$window){
                             })
     }
     var load = function(){
-            return profService.getProfs({userId : user._id, searchQuery : {_id : { $ne : user._id}},responseFields : 'nom'})
+            return profService.getProfs({userId : user._id, searchQuery : {_id : { $ne : user._id}},responseFields : 'nom prenom'})
                     .then(function successCallback(response){
                                  items = response.data.data;
                                  $rootScope.$broadcast('profsListUpdate',{});
@@ -255,12 +255,12 @@ app.service('modulesList',function(moduleService,profsList,$rootScope,$filter){
               items = [];
               return  moduleService.load({userId : profsList.getUser()._id, searchQuery : {/*createdBy : profsList.getUser()._id ,*/'coordonnateur' :{ $in : [profsList.getUser()._id]}},
                                     responseFields : '',
-                                    populate : [{path : 'createdBy',select : 'nom'},{path : 'updatedBy',select : 'nom'},{path : 'coordonnateur',select : 'nom prenom'},{path : 'eModules',select : 'intitulee'}]})
+                                    populate : [{path : 'createdBy',select : 'nom prenom'},{path : 'updatedBy',select : 'nom prenom'},{path : 'coordonnateur',select : 'nom prenom'},{path : 'eModules',select : 'intitulee'}]})
                       .then(function successCallback(response){
                               items = items.concat(response.data.data);
                               return moduleService.load({userId : profsList.getUser()._id, searchQuery : {createdBy : profsList.getUser()._id },
                                     responseFields : '',
-                                    populate : [{path : 'createdBy',select : 'nom'},{path : 'updatedBy',select : 'nom'},{path : 'coordonnateur',select : 'nom prenom'},{path : 'eModules',select : 'intitulee'}]})
+                                    populate : [{path : 'createdBy',select : 'nom prenom'},{path : 'updatedBy',select : 'nom prenom'},{path : 'coordonnateur',select : 'nom prenom'},{path : 'eModules',select : 'intitulee'}]})
                                 .then(function successCallback(response){
                                         items = $filter('orderBy')(items.concat(response.data.data),'-lastUpdate');
                                         $rootScope.$broadcast('moduleListUpdate',{});
@@ -347,7 +347,7 @@ app.service('moduleNotifList',function($rootScope,moduleNotifService,profService
     var load = function(){
         return profService.getProfs({userId : profsList.getUser()._id, searchQuery :{ _id : profsList.getUser()._id},responseFields : 'notification.moduleNotif'})
                     .then(function successCallback(response){
-                         return moduleNotifService.getNotif({userId : profsList.getUser()._id, searchQuery : {_id : {$in : response.data.data[0].notification.moduleNotif}},populate : [{path : 'module',select : 'intitulee'},{path : 'eModule',select : 'intitulee'},{path : 'prof',select : 'nom'}]})
+                         return moduleNotifService.getNotif({userId : profsList.getUser()._id, searchQuery : {_id : {$in : response.data.data[0].notification.moduleNotif}},populate : [{path : 'module',select : 'intitulee'},{path : 'eModule',select : 'intitulee'},{path : 'prof',select : 'nom prenom'}]})
                                     .then(function successCallback(response){
                                        count = 0;                                       
                                        items = response.data.data;
@@ -472,12 +472,12 @@ app.service('eModulesList',function(eModuleService,profsList,$rootScope,$filter)
               items = [];
               return  eModuleService.load({userId : profsList.getUser()._id, searchQuery : {/*createdBy : profsList.getUser()._id ,*/'sendTo._id' :{ $in : [profsList.getUser()._id]}},
                                     responseFields : '',
-                                    populate : [{path : 'createdBy',select : 'nom'},{path : 'updatedBy',select : 'nom'},{path : 'sendTo._id',select : 'nom'}]})
+                                    populate : [{path : 'createdBy',select : 'nom prenom'},{path : 'updatedBy',select : 'nom prenom'},{path : 'sendTo._id',select : 'nom prenom'}]})
                       .then(function successCallback(response){
                                items = items.concat(response.data.data);
                               return eModuleService.load({userId : profsList.getUser()._id, searchQuery : {createdBy : profsList.getUser()._id },
                                     responseFields : '',
-                                    populate : [{path : 'createdBy',select : 'nom'},{path : 'updatedBy',select : 'nom'},{path : 'sendTo._id',select : 'nom'}]})
+                                    populate : [{path : 'createdBy',select : 'nom prenom'},{path : 'updatedBy',select : 'nom prenom'},{path : 'sendTo._id',select : 'nom prenom'}]})
                                 .then(function successCallback(response){
                                         items = $filter('orderBy')(items.concat(response.data.data),'-lastUpdate');
                                         $rootScope.$broadcast('eModulesListUpdate',{});
@@ -567,7 +567,7 @@ app.service('eModuleNotifList',function($rootScope,eModuleNotifService,profServi
     var load = function(){
        return profService.getProfs({userId : profsList.getUser()._id, searchQuery :{ _id : profsList.getUser()._id},responseFields : 'notification.eModuleNotif'})
                     .then(function successCallback(response){
-                         return eModuleNotifService.getNotif({userId : profsList.getUser()._id, searchQuery : {_id : {$in : response.data.data[0].notification.eModuleNotif}},populate : [{path : 'eModule',select : 'intitulee'},{path : 'prof',select : 'nom'}]})
+                         return eModuleNotifService.getNotif({userId : profsList.getUser()._id, searchQuery : {_id : {$in : response.data.data[0].notification.eModuleNotif}},populate : [{path : 'eModule',select : 'intitulee'},{path : 'prof',select : 'nom prenom'}]})
                                     .then(function successCallback(response){
                                        items = response.data.data;
                                        if(items)
@@ -971,6 +971,7 @@ app.controller('m_editeModalController',function($scope,$rootScope,moduleService
                 if(!$scope.editeForm.$pristine){
                     $scope.edite.req.lastUpdate = new Date();
                 }
+                alert(JSON.stringify($scope.edite.req.eModules,null,' '))
                 moduleService.edite($scope.edite.req)
                               .then(function successCallback(response){
                                         if(response.data.code == '200'){
@@ -1545,15 +1546,43 @@ app.controller('f_editeModalController',function($scope,$rootScope,moduleService
               $('.selectpicker').selectpicker('refresh');
             },
            submit : function(){
+                 
+                 for(var i=0; i<$scope.edite.req.annee1.s1.length ; i++){
+                     $scope.edite.req.annee1.s1[i] = {_id : $scope.edite.req.annee1.s1[i]._id}
+                 }
+                 for(var i=0; i<$scope.edite.req.annee1.s2.length ; i++){
+                     $scope.edite.req.annee1.s2[i] = {_id : $scope.edite.req.annee1.s2[i]._id }
+                 }
+                 for(var i=0; i<$scope.edite.req.annee2.s1.length ; i++){
+                     $scope.edite.req.annee2.s1[i] = {_id : $scope.edite.req.annee2.s1[i]._id }
+                 }
+                 for(var i=0; i<$scope.edite.req.annee2.s2.length ; i++){
+                     $scope.edite.req.annee2.s2[i] = {_id : $scope.edite.req.annee2.s2[i]._id }
+                 }
+                 for(var i=0; i<$scope.edite.req.annee3.s1.length ; i++){
+                     $scope.edite.req.annee3.s1[i] = {_id : $scope.edite.req.annee3.s1[i]._id }
+                 }
+                 for(var i=0; i<$scope.edite.req.annee3.s2.length ; i++){
+                     $scope.edite.req.annee3.s2[i] = {_id : $scope.edite.req.annee3.s2[i]._id }
+                 }
+                 
+                 
                  $scope.edite.req.annee1.s1 =  $scope.edite.req.annee1.s1.concat($scope.edite.currentModules.annee1.s1);
                  $scope.edite.req.annee1.s2 =  $scope.edite.req.annee1.s2.concat($scope.edite.currentModules.annee1.s2);
                  $scope.edite.req.annee2.s1 =  $scope.edite.req.annee2.s1.concat($scope.edite.currentModules.annee2.s1);
                  $scope.edite.req.annee2.s2 =  $scope.edite.req.annee2.s2.concat($scope.edite.currentModules.annee2.s2);
                  $scope.edite.req.annee3.s1 =  $scope.edite.req.annee3.s1.concat($scope.edite.currentModules.annee3.s1);
                  $scope.edite.req.annee3.s2 =  $scope.edite.req.annee3.s2.concat($scope.edite.currentModules.annee3.s2);
+                
+                
+                console.log(JSON.stringify( $scope.edite.req.annee1)) 
+                
+                
                 if(!$scope.editeForm.$pristine){
                     $scope.edite.req.lastUpdate = new Date();
                 }
+                
+                
                 filiereService.edite($scope.edite.req)
                               .then(function successCallback(response){
                                         if(response.data.code == '200'){
@@ -1781,26 +1810,26 @@ app.controller('gestionFilierController',function($scope,$rootScope,profService,
                         if(notif.typee == 'update'){
                              notify = {
                                 type: 'info',
-                                title: notif.prof.nom+' a modifier '+notif.intitulee,
+                                title: notif.prof.nom+" "+notif.prof.prenom+' a modifier '+notif.intitulee,
                                 content: 'status : '+notif.module.status
                             };
                         }
                         else if(notif.typee == 'cord')
                              notify = {
                                 type: 'info',
-                                title: notif.prof.nom + ' vous a designé coordonnateur du Module ' + notif.intitulee,
+                                title: notif.prof.nom+" "+notif.prof.prenom+' vous a designé coordonnateur du Module ' + notif.intitulee,
                                 content: 'status : ' + notif.module.status
                             };
                        else if(notif.typee == 'share')
                              notify = {
                                 type: 'info',
-                                title: notif.prof.nom + ' a partagé avec vous ' + notif.intitulee,
+                                title: notif.prof.nom+" "+notif.prof.prenom+' a partagé avec vous ' + notif.intitulee,
                                 content: 'status : ' + notif.module.status
                             };
                        else if(notif.typee == 'eModuleUpdate')
                              notify = {
                                 type: 'info',
-                                title: notif.prof.nom + ' a modifier ' + notif.intitulee,
+                                title: notif.prof.nom+" "+notif.prof.prenom+' a modifier ' + notif.intitulee,
                                 content: 'element de module Modifier: '+notif.eModule.intitulee+'\nstatus : ' + notif.module.status
                             };
                        else if(notif.typee == 'delete')
@@ -1831,19 +1860,19 @@ app.controller('gestionFilierController',function($scope,$rootScope,profService,
                         if(notif.typee == 'update')
                              notify = {
                                 type: 'info',
-                                title: notif.prof.nom+' a modifier '+notif.intitulee,
+                                title: notif.prof.nom+" "+notif.prof.prenom+' a modifier '+notif.intitulee,
                                 content: 'status : '+notif.eModule.status
                             };
                         else if(notif.typee == 'share')
                              notify = {
                                 type: 'info',
-                                title: notif.prof.nom + ' a partagé avec vous ' + notif.intitulee,
+                                title: notif.prof.nom+" "+notif.prof.prenom+' a partagé avec vous ' + notif.intitulee,
                                 content: 'status : ' + notif.eModule.status
                             };
                        else if(notif.typee == 'delete')
                              notify = {
                                 type: 'warning',
-                                title: notif.prof.nom + ' a Supprimer ' + notif.intitulee,
+                                title: notif.prof.nom+" "+notif.prof.prenom+' a Supprimer ' + notif.intitulee,
                                 content: ''
                             };
                                 

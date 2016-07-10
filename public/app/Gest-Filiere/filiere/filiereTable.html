@@ -11,7 +11,7 @@
                  <tr ng-repeat="filiere in filiereTable.items() | filter : filiereTable.search" class="{{filiere.status =='complet'?'tr_complet':'tr_incomplet'}}"  ng-class="{'tr_active' : filiereTable.selectedIndex == $index}" ng-mousedown="filiereTable.clicked($index,filiere._id,filiere.intitulee)" context-menu="filiereTable.menuOptions"  ng-click="filiereTable.clicked($index,filiere._id,filiere.intitulee)">
                     <td>{{$index}}</td>
                     <td>{{filiere.intitulee}}</td>
-                    <td>{{filiere.lastUpdate}} <h6>{{filiere.createdBy._id==user()._id?'Vous':filiere.updatedBy.nom}}</h6></td>
+                    <td>{{filiere.lastUpdate | date:'yyyy-MM-dd HH:mm:ss'}} <h6>{{filiere.createdBy._id==user()._id?'Vous':filiere.updatedBy.nom+" "+filiere.updatedBy.prenom}}</h6></td>
                  </tr>
             </tbody>    
        </table>   

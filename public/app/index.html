@@ -16,7 +16,7 @@
      
 </head>
 
-<body>
+<body ng-controller="mainController">
 <header>
 	
 	 <!-- Static navbar -->
@@ -35,7 +35,7 @@
             <ul class="nav navbar-nav">
               <li><a class="active" href="#/home"> <span class="glyphicon glyphicon-home" ></span> acceuil</a></li>
 				<li><a ui-sref="Gest-Charges"><span class="glyphicon glyphicon-calendar"></span> Gestion de charge</a></li>
-				<li><a ui-sref="Gest-Filiere.module"><span class="glyphicon glyphicon-file"></span> Gestion de filière</a></li>
+				<li><a ui-sref="Gest-Filiere.module"><span class="glyphicon glyphicon-file"></span> Gestion de filière <span class="badge">{{eModuleNotifCount()+moduleNotifCount()}}</span></a></li>
 				<li><a ui-sref="Gest-Delib.anneeScolaire"><span class="glyphicon glyphicon-ok"></span> Gestion des délibérations</a></li>
 				<li><a ui-sref="Gest-Scolarite"><span class="glyphicon glyphicon-folder-open"/> Gestion de scolarité</a></li>
               
@@ -57,16 +57,6 @@
 
  <div style="margin-top:50px;" ui-view></div>
 
- 
- <footer >
-	
-	  <div class="container-fluid">
-		<nav class="navbar navbar-default navbar-fixed-bottom">
-		  <a class="navbar-brand" href="#/">Scholar-Gest</a>
-		</nav>
-	  </div>
-	
- </footer>
 
 	<!-- jQuery -->
     <script src="../bower_components/jquery/dist/jquery.js"></script>

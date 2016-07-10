@@ -102,14 +102,14 @@
                                                 <div  ng-class="{'notification-item' : notif.status == 'unseen','notification-item-seen' : notif.status == 'seen'}" ng-click="notifClick(notif);notif.status = 'seen'">
                                                     <div class="item-info">
                                                         <h4 ng-if='notif.typee == "delete"'>
-                                                            {{notif.prof.nom}} a supprimer {{notif.intitulee}}
+                                                            {{notif.prof.nom}} {{notif.prof.prenom}} a supprimer {{notif.intitulee}}
                                                         </h4>
                                                         <h4 ng-if='notif.typee == "share"'  >
-                                                            {{notif.prof.nom}} a partager avec vous {{notif.eModule.intitulee}}
+                                                            {{notif.prof.nom}} {{notif.prof.prenom}} a partager avec vous {{notif.eModule.intitulee}}
                                                             <span class="glyphicon glyphicon-{{getPermision(notif.eModule._id)=='w'?'edit':'eye-open'}}" aria-hidden="true"></span>
                                                         </h4>
                                                         <h4 ng-if='notif.typee == "update"'>
-                                                            {{notif.prof.nom}} a mis a jour {{notif.eModule.intitulee}}
+                                                            {{notif.prof.nom}} {{notif.prof.prenom}} a mis a jour {{notif.eModule.intitulee}}
                                                         </h4>
                                                         <h6>{{notif.date}}</h6>
                                                     </div>

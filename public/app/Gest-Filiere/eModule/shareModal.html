@@ -11,12 +11,12 @@
                 <div class="form-group">
                     <label for="sendToList">partager avec :</label>
                     <div class="form-inline">
-                        <select id="sendToList" class="selectpicker show-tick" multiple title="..." data-live-search="true" ng-options="prof.nom  for prof in profs()"  ng-model="share.req.sendTo">                 
+                        <select id="sendToList" class="selectpicker show-tick" multiple title="..." data-live-search="true" ng-options="prof.nom+' '+prof.prenom  for prof in profs()"  ng-model="share.req.sendTo">                 
                         </select>
                     </div>
                     <h4 ng-repeat="currentSendTo in share.currentSendTo">
                             <span  class="label label-info">
-                                {{currentSendTo._id.nom}}
+                                {{currentSendTo._id.nom}} {{currentSendTo._id.prenom}}
                                 <button type="button" class="btn btn-info btn-xs" ng-click="share.removeCurrentST($index)">
                                     <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                                 </button>
@@ -25,7 +25,7 @@
                 </div>
                 <div class="form-group" ng-repeat="item in share.req.sendTo" ng-init="item.permision = 'r'">
                         <label>
-                             {{item.nom}}
+                             {{item.nom}} {{item.prenom}}
                         </label>
                         <div class="btn-group">
                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -40,7 +40,7 @@
           </form>
         </div>
         <div class="modal-footer">
-           <button class="btn btn-default"  ng-click="share.submit()">OK</button>   
+           <button class="btn btn-default"  ng-click="share.submit()">Valider</button>   
            <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="share.annuler()">annuler</button>
         </div>
     </div>

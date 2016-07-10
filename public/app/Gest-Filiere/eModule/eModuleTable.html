@@ -12,8 +12,8 @@
                  <tr ng-repeat="eModule in eModuleTable.items() | filter : eModuleTable.search" class="{{eModule.status =='complet'?'tr_complet':'tr_incomplet'}}" ng-class="{'tr_active' : eModuleTable.selectedIndex == $index}" ng-mousedown="eModuleTable.clicked($index,eModule._id,eModule.intitulee)" context-menu="eModuleTable.menuOptions{{eModulesList()[selectedItemIndex()].createdBy._id == user()._id?'':getPermision(eModulesList()[selectedItemIndex()]._id)}}"  ng-click="eModuleTable.clicked($index,eModule._id,eModule.intitulee)">
                     <td>{{$index}}</td>
                     <td>{{eModule.intitulee}}</td>
-                    <td>{{eModule.createdBy._id==user()._id?'Vous':eModule.createdBy.nom}}</td>
-                    <td>{{eModule.lastUpdate}} <h6>{{eModule.createdBy._id==user()._id?'Vous':eModule.updatedBy.nom}}</h6></td>
+                    <td>{{eModule.createdBy._id==user()._id?'Vous':eModule.createdBy.nom+" "+eModule.createdBy.prenom}}</td>
+                    <td>{{eModule.lastUpdate | date:'yyyy-MM-dd HH:mm:ss'}} <h6>{{eModule.createdBy._id==user()._id?'Vous':eModule.updatedBy.nom+" "+eModule.updatedBy.prenom}}</h6></td>
                  </tr>
             </tbody>
        </table>   
