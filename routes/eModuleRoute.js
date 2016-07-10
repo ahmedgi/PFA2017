@@ -105,20 +105,20 @@ router.post("/shareEmodule",conEnsure.ensureLoggedIn(0,"/login_",true),function(
            console.log("response is : ");
            async.waterfall([
                function(callback){
+                   var oldSendTo ;
                    databaseModels.eModules.findById(req.body.eModuleId,function(err,eModule){
                        if(err) return callback({code : '002',message :"database problem!"});
                        if(!eModule) return callback({code : '004',message :"eModule doesn't exist!!"})
-                       
-                       
+                           oldSendTo = eModule.sendTo;
                            eModule.setAtt('sendTo',req.body.sendTo);
                            //eModule.appendSendTo(req.body.sendTo);
                            eModule.save(function(err){
                                if(err) return callback({code : '002',message :"database problem!"});
-                               callback(null);
+                               callback(null,oldSendTo);
                            });
                    });
                },
-               function(callback){
+               function(oldSendTo,callback){
                    var newNotif = new databaseModels.eModuleNotif({
                                                                 intitulee :req.body.intitulee,
                                                                 eModule : req.body.eModuleId,
@@ -129,13 +129,14 @@ router.post("/shareEmodule",conEnsure.ensureLoggedIn(0,"/login_",true),function(
                                                              });
                    newNotif.save(function(err){
                        if(err) return callback({code : '008',message :"prob saving notif"});
-                       callback(null,newNotif._id)
+                       callback(null,newNotif._id,oldSendTo)
                     }); 
                },
-               function(notifId,callback){
+               function(notifId,oldSendTo,callback){
                    async.each(
                            req.body.sendTo,
                            function(element,callback){
+                               oldSendTo.splice(oldSendTo.indexOf(element),1);
                                databaseModels.profs.findById(element._id,function(err,prof){
                                if(!prof) return callback(errorMessage('005',"prof n'existe pas!"));
                                if(!err){
@@ -154,6 +155,18 @@ router.post("/shareEmodule",conEnsure.ensureLoggedIn(0,"/login_",true),function(
                                    callback(errorMessage('002','database Problem'))
                                }
                                });
+                           },
+                           function(err){
+                               if(err) return callback(err,null);
+                               callback(null,oldSendTo)
+                           }) 
+               },
+               function(oldSendTo,callback){
+                   async.each(
+                           oldSendTo,
+                           function(element,callback){
+                                socket.emit(element._id,'newEmoduleNotif',null);
+                                callback(null)
                            },
                            function(err){
                                if(err) return callback(err,null);
@@ -470,7 +483,38 @@ router.post("/deleteEmodule",conEnsure.ensureLoggedIn(0,"/login_",true),function
                        if(err) return callback({code : '002',message :"database problem!!"});
                        callback(null);
                    });
-               }
+               },
+               function(callback){
+                            databaseModels.modules.find({ 'eModules._id': { $in: req.body.eModuleId } }, 'eModules', function (err, modules) {
+                                if (modules) {
+                                    callback(null, modules)
+                                } else {
+                                    callback(null)
+                                }
+                            })
+                        },
+                       function(modules,callback){
+                           async.each(
+                           modules,
+                           function(module,callback){
+                               for(var i = 0; i < module.eModules.length ; i++){
+                                   if(module.eModules[i]._id == req.body._id){
+                                       setTimeout(function(){
+                                           console.log(module.eModules[i].intitulee+" spliced")
+                                       },1000)
+                                       module.eModules.splice(i,1);
+                                       break;
+                                   }
+                               }
+                               module.save(function(err){
+                                   callback(null);
+                               })       
+                           },
+                           function(err){
+                               if(err) return callback(err,null);
+                               callback(null);
+                           })
+                       }
            ],
            function(err,data){
                if(err){ 

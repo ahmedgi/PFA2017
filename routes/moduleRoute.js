@@ -150,7 +150,7 @@ router.post("/shareModule",conEnsure.ensureLoggedIn(0,"/login_",true),function(r
                                                              });
                    newNotif.save(function(err){
                        if(err) return callback({code : '008',message :"prob saving notif"});
-                       socket.emit(oldCordId,'newModuleNotif',newNotif._id);
+                       socket.emit(oldCordId,'newModuleNotif',null);
                        callback(null,newNotif._id)
                    })
                 },
@@ -259,7 +259,7 @@ router.post("/deleteModule",conEnsure.ensureLoggedIn(0,"/login_",true),function(
                                databaseModels.profs.findById(coordonnateur,function(err,prof){
                                if(!err&&prof){
                                    if(prof._id != req.body.userId){
-                                           socket.emit(coordonnateur,'newModuleNotif',{});
+                                           socket.emit(coordonnateur,'newModuleNotif',notifId);
                                            prof.addNotif(notifId,'moduleNotif');
                                            prof.save(function(err){
                                                callback(null);
@@ -561,7 +561,7 @@ router.post('/generatePDF',conEnsure.ensureLoggedIn(0,"/login_",true),function(r
                     data.coordonnateur_grade = module.coordonnateur.grade,
                     data.coordonnateur_specialite = module.coordonnateur.specialite;
                     data.coordonnateur_tel = module.coordonnateur.tel;
-                    data.coordonnateur_mail = module.coordonnateur.mail;
+                    data.coordonnateur_mail = module.coordonnateur.email;
                    }
                    data.didactique = module.didactique;
                    data.note_minimal = module.note_minimal;

@@ -661,7 +661,8 @@ app.controller('m_creeModalController',function($scope,$rootScope,moduleService,
                                         }
                                     },
                                     function errorCallback(response) {
-                                        var notify = {
+                                          $('#creeModal').modal('hide');
+                                           var notify = {
                                                 type: 'error',
                                                 title: "une erreur est survenue !!",
                                                 content: ''
@@ -810,8 +811,20 @@ app.controller('m_moduleTableController',function($scope,$rootScope,moduleServic
                                 $window.location.href = 'http://' + serverip + response.data.data.url;
                             }
                             else {
-                                alert(response.data.message);
+                                var notify = {
+                                    type: 'error',
+                                    title: "une erreur est survenue !!",
+                                    content: ''
+                                };
+                                $scope.$emit('notify', notify);
                             }
+                        },function(response){
+                            var notify = {
+                                type: 'error',
+                                title: "une erreur est survenue !!",
+                                content: ''
+                            };
+                            $scope.$emit('notify', notify);
                         });
                 }],
                 null,
@@ -838,8 +851,20 @@ app.controller('m_moduleTableController',function($scope,$rootScope,moduleServic
                                 $window.location.href = 'http://' + serverip + response.data.data.url;
                             }
                             else {
-                                alert(response.data.message);
+                                var notify = {
+                                    type: 'error',
+                                    title: "une erreur est survenue !!",
+                                    content: ''
+                                };
+                                $scope.$emit('notify', notify);
                             }
+                        },function(response){
+                            var notify = {
+                                type: 'error',
+                                title: "une erreur est survenue !!",
+                                content: ''
+                            };
+                            $scope.$emit('notify', notify);
                         });
                 }],
                ],
@@ -869,6 +894,7 @@ app.controller('m_deleteModalController',function($scope,$rootScope,moduleServic
                 moduleService.delete({intitulee : intitulee,moduleId : id,userId : userId})
                                .then(function successCallback(response){
                                         if(response.data.code == '200'){
+                                         modulesList.setSelectedItemIndex(-1)
                                          modulesList.load();
                                          var notify = {
                                                 type: 'success',
@@ -971,6 +997,7 @@ app.controller('m_editeModalController',function($scope,$rootScope,moduleService
                                         }
                                     },
                                     function errorCallback(response) {
+                                        $('#editeModal').modal('hide');
                                         var notify = {
                                             type: 'error',
                                             title: "une erreur est survenue !!",
@@ -1003,11 +1030,26 @@ app.controller('m_apercuModalController',function($scope,$rootScope,moduleServic
             .then(function(response){
                if(response.data.code = '200'){
                    $window.location.href = 'http://'+serverip+response.data.data.url;
+                   $('#apercuModal').modal('hide');
                }
                else{
-                    alert(response.data.message);
+                   $('#apercuModal').modal('hide');
+                   var notify = {
+                       type: 'error',
+                       title: "une erreur est survenue !!",
+                       content: ''
+                   };
+                   $scope.$emit('notify', notify);
                }
-            });
+            },function (response) {
+                $('#apercuModal').modal('hide');
+                var notify = {
+                    type: 'error',
+                    title: "une erreur est survenue !!",
+                    content: ''
+                };
+                $scope.$emit('notify', notify);
+          });
     }
     
     $scope.init = function(moduleId){
@@ -1160,15 +1202,33 @@ app.controller('e_editeModalController',function($scope,$rootScope,eModuleServic
                                         if(response.data.code == '200'){
                                             eModulesList.load();
                                             $('#editeModal').modal('hide');
+                                             var notify = {
+                                                type: 'success',
+                                                title: "élémenet de module "+$scope.edite.req.intitulee+" éditer avec succes ",
+                                                content: ''
+                                            };
+                                            $scope.$emit('notify', notify);
                                         }else if(response.data.code == "003"){
                                             $scope.edite.validation.taken = true;
                                             $('#editeModal').scrollTop(0)
                                         }else {
                                             $('#editeModal').modal('hide');
+                                            var notify = {
+                                                type: 'error',
+                                                title: "une erreur est survenue !!",
+                                                content: ''
+                                            };
+                                            $scope.$emit('notify', notify);
                                         }
                                     },
                                     function errorCallback(response) {
-                                            
+                                             $('#editeModal').modal('hide');
+                                            var notify = {
+                                                type: 'error',
+                                                title: "une erreur est survenue !!",
+                                                content: ''
+                                            };
+                                            $scope.$emit('notify', notify);
                                      }
                              );
                 
@@ -1235,13 +1295,32 @@ app.controller('e_creeModalController',function($scope,$rootScope,eModuleService
                                         if(response.data.code == '200'){
                                             eModulesList.load();
                                             $('#creeModal').modal('hide');
+                                            var notify = {
+                                                type: 'success',
+                                                title: "élement de Module "+$scope.cree.req.intitulee+" cree avec succes ",
+                                                content: ''
+                                            };
+                                            $scope.$emit('notify', notify);
                                         }else if(response.data.code == '003'){
                                             $scope.cree.validation.taken = true;
                                         }else {
                                              $('#creeModal').modal('hide');
+                                             var notify = {
+                                                type: 'error',
+                                                title: "une erreur est survenue !!",
+                                                content: ''
+                                            };
+                                            $scope.$emit('notify', notify);
                                         }
                                     },
                                     function errorCallback(response) {
+                                         $('#creeModal').modal('hide');
+                                             var notify = {
+                                                type: 'error',
+                                                title: "une erreur est survenue !!",
+                                                content: ''
+                                            };
+                                            $scope.$emit('notify', notify);
                                      }
                              );
                 
@@ -1267,10 +1346,23 @@ app.controller('e_deleteModalController',function($scope,$rootScope,eModuleServi
                 eModuleService.delete({intitulee : intitulee,eModuleId : id,userId : userId})
                                .then(function successCallback(response){
                                         if(response.data.code == '200'){
+                                         eModulesList.setSelectedItemIndex(-1)
                                          eModulesList.load();
+                                         var notify = {
+                                                type: 'success',
+                                                title: "élément de module "+intitulee+" supprimer avec succes ",
+                                                content: ''
+                                            };
+                                            $scope.$emit('notify', notify);
                                         }
                                     },
                                     function errorCallback(response) {
+                                         var notify = {
+                                                type: 'error',
+                                                title: "une erreur est survenue !!",
+                                                content: ''
+                                            };
+                                            $scope.$emit('notify', notify);
                                      }
                              );
             }
@@ -1524,6 +1616,7 @@ app.controller('f_deleteModalController',function($scope,$rootScope,moduleServic
                                .then(function successCallback(response){
                                         if(response.data.code == '200'){
                                          filiereList.load();
+                                         filiereList.setSelectedItemIndex(-1)
                                          var notify = {
                                                 type: 'success',
                                                 title: "filiere "+intitulee+" supprimer avec succes ",
@@ -1557,18 +1650,13 @@ app.controller('f_filiereTableController',function($scope,$rootScope,moduleServi
                 $scope.filiereTable.search = '';
             },
             menuOptions : [
-                ['Apercu', function($itemScope){
-                    $rootScope.$broadcast('init_apercuModal',{});
-                    $('#apercuModal').modal('show');
-                }],
-                null,
                 ['Modifier',function($itemScope){
                    $rootScope.$broadcast('init_editeModal',{});
                     $('#editeModal').modal('show');
                 }],
                 null,
                 ['Supprimer',function($itemScope){
-                    $scope.moduleTable.selectedId = $itemScope.module._id;
+                    $scope.filiereTable.selectedId = $itemScope.filiere._id;
                     $('#deleteModal').modal('show');
                 }]
             ],
@@ -1687,34 +1775,45 @@ app.controller('gestionFilierController',function($scope,$rootScope,profService,
        $rootScope.socket.on('newModuleNotif',function(notifId){
            moduleNotifService.getNotif({userId : $scope.user()._id,searchQuery : {_id : notifId},populate : [{path : 'prof',select : 'nom prenom'},{path : 'module',select : 'status'},{path : 'eModule',select : 'intitulee status'}]})
                     .then(function(response){
+                       if(response.data.code = '200'&&response.data.data.length>0){
                         var notif = response.data.data[0];
-                        if(notif.typee == 'update')
-                            var notify = {
+                        var notify;
+                        if(notif.typee == 'update'){
+                             notify = {
                                 type: 'info',
                                 title: notif.prof.nom+' a modifier '+notif.intitulee,
                                 content: 'status : '+notif.module.status
                             };
+                        }
                         else if(notif.typee == 'cord')
-                            var notify = {
+                             notify = {
                                 type: 'info',
                                 title: notif.prof.nom + ' vous a designé coordonnateur du Module ' + notif.intitulee,
                                 content: 'status : ' + notif.module.status
                             };
                        else if(notif.typee == 'share')
-                            var notify = {
+                             notify = {
                                 type: 'info',
-                                title: notif.prof.nom + ' a partagé avec vous' + notif.intitulee,
+                                title: notif.prof.nom + ' a partagé avec vous ' + notif.intitulee,
                                 content: 'status : ' + notif.module.status
                             };
                        else if(notif.typee == 'eModuleUpdate')
-                            var notify = {
+                             notify = {
                                 type: 'info',
                                 title: notif.prof.nom + ' a modifier ' + notif.intitulee,
                                 content: 'element de module Modifier: '+notif.eModule.intitulee+'\nstatus : ' + notif.module.status
                             };
+                       else if(notif.typee == 'delete')
+                             notify = {
+                                type: 'warning',
+                                title: notif.prof.nom + ' a Supprimer ' + notif.intitulee,
+                                content: ''
+                            };
+                      
                         
-                            
-                        $scope.$emit('notify', notify);
+                        if(notify)    
+                            $scope.$emit('notify', notify);
+                      }
                     })
            
                     moduleNotifList.load().then(function(){
@@ -1726,27 +1825,40 @@ app.controller('gestionFilierController',function($scope,$rootScope,profService,
            $rootScope.socket.on('newEmoduleNotif',function(notifId){
            eModuleNotifService.getNotif({userId : $scope.user()._id,searchQuery : {_id : notifId},populate : [{path : 'prof',select : 'nom prenom'},{path : 'eModule',select : 'status'}]})
                     .then(function(response){
+                      if(response.data.code == '200'&&response.data.data.length>0){ 
                         var notif = response.data.data[0];
+                        var notify;
                         if(notif.typee == 'update')
-                            var notify = {
+                             notify = {
                                 type: 'info',
                                 title: notif.prof.nom+' a modifier '+notif.intitulee,
                                 content: 'status : '+notif.eModule.status
                             };
                         else if(notif.typee == 'share')
-                            var notify = {
+                             notify = {
                                 type: 'info',
-                                title: notif.prof.nom + ' a partagé avec vous' + notif.intitulee,
+                                title: notif.prof.nom + ' a partagé avec vous ' + notif.intitulee,
                                 content: 'status : ' + notif.eModule.status
+                            };
+                       else if(notif.typee == 'delete')
+                             notify = {
+                                type: 'warning',
+                                title: notif.prof.nom + ' a Supprimer ' + notif.intitulee,
+                                content: ''
                             };
                                 
                         $scope.$emit('notify', notify);
+                      }
                     })
            
                     eModuleNotifList.load().then(function(){
                         eModulesList.load();
                     });
                     
+            })
+            
+            $rootScope.socket.on('_ping',function(){
+                alert("whattt")
             })
          
 });
