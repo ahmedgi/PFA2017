@@ -42,6 +42,12 @@ mongoose.connect(url);
 app.disable("x-powered-by");
 app.set('view engine','jade'); 
 
+app.use(function(req, res, next) { //allow cross origin requests
+        res.setHeader("Access-Control-Allow-Methods", "POST, PUT, OPTIONS, DELETE, GET");
+        res.header("Access-Control-Allow-Origin", "http://localhost");
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        next();
+    });
 
 app.use(express.static(__dirname+"/public",{index:false}));
 app.use('/app',express.static(__dirname+"/public/app"));

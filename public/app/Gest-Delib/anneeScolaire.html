@@ -1,7 +1,7 @@
-<button class="btn btn-info"  data-target="#myModal" data-toggle="modal" ng-click="fetchFillieres()">create</button>
+<button class="btn btn-info"  data-target="#myModal" data-toggle="modal" ng-click="fetchFillieres()" style="float: right;margin: 10px;">create</button>
 
-<div class="table-responsive" >
-       <table class="table table-hover ">
+<div class="panel panel-default" >
+       <table class="table ">
            <thead>
                 <tr>
                     <th>#</th>
@@ -18,10 +18,9 @@
                     <td><input type="radio" name="annee" ng-value="a._id" ng-click="changeActiveTo(a._id)" ng-model="activeId" ng-init="activeId=a.active?a._id:0"/></td>
                  </tr>
             </tbody>
-       </table>   
-</div>
+       </table>
     
-
+</div>
     <!-- Modal -->
 <div id="myModal" class="modal fade" role="dialog">
   <div class="modal-dialog">

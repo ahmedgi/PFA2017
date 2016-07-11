@@ -27,6 +27,9 @@ prouter.get('/list',conEnsure.ensureLoggedIn(1,"/login"),function(req,res){
 	}).populate({
 		path:"_ref",
 		model:"eModules"
+	}).populate({
+		path:"notes",
+		model:"Notes"
 	}).exec(function(err,mats){
 		if(err) res.json({"err":"erroooor"});
 		console.log("maat+++++++++++++++++++++++"+mats);
@@ -80,7 +83,7 @@ prouter.get('/list',conEnsure.ensureLoggedIn(1,"/login"),function(req,res){
 //==============config de multer=============================================================
 var storage=multer.diskStorage({
               destination:function(req,file,cb){
-                  cb(null,'./uploads');
+                  cb(null,'./uploadsz/');
               },         
               filename   :function(req,file,cb){
                   cb(null,file.fieldname+".csv");
@@ -91,24 +94,30 @@ var upload=multer({storage:storage});
 
 //===============charger un note==================================
 
-prouter.post('/charger',conEnsure.ensureLoggedIn(1,"/login"),upload.single('note'),function(req,res){
-
+prouter.post('/charger',/* conEnsure.ensureLoggedIn(1,"/login"), */upload.single('file'),function(req,res){
+/*upload(req,res,function(err){
+if(err){console.log("eerrrooor");}else{console.log("goood");}
+});*/
+console.log("------/charger------"+req.file);
 var Converter =require("csvtojson").Converter;
 var converter = new Converter({flatKeys:true});
 var matRegx=new RegExp(/^[a-zA-Z ]{3,}$/);
 var mat=req.body.mat;
+// console.log("matiere waaaaaaaaaaw \nmatiere waaaaaaaaaaw\nmatiere waaaaaaaaaaw"+req.body.mat);
 var subject={};
 var notes;
 var currentProf={};
+
   //if(req.user.matiere[mat]) {matiereexiste=true;break;}
-	if(!matRegx.test(mat)) res.render("error",{err:"pas de caractères speciaux!"});
+	if(!matRegx.test(mat)) res.json({err:"pas de caractères speciaux!"});
  else if(typeof req.body.file=="undefined")
-      res.render("error",{title:"error",err:"vous devez choisir un fichier  csv!"});
+      res.json({err:"vous devez choisir un fichier  csv!"});
  else{
 				converter.fromFile("uploads/"+req.body.file.filename,function(err,jsonArray){
      //cette boucle transforme le tableau d'objets json retourné en un objet json 
      //compatible avec la structure de données dans mongo
      async.each(jsonArray,function(item,callback){
+	 console.log(item+"dddddddd");
       subject[item["nom/prenom"]]=item["note"];
 			   async.setImmediate(function(){
 				   callback();
@@ -121,34 +130,26 @@ var currentProf={};
         .exec(function(err,matiere){
          if(!err) {
            if(!matiere) res.json({err:"error , nom de matiere invalide !"});
-           else if(matiere.notes){
-			if(matiere.notes.editable){
-				notes=new Notes({_elm:matiere,liste:subject});
-				matiere.notes =notes;
-				
-				notes.save(function(err){
-				  if(!err){
-				   matiere.save(function(err){
-					if(!err){ res.json({ok:"données ajoutées avec succes !"});
-						// console.log("you win");
-					}
-					else {res.json({err:"Rien n'est ajouté !"});
-						// console.log("you win");
-					}
-				   });
-				  }else{ res.json({err:"error , can't save !"});
-				  }
-				});
-			}else res.json({err:"vous ne pouvez pas modifier !"});
-            
-           }
+           //else if(matiere.notes.editable){
+		   //console.log("pppppppppp"+JSON.stringify(subject));
+            notes=new Notes({_elm:matiere,liste:subject});
+            matiere.notes = notes;
+            notes.save(function(err){
+              if(!err){
+               matiere.save(function(err){
+                if(!err){ res.status(200).json({ok:"données ajoutées avec succès !"});
+				}
+                else res.json({err:"Rien n'est ajouté !"});
+               });
+              }else res.json({err:"error , can't save !"});
+            });
+           //}else res.json({err:"vous ne pouvez pas modifier !"});
          }else res.json({err:"user not found !"});
         });
        }
      });
     });
  }});
-
  //=====================================modifier une note================================
 
 prouter.post('/modifier',conEnsure.ensureLoggedIn(1,"/login"),function(req,res){

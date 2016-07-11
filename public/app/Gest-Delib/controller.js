@@ -30,6 +30,7 @@ app.controller("GestDelibCtrl",function($rootScope,$http,$scope,delibNoteFactory
 	}
 	$scope.ready=false;//this bool turn on when we choose any subject !
 
+	console.log($scope.data.matieres);
 	$scope.editBtn=function(obj,$index){
 		$scope.data.editToggle[$index]=!$scope.data.editToggle[$index];
 
@@ -88,12 +89,11 @@ app.controller("GestDelibCtrl",function($rootScope,$http,$scope,delibNoteFactory
 
 	$scope.upload=function(){
 		var fd=new FormData();
-		fd.append("file",$scope.noteFile);
+		var file=$scope.noteFile;
+		fd.append("file",file);
 		fd.append("mat",$scope.activeMatiere._ref.intitulee);
 		fd.append("id",$scope.activeMatiere._id);
-  		console.log("active matiere="+$scope.activeMatiere._ref.intitulee);
-  
-
+		
 		$http.post('/charger',fd,{
             transformRequest: angular.identity,
             headers: {'Content-Type':undefined}
