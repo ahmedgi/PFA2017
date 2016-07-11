@@ -1,6 +1,6 @@
 /* global io */
 'use strict';
-
+var serverip = 'localhost:801'
 /**
  * @ngdoc overview
  * @name frontpfaApp
@@ -149,7 +149,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 
 
 // Contrôleur de la page d'accueil
-app.controller('mainController',function($scope,$rootScope,profsList,moduleNotifList,eModuleNotifList){
+app.controller('mainController',function($scope,$rootScope,$http,$window,profsList,moduleNotifList,eModuleNotifList){
       $scope.eModuleNotifCount = eModuleNotifList.getCount;
       $scope.moduleNotifCount = moduleNotifList.getCount; 
       profsList.getCurrentUser().then(function(){
@@ -158,6 +158,16 @@ app.controller('mainController',function($scope,$rootScope,profsList,moduleNotif
             })  
         })
       }) 
+      
+      
+      $scope.logout = function(){
+          $http({
+              method : 'GET',
+              url : '/logout'
+          },function(response){
+             $window.location.href = 'http://'+serverip+'/app/login';
+          })
+      }
 })
 
 

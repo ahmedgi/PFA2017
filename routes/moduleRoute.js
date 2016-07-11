@@ -403,6 +403,10 @@ router.post('/remplireModule',conEnsure.ensureLoggedIn(0,"/login_",true),functio
                    module.setAtt('etablissement',req.body.etablissement);
                    module.setAtt('departement',req.body.departement);
                    module.setAtt('didactique',req.body.didactique);
+                   module.setAtt('prerequis',req.body.prerequis);
+                   module.setAtt('objectif',req.body.objectif);
+                   module.setAtt('modalitee_evaluation',req.body.modalitee_evaluation);                  
+                   module.setAtt('note',req.body.note);                 
                    module.setAtt('lastUpdate',new Date());                  
                    module.setAtt('updatedBy',req.body.userId);                  
                    module.setAtt('status',req.body.status);
@@ -557,12 +561,18 @@ router.post('/generatePDF',conEnsure.ensureLoggedIn(0,"/login_",true),function(r
                            }*/
                        ],
                        didactique: '',
+                       modalitee_evaluation: '',
+                       note : '',
+                       note_minimal: '',
                    }
                    
                    data.universite = module.universite;
                    data.departement = module.departement;
                    data.etablissement = module.etablissement;
                    data.intitulee = module.intitulee;
+                   data.prerequis = module.prerequis;
+                   data.objectif = module.objectif
+                   
                    if(module.coordonnateur){
                     data.coordonnateur_nom =  module.coordonnateur.nom;
                     data.coordonnateur_prenom = module.coordonnateur.prenom;
@@ -571,13 +581,14 @@ router.post('/generatePDF',conEnsure.ensureLoggedIn(0,"/login_",true),function(r
                     data.coordonnateur_tel = module.coordonnateur.tel;
                     data.coordonnateur_mail = module.coordonnateur.email;
                    }
+                   
                    data.didactique = module.didactique;
+                   data.modalitee_evaluation = module.modalitee_evaluation;
+                   data.note = module.note;
                    data.note_minimal = module.note_minimal;
                    
                    
                    for(var i = 0 ;i < module.eModules.length ; i++){
-                      data.prerequis = data.prerequis.concat("\n"+module.eModules[i].prerequis);
-                      data.objectif = data.objectif.concat("\n"+module.eModules[i].objectif);
                       
                       data.enseignementCours_total += module.eModules[i].volume_horaire.cour;
                       data.enseignementTd_total += module.eModules[i].volume_horaire.td;

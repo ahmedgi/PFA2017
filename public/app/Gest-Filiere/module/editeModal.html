@@ -46,10 +46,49 @@
                 </div>
                 <div class="panel panel-primary">
                     <div class="panel-heading">
+                        <h3 class="panel-title"><label for="prerequis">PRE-REQUIS PEDAGOGIQUES</label></h3>
+                    </div>
+                    <div class="panel-body">
+                        <textarea class="form-control" id="prerequis" name="prerequis" placeholder="PRE-REQUIS PEDAGOGIQUES" rows="4" ng-model="edite.req.prerequis"></textarea>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><label for="objectifs">OBJECTIFS</label></h3>
+                    </div>
+                    <div class="panel-body">
+                        <textarea class="form-control" id="objectifs" name="objectifs" placeholder="objectifs" rows="4" ng-model="edite.req.objectif"></textarea>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
                         <h3 class="panel-title"><label for="didactique">Didactique du module</label></h3>
                     </div>
                     <div class="panel-body">
                         <textarea class="form-control" id="didactique" name="departement" placeholder="Didactique du module" rows="4" ng-model="edite.req.didactique"></textarea>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><label for="objectifs">EVALUATION</label></h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                               <label class="col-sm-12">Modalités d’évaluation</label>
+                               <textarea class="form-control" type="text" name="modaliteeEvaluation" placeholder="..." rows="5" ng-model="edite.req.modalitee_evaluation"></textarea>
+                        </div>
+                        <div class="form-group">
+                                <label class="col-sm-12">Note du module</label>
+                                <textarea class="form-control" type="text" name="note" placeholder="..." rows="3" ng-model="edite.req.note"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><label for="noteMinimal">Validation du module <span class="label label-info">note minimale</span> </label></h3>
+                    </div>
+                    <div class="panel-body">
+                        <input type="number" class="form-control" id="noteMinimal" name="noteMinimal" placeholder="note minimale ..."ng-model="edite.req.note_minimal"></textarea>
                     </div>
                 </div>
                 <div class="panel panel-primary">
@@ -67,17 +106,6 @@
                                 </button>
                             </span> 
                         </h4> 
-                    </div>
-                </div>
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h3 class="panel-title"><label for="didactique">Liste des élements du module</label></h3>
-                    </div>
-                    <div class="panel-body">
-                        <div class="form-group">
-                             <label class="col-sm-12">Note Minimal</label>
-                             <input class="form-control" type="text" name="note Minimal"   ng-model="edite.req.note_minimal">
-                         </div>
                     </div>
                 </div>
               </form>

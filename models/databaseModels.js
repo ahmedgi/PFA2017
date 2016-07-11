@@ -3,27 +3,27 @@ var bcrypt   = require('bcrypt-nodejs');
 
 var eModuleSchema = mongoose.Schema(
                   {
-                    intitulee : String,
-                    prerequis : String,
-                    objectif : String,
+                    intitulee : { type : String,default : ''},
+                    prerequis : { type : String,default : ''},
+                    objectif : { type : String,default : ''},
                     volume_horaire : 
                         {
-                            cour : { type: Number, min: 0},
-                            td : { type: Number, min: 0},
-                            tp : { type: Number, min: 0}
+                            cour : { type: Number, min: 0 ,default : 0},
+                            td : { type: Number, min: 0 , default : 0},
+                            tp : { type: Number, min: 0 , default : 0}
                         },
                     activitees_pratique : [
                         {
-                            libellee : String,
-                            objectif : String,
-                            travaux_terrain : { type: Number, min: 0},
-                            projet : { type: Number, min: 0},
-                            stage : { type: Number, min: 0},
-                            visite_etude : { type: Number, min: 0} 
+                            libellee : { type : String,default : ''},
+                            objectif : { type : String,default : ''},
+                            travaux_terrain : { type: Number, min: 0, default : 0},
+                            projet : { type: Number, min: 0 , default : 0},
+                            stage : { type: Number, min: 0 , default : 0},
+                            visite_etude : { type: Number, min: 0 , default : 0} 
                         }
                         ],
-                    description_programme : String, 
-                    modalitee_evaluation : String,
+                    description_programme : { type : String,default : ''}, 
+                    modalitee_evaluation : { type : String,default : ''},
                     note : String,
                     note_minimal : { type: Number, min: 0 , max : 10},
                     
@@ -36,7 +36,7 @@ var eModuleSchema = mongoose.Schema(
                             type: mongoose.Schema.Types.ObjectId,
                             ref : 'prof'
                             },
-                            permision : String
+                            permision : { type : String,default : 'r'}
                            }],
                    creationDate : { type: Date, default: Date.now },
                    lastUpdate : { type: Date, default: Date.now },
@@ -44,7 +44,7 @@ var eModuleSchema = mongoose.Schema(
                             type: mongoose.Schema.Types.ObjectId,
                             ref : 'prof'
                            },
-                   status : String
+                   status : { type : String,default : 'incomplet'}
                   }
               );
               
@@ -75,17 +75,21 @@ eModuleSchema.methods.setAtt = function(att,value){
               
 var moduleSchema = mongoose.Schema(
                  {
-                     universite : String,
-                     etablissement : String,
-                     departement : String,
-                     intitulee : String,
+                     universite : { type : String,default : ''},
+                     etablissement : { type : String,default : ''},
+                     departement : { type : String,default : ''},
+                     intitulee : { type : String,default : ''},
                      coordonnateur : 
                         {
                             type: mongoose.Schema.Types.ObjectId,
                             ref : 'prof'
                         },
-                    didactique : String,
-                    note_minimal : { type: Number, min: 0 , max : 12},
+                    prerequis : { type : String,default : ''},
+                    objectif : { type : String,default : ''},
+                    didactique : { type : String,default : ''},
+                    modalitee_evaluation : { type : String,default : ''},
+                    note : { type : String,default : ''},
+                    note_minimal : { type: Number, min: 0 , max : 20,default : 12},
                     eModules : [
                            {
                             type: mongoose.Schema.Types.ObjectId,
@@ -106,7 +110,7 @@ var moduleSchema = mongoose.Schema(
                             type: mongoose.Schema.Types.ObjectId,
                             ref : 'prof'
                            },   
-                   status : String                    
+                   status : { type : String,default : 'incomplet'}                    
                  }
     );
     
@@ -117,7 +121,7 @@ var moduleSchema = mongoose.Schema(
 }
  
  var eModuleNotifSchema = mongoose.Schema({
-                    intitulee : String,
+                    intitulee : { type : String,default : ''},
                     eModule : {
                         type : mongoose.Schema.Types.ObjectId,
                         ref : 'eModules'
@@ -126,13 +130,13 @@ var moduleSchema = mongoose.Schema(
                         type : mongoose.Schema.Types.ObjectId,
                         ref : 'prof'
                     },
-                    status : String,
-                    typee : String,
+                    status : { type : String,default : 'unseen'},
+                    typee : { type : String,default : ''},
                     date : { type: Date, default: Date.now },
  });
  
  var moduleNotifSchema = mongoose.Schema({
-                    intitulee : String,
+                    intitulee : { type : String,default : ''},
                     module : {
                         type : mongoose.Schema.Types.ObjectId,
                         ref : 'modules'
@@ -145,8 +149,8 @@ var moduleSchema = mongoose.Schema(
                         type : mongoose.Schema.Types.ObjectId,
                         ref : 'prof'
                     },
-                    status : String,
-                    typee : String,
+                    status : { type : String,default : 'unseen'},
+                    typee : { type : String,default : ''},
                     date : { type: Date, default: Date.now },
  });
  
@@ -158,11 +162,13 @@ var moduleSchema = mongoose.Schema(
  
  var profSchema = mongoose.Schema(
      {
-         nom : String,
-         prenom : String,
-         tel : String,
-         grade : String,
-         email : String,
+         nom : { type : String,default : ''},
+         prenom : { type : String,default : ''},
+         tel : { type : String,default : '05-36-50-54-70/71'},
+         grade : { type : String,default : ''},
+         specialite : { type : String,default : ''},
+         fax : { type : String,default : '0356505472'},
+         email : { type : String,default : ''},
          password : String,
          login          :{type:String,required:true,unique:true},
          filiere        :{type:String}, //si l'user est un chef de filiere ===specifier la filiere
@@ -215,7 +221,7 @@ profSchema.methods.setAtt = function(att,value){
 
  var filiereSchema = mongoose.Schema(
      {
-         intitulee : String,
+         intitulee : { type : String,default : ''},
          annee1 : {
              s1 : [
                  {

@@ -624,7 +624,7 @@ app.controller('m_creeModalController',function($scope,$rootScope,moduleService,
             },
             init : function(){
                //$('.selectpicker').selectpicker('deselectAll');
-                $('.selectpicker').selectpicker('refresh');
+               // $('.selectpicker').selectpicker('refresh');
 
                 $scope.cree.req.userId = profsList.getUser()._id
                 $scope.cree.validation.WTaken = false;
@@ -925,7 +925,11 @@ app.controller('m_editeModalController',function($scope,$rootScope,moduleService
                 etablissement : '',
                 departement : '',
                 intitulee : '',
+                prerequis : '',
+                objectif : '',
                 didactique : '',
+                modalitee_evaluation : '',
+                note : '',
                 status : '',
                 userId : '',
                 updatedBy : '',
@@ -955,7 +959,11 @@ app.controller('m_editeModalController',function($scope,$rootScope,moduleService
               $scope.edite.req.etablissement = tmpModule.etablissement;
               $scope.edite.req.departement = tmpModule.departement;
               $scope.edite.req.intitulee = tmpModule.intitulee;
+              $scope.edite.req.prerequis = tmpModule.prerequis;
+              $scope.edite.req.objectif = tmpModule.objectif;
               $scope.edite.req.didactique = tmpModule.didactique;
+              $scope.edite.req.modalitee_evaluation = tmpModule.modalitee_evaluation;
+              $scope.edite.req.note = tmpModule.note;
               $scope.edite.req.status = tmpModule.status; 
               $scope.edite.req.note_minimal = tmpModule.note_minimal;
               $scope.edite.currentEModules = tmpModule.eModules;
@@ -1088,7 +1096,6 @@ app.controller('e_shareModalController',function($scope,$rootScope,eModuleServic
             },
             init : function(){
                 var eModule = eModulesList.getItems()[eModulesList.getSelectedItemIndex()];
-                //$('.selectpicker').selectpicker('deselectAll');
                 $('.selectpicker').selectpicker('refresh')
                 $scope.share.req.intitulee = eModule.intitulee;
                 $scope.share.req.userId = profsList.getUser()._id;
@@ -1111,11 +1118,29 @@ app.controller('e_shareModalController',function($scope,$rootScope,eModuleServic
                                         if(response.data.code == '200'){
                                             eModulesList.load();
                                             $('#shareModal').modal('hide');
+                                            var notify = {
+                                                type: 'success',
+                                                title: "élémenet de module "+$scope.edite.req.intitulee+" partagé avec succes ",
+                                                content: ''
+                                            };
+                                            $scope.$emit('notify', notify);
                                         }else{
+                                            var notify = {
+                                                type: 'error',
+                                                title: "une erreur est survenue !!",
+                                                content: ''
+                                            };
+                                            $scope.$emit('notify', notify);
                                         }
                                     },
                                     function errorCallback(response) {
-                                     }
+                                        var notify = {
+                                                type: 'error',
+                                                title: "une erreur est survenue !!",
+                                                content: ''
+                                            };
+                                            $scope.$emit('notify', notify);
+                                    }
                              );
                 
             },
@@ -1137,8 +1162,6 @@ app.controller('e_editeModalController',function($scope,$rootScope,eModuleServic
                 updatedBy : '',
                 eModuleId : '',
                 intitulee : '',
-                prerequis : '',
-                objectif : '',
                 volume_horaire : 
                         {
                             cour :0,
@@ -1147,8 +1170,6 @@ app.controller('e_editeModalController',function($scope,$rootScope,eModuleServic
                         },
                 activitees_pratique : [],
                 description_programme : '', 
-                modalitee_evaluation : '',
-                note : '',
                 status : '',
             },
             validation : {
@@ -1171,13 +1192,9 @@ app.controller('e_editeModalController',function($scope,$rootScope,eModuleServic
               $scope.edite.req.updatedBy = profsList.getUser()._id;
               $scope.edite.req.eModuleId = tmpEModule._id;
               $scope.edite.req.intitulee = tmpEModule.intitulee;
-              $scope.edite.req.prerequis = tmpEModule.prerequis;
-              $scope.edite.req.objectif = tmpEModule.objectif;
               $scope.edite.req.volume_horaire = tmpEModule.volume_horaire;
               $scope.edite.req.activitees_pratique = tmpEModule.activitees_pratique;
               $scope.edite.req.description_programme = tmpEModule.description_programme;
-              $scope.edite.req.modalitee_evaluation = tmpEModule.modalitee_evaluation;
-              $scope.edite.req.note = tmpEModule.note;
               $scope.edite.req.status = tmpEModule.status;
               
               

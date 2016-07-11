@@ -41,7 +41,7 @@
                 </div>
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title"><label for="objectifs">IDENTIFICATION DU COORDONNATEUR DU MODULE</label></h3>
+                        <h3 class="panel-title"><label>Coordonnateur </label></h3>
                     </div>
                     <div class="panel-body">
                         <pre>{{module.coordonnateur.nom}} {{module.coordonnateur.prenom}}</pre>
@@ -49,7 +49,23 @@
                 </div>
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title"><label for="objectifs">DIDACTIQUE DU MODULE</label></h3>
+                        <h3 class="panel-title"><label>Pre-requis pedagogiques</label></h3>
+                    </div>
+                    <div class="panel-body">
+                        <pre>{{module.prerequis}}</pre>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><label>Objectifs</label></h3>
+                    </div>
+                    <div class="panel-body">
+                        <pre>{{module.objectif}}</pre>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><label>Didactique du module</label></h3>
                     </div>
                     <div class="panel-body">
                         <pre>{{module.didactique}}</pre>
@@ -57,7 +73,22 @@
                 </div>
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title"><label for="objectifs">Note minimale</label></h3>
+                        <h3 class="panel-title"><label for="objectifs">Evaluation</label></h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                               <label class="col-sm-12">Modalités d’évaluation</label>
+                               <pre>{{module.modalitee_evaluation}}</pre>
+                        </div>
+                        <div class="form-group">
+                                <label class="col-sm-12">Note du module</label>
+                                <pre>{{module.note}}</pre>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><label>Note minimale</label></h3>
                     </div>
                     <div class="panel-body">
                         <pre>{{module.note_minimal}}</pre>

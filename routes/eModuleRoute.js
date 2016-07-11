@@ -203,9 +203,9 @@ router.post("/shareEmodule",conEnsure.ensureLoggedIn(0,"/login_",true),function(
 
 });
 
-//{eModuleId : id,userId : id,intitulee : String,prerequis : String,objectif : String , volume_horaire : {cour : number,td : numbeer,tp : number},
+//{eModuleId : id,userId : id,intitulee : String, volume_horaire : {cour : number,td : numbeer,tp : number},
 // activitees_pratique : [{libellee : String,objectif : String,travaux_terrain : number,projet : number,stage : number,visite_etude : number}
-// description_programme : String,modalitee_evaluation : String,note_minimal : number}
+// description_programme : String,}
 router.post('/remplireEmodule',conEnsure.ensureLoggedIn(0,"/login_",true),function(req,res){
         res.setHeader('Content-Type', 'application/json');
        
@@ -227,16 +227,11 @@ router.post('/remplireEmodule',conEnsure.ensureLoggedIn(0,"/login_",true),functi
                },
                function(eModule,callback){
                    eModule.setAtt('intitulee',req.body.intitulee);
-                   eModule.setAtt('prerequis',req.body.prerequis);
-                   eModule.setAtt('objectif',req.body.objectif);
                    eModule.setAtt('volume_horaire',req.body.volume_horaire);
                    eModule.setAtt('activitees_pratique',req.body.activitees_pratique)
                    eModule.setAtt('description_programme',req.body.description_programme);                  
-                   eModule.setAtt('modalitee_evaluation',req.body.modalitee_evaluation);                  
-                   eModule.setAtt('note_minimal',req.body.note_minimal);                  
                    eModule.setAtt('lastUpdate',req.body.lastUpdate);                  
                    eModule.setAtt('updatedBy',req.body.updatedBy); 
-                   eModule.setAtt('note',req.body.note);                 
                    eModule.setAtt('status',req.body.status);
                    
                    eModule.save(function(err){
