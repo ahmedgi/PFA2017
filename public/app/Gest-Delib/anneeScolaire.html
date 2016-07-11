@@ -7,7 +7,7 @@
                     <th>#</th>
                     <th>Description</th>
                     <th>Année</th>
-                    <th>Dernière modification</th>
+                    <th>Activer</th>
                  </tr>
            </thead>
            <tbody>
@@ -15,7 +15,7 @@
                     <td>{{$index}}</td>
                     <td>{{a.description}}</td>
                     <td>{{a.annee}}</td>
-                    <td> <h6></h6></td>
+                    <td><input type="radio" name="annee" ng-value="a._id" ng-click="changeActiveTo(a._id)" ng-model="activeId" ng-init="activeId=a.active?a._id:0"/></td>
                  </tr>
             </tbody>
        </table>   

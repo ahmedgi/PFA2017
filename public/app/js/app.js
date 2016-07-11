@@ -100,7 +100,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
             state ('Gest-Delib.affectation', {
             url : '/affectation',
             templateUrl: '/Gest-Delib/affectation.html',
-            controller: 'GestDelibCtrl'
+            controller: 'affectationCont'
             }).
             state ('Gest-Delib.deliberation', {
             url : '/deliberation',

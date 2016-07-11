@@ -5,6 +5,7 @@
       <tr>
         <th >Nom</th>
         <th >Module</th>
+        <th >Annee</th>
         <th >Professeur</th>
         <th >Options</th>
       </tr>
@@ -14,6 +15,9 @@
         </td>
         <td>
             {{a.module}} 
+        </td>
+        <td>
+            {{a.annee}} 
         </td>
         <td>
             {{a.nomProf}}
@@ -31,13 +35,12 @@
 
     <!-- Modal content-->
     <div class="modal-content">
-
             <div id="switchDelete" class="alert alert-info center-block text-center">
                 <div class="modal-header">
                   <h1></h1>
                 </div>
                 <div class="modal-body">
-                  <div ng-repeat="p in profs track by $index">
+                  <div ng-repeat="p in profs() track by $index">
                     <label>{{p.nom}} {{p.prenom}}</label>
                     <input name="radio" type="radio"  ng-model="radio.id"  ng-value="p._id" />
                   </div>

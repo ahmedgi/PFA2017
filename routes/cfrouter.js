@@ -114,6 +114,7 @@ cfrouter.post('/affect',conEnsure.ensureLoggedIn(2,"/login_"),function(req,res){
       })
       .exec(function(err,user){
        if(!err){
+	   console.log(user);
          async.each(user.matieres,function(mat,cb){
            if(mat._id==idmat) cb({err:"subject already attributed !!"});
            else cb();
