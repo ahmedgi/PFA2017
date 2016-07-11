@@ -9,7 +9,7 @@ var matiereSchema=new Schema({
    coef    :Number,
    niveau  :Number,
    semestre:Number,
-   //filiere :String,
+   _filiere :{type:Schema.Types.ObjectId,ref:"filieres"},
    notes   :{type:Schema.Types.ObjectId,ref:"Notes"}
 });
 var Matiere = mongoose.model('Matiere',matiereSchema);

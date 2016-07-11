@@ -9,7 +9,7 @@ var Rat=require("../models/rattrappage");
 var Matiere=require("../models/Matiere");
 var Notes=require("../models/Notes");
 var Module=require("../models/Module");
-
+var AnneeScolaire=require("../models/AnneeScolaire");
 //no backup !!!!!!!!
 //===============================afficher mes notes=======================================
 prouter.get('/list',conEnsure.ensureLoggedIn(1,"/login"),function(req,res){
@@ -17,43 +17,64 @@ prouter.get('/list',conEnsure.ensureLoggedIn(1,"/login"),function(req,res){
  var niveau=parseInt(req.query.niv);
  var fil   =req.query.fil;
  var liste =[];
-	User.findOne({_id:req.user._id},{matieres:1}).populate(
-   {
-    path    :'matieres',
-    model   :'Matiere',
-    match   :{$and:[{filiere:fil},{niveau:niveau},{semestre:req.user.active_semestre}]},
-    populate:{path:"notes"}
-   }
-  ).exec(function(err,doc){
-		  if(!err){
-					 if(doc && doc.matieres && doc.matieres.length!=0){
-       console.log(
-        "---------------get : /list------------------"+
-        JSON.stringify({mats:doc.matieres})+
-        "--------------------------------------------"
-       );
-       async.each(doc.matieres,function(matiere,done){
-         var iJson={}; 
-         iJson.nom   =matiere.nom        ;
-         iJson.notes =matiere.notes.liste;
-         iJson.niveau=matiere.niveau     ;
-         liste.push(iJson);
-         /*'liste' entry format:
-          *{
-          *  nom    :"nom_matiere",
-          *  notes  :{e0:19.5,e1:18.99,e2:19.78,.....},
-          *  niveau :___,
-          *  filiere:___
-          *}
-          */
-       },function(err){
-          res.status(200).json({liste:liste});
-       });
-      }    
-      else 
-							    res.status(404).json({err:"aucune matière ! ajouter des matière !"});
-				} else res.status(500).json({err:"erreur de connexion"});
+ console.log("heeere----------------------------------------------");
+ AnneeScolaire.findOne({active:true},function(err,annee){
+	if(err) res.json({"err":"erroooor"});
+	Matiere.find({_ens:req.user._id,_anneeScolaire:annee._id})
+	.populate({
+		path:"_filiere",
+		model:"filieres"
+	}).populate({
+		path:"_ref",
+		model:"eModules"
+	}).exec(function(err,mats){
+		if(err) res.json({"err":"erroooor"});
+		console.log("maat+++++++++++++++++++++++"+mats);
+		res.json(mats);
 	});
+ });
+ 
+ //-----------------------------------------------------------------------
+ // AnneeScolaire.findOne({active:true},function(err,annee){
+	// User.findOne({_id:req.user._id},{matieres:1}).populate(
+   // {
+    // path    :'matieres',
+    // model   :'Matiere',
+    // match   :{$and:[{filiere:fil},{niveau:niveau},{semestre:req.user.active_semestre}]},
+    // populate:{path:"notes"}
+   // }
+  // ).exec(function(err,doc){
+		  // if(!err){
+					 // if(doc && doc.matieres && doc.matieres.length!=0){
+       // console.log(
+        // "---------------get : /list------------------"+
+        // JSON.stringify({mats:doc.matieres})+
+        // "--------------------------------------------"
+       // );
+       // async.each(doc.matieres,function(matiere,done){
+         // var iJson={}; 
+         // iJson.nom   =matiere.nom        ;
+         // iJson.notes =matiere.notes.liste;
+         // iJson.niveau=matiere.niveau     ;
+         // liste.push(iJson);
+         // /*'liste' entry format:
+          // *{
+          // *  nom    :"nom_matiere",
+          // *  notes  :{e0:19.5,e1:18.99,e2:19.78,.....},
+          // *  niveau :___,
+          // *  filiere:___
+          // *}
+          // */
+       // },function(err){
+          // res.status(200).json({liste:liste});
+       // });
+      // }    
+      // else 
+							    // res.status(404).json({err:"aucune matière ! ajouter des matière !"});
+				// } else res.status(500).json({err:"erreur de connexion"});
+	// });
+ // });*/
+ //-----------------------------------------------------------------------
 });
 
 //==============config de multer=============================================================
@@ -81,10 +102,10 @@ var notes;
 var currentProf={};
   //if(req.user.matiere[mat]) {matiereexiste=true;break;}
 	if(!matRegx.test(mat)) res.render("error",{err:"pas de caractères speciaux!"});
- else if(typeof req.file=="undefined")
+ else if(typeof req.body.file=="undefined")
       res.render("error",{title:"error",err:"vous devez choisir un fichier  csv!"});
  else{
-				converter.fromFile("uploads/"+req.file.filename,function(err,jsonArray){
+				converter.fromFile("uploads/"+req.body.file.filename,function(err,jsonArray){
      //cette boucle transforme le tableau d'objets json retourné en un objet json 
      //compatible avec la structure de données dans mongo
      async.each(jsonArray,function(item,callback){
@@ -95,23 +116,32 @@ var currentProf={};
 			  },function(err){
 				   if(typeof mat=="undefined" || mat=="") res.redirect("/telecharger");
        else{
-        Matiere.findOne({$and:[{nom:mat},{_ens:req.user._id}]})
+        Matiere.findOne({$and:[{_id:req.body.id},{_ens:req.user._id}]})
         .populate({path:"notes",model:"Notes"})
         .exec(function(err,matiere){
          if(!err) {
            if(!matiere) res.json({err:"error , nom de matiere invalide !"});
-           else if(matiere.notes.editable){
-            notes=new Notes({_elm:matiere,liste:subject});
-            matiere.notes =notes;
-            notes.save(function(err){
-              if(!err){
-               matiere.save(function(err){
-                if(!err) res.json({ok:"données ajoutées avec succes !"});
-                else res.json({err:"Rien n'est ajouté !"});
-               });
-              }else res.json({err:"error , can't save !"});
-            });
-           }else res.json({err:"vous ne pouvez pas modifier !"});
+           else if(matiere.notes){
+			if(matiere.notes.editable){
+				notes=new Notes({_elm:matiere,liste:subject});
+				matiere.notes =notes;
+				
+				notes.save(function(err){
+				  if(!err){
+				   matiere.save(function(err){
+					if(!err){ res.json({ok:"données ajoutées avec succes !"});
+						// console.log("you win");
+					}
+					else {res.json({err:"Rien n'est ajouté !"});
+						// console.log("you win");
+					}
+				   });
+				  }else{ res.json({err:"error , can't save !"});
+				  }
+				});
+			}else res.json({err:"vous ne pouvez pas modifier !"});
+            
+           }
          }else res.json({err:"user not found !"});
         });
        }
