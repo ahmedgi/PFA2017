@@ -110,7 +110,19 @@ router.post("/shareEmodule",conEnsure.ensureLoggedIn(0,"/login_",true),function(
                        if(err) return callback({code : '002',message :"database problem!"});
                        if(!eModule) return callback({code : '004',message :"eModule doesn't exist!!"})
                            oldSendTo = eModule.sendTo;
-                           eModule.setAtt('sendTo',req.body.sendTo);
+                           
+                           var sendTo = [];
+                           var ids = [];
+                           for(var i = 0; i < req.body.sendTo.length ; i++){
+                               var id = req.body.sendTo[i]._id._id?req.body.sendTo[i]._id._id:req.body.sendTo[i]._id;
+                               var permision = req.body.sendTo[i].permision;
+                               if(ids.indexOf(id) == -1){
+                                   sendTo.push({_id : id,permision : permision});
+                                   ids.push(id);
+                               }
+                           }
+                          
+                           eModule.setAtt('sendTo',sendTo);
                            //eModule.appendSendTo(req.body.sendTo);
                            eModule.save(function(err){
                                if(err) return callback({code : '002',message :"database problem!"});
@@ -297,10 +309,11 @@ router.post('/remplireEmodule',conEnsure.ensureLoggedIn(0,"/login_",true),functi
                            })
                        },
                        function(callback){
-                           databaseModels.modules.find({'eModules._id' : { $in : eModuleId}},'intitulee createdBy coordonnateur sendTo',function(err,modules){
+                           databaseModels.modules.find({eModules : { $in : [eModuleId]}},'intitulee createdBy coordonnateur sendTo',function(err,modules){
                                if(modules){
                                    callback(null,modules)
                                }else{
+                                   console.log("##################################################")
                                    callback(null)
                                }
                            })
@@ -485,7 +498,7 @@ router.post("/deleteEmodule",conEnsure.ensureLoggedIn(0,"/login_",true),function
                    });
                },
                function(callback){
-                            databaseModels.modules.find({ 'eModules._id': { $in: req.body.eModuleId } }, 'eModules', function (err, modules) {
+                            databaseModels.modules.find({ eModules: { $in: [req.body.eModuleId] } }, 'eModules', function (err, modules) {
                                 if (modules) {
                                     callback(null, modules)
                                 } else {
@@ -497,15 +510,7 @@ router.post("/deleteEmodule",conEnsure.ensureLoggedIn(0,"/login_",true),function
                            async.each(
                            modules,
                            function(module,callback){
-                               for(var i = 0; i < module.eModules.length ; i++){
-                                   if(module.eModules[i]._id == req.body._id){
-                                       setTimeout(function(){
-                                           console.log(module.eModules[i].intitulee+" spliced")
-                                       },1000)
-                                       module.eModules.splice(i,1);
-                                       break;
-                                   }
-                               }
+                               module.eModules.splice(module.eModules.indexOf(req.body.eModuleId),1)
                                module.save(function(err){
                                    callback(null);
                                })       

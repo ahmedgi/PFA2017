@@ -19,13 +19,13 @@
                 <div class="form-group">
                     <label for="sendToList">partager avec :</label>
                     <div class="form-inline">
-                        <select id="sendToList" class="selectpicker show-tick" multiple title="..." data-live-search="true" ng-options="prof.nom  for prof in profs()"  ng-model="cree.req.sendTo">                 
+                        <select id="sendToList" class="selectpicker show-tick" multiple title="..." data-live-search="true" ng-options="prof.nom+' '+prof.prenom  for prof in profs()"  ng-model="cree.req.sendTo">                 
                         </select>
                     </div>
                 </div>
                 <div class="form-group" ng-repeat="item in cree.req.sendTo" ng-init="item.permision = 'r'">
                         <label>
-                             {{item.nom}}
+                             {{item.nom}} {{item.prenom}}
                         </label>
                         <div class="btn-group">
                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -40,8 +40,8 @@
           </form>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-default" ng-click="cree.submit()" ng-disabled="creeEModuleForm.$invalid">Cree</button>   
-          <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="cree.annuler()">annuler</button>
+          <button class="btn btn-default" ng-click="cree.submit()" ng-disabled="creeEModuleForm.$invalid">Valider</button>   
+          <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="cree.annuler()">Annuler</button>
         </div>
       </div>
     </div>

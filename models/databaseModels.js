@@ -88,11 +88,9 @@ var moduleSchema = mongoose.Schema(
                     note_minimal : { type: Number, min: 0 , max : 12},
                     eModules : [
                            {
-                              _id :  {
-                                    type: mongoose.Schema.Types.ObjectId,
-                                    ref : 'eModules'
-                                    }
-                           }
+                            type: mongoose.Schema.Types.ObjectId,
+                            ref: 'eModules'
+                           },
                        ],
                     createdBy : {
                             type: mongoose.Schema.Types.ObjectId,

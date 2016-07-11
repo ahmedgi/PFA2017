@@ -11,11 +11,11 @@
                 <div class="form-group">
                     <label for="coordonnateur">Coordonnateur :</label>
                     <div class="form-inline">
-                        <select id="sendToList" class="form-control"  title="..." data-live-search="true" ng-options="prof.nom  for prof in profs()"  ng-model="share.req.cordId">                 
+                        <select id="sendToList" class="form-control"  title="..." data-live-search="true" ng-options="prof.nom+' '+prof.prenom  for prof in profs()"  ng-model="share.req.cordId">                 
                         </select>
                         <h4 ng-show="share.currentCord">
                             <span  class="label label-info">
-                                    {{share.currentCord.nom}}
+                                    {{share.currentCord.nom}} {{share.currentCord.prenom}}
                                     <button type="button" class="btn btn-info btn-xs" ng-click="share.removeCurrentCord()">
                                         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                                     </button>
@@ -26,8 +26,8 @@
           </form>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-default" ng-click="share.submit()" >Partagée</button>   
-          <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="share.annuler()">annuler</button>
+          <button class="btn btn-default" ng-click="share.submit()" >Valider</button>   
+          <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="share.annuler()">Annuler</button>
         </div>
       </div>
     </div>

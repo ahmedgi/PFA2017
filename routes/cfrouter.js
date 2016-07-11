@@ -134,7 +134,6 @@ cfrouter.post('/affect',conEnsure.ensureLoggedIn(2,"/login_"),function(req,res){
     function(user,findSubjectDone){
      Matiere.findOne({_id:idmat}).exec(function(err,matiere){
         if(!err){
-		console.log(user);
           if(!user.matieres){
 			user.matieres=[];
 			user.matieres.push(matiere);
@@ -143,6 +142,7 @@ cfrouter.post('/affect',conEnsure.ensureLoggedIn(2,"/login_"),function(req,res){
 			  if(user.matieres.indexOf(idmat)!= -1)
 				user.matieres.push(matiere);
 		  }
+
            findSubjectDone(null,user,matiere)
         }
         else{

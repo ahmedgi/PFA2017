@@ -164,8 +164,7 @@ adminrouter.get('/matieres',/*conEnsure.ensureLoggedIn(2,"/login_"),*/function(r
         
        if(!err){
         async.each(mats,function(mat,done){
-          console.log("------------------------------------------\n");
-          console.log(mat);
+
           ijson.id      =mat._id;
           ijson.nom     =(mat._ref&&mat._ref.intitulee)?mat._ref.intitulee:"indefine";
           ijson.idProf  =(mat._ens)?mat._ens._id:0;
@@ -373,10 +372,13 @@ adminrouter.post('/creeAnneeScolaire',function(req,res){
                     filliere:filiere._id,
                     liste : []
                   });
-
                  async.each(
                     module.eModules,
                     function(eModule,callback){
+                       setTimeout(function(){
+                           console.log("#################################")
+                           console.log(JSON.stringify(eModule,null,'\t'));
+                       },300)
                        var matiere=new Matiere({
                         _mod:md._id,
                         niveau  :1,
@@ -435,7 +437,7 @@ adminrouter.post('/creeAnneeScolaire',function(req,res){
                         _ref:eModule,
                         _anneeScolaire:annee._id
                        });
-
+                       
                        matiere.save(function(err){
                         if(err) callback(err);
                         else{

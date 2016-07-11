@@ -337,6 +337,7 @@ router.post("/getNotif",conEnsure.ensureLoggedIn(0,"/login_",true),function(req,
 
 });
 
+
 //{notifId : _id , status : 'seen'|'unseen'}
 router.post("/updateNotif",conEnsure.ensureLoggedIn(0,"/login_",true),function(req,res){
        res.setHeader('Content-Type', 'application/json');
@@ -390,6 +391,13 @@ router.post('/remplireModule',conEnsure.ensureLoggedIn(0,"/login_",true),functio
                   });
                },
                function(module,callback){
+                   var eModules = [];
+                   for(var i =0 ; i< req.body.eModules.length ; i++){
+                       if(eModules.indexOf(req.body.eModules[i]._id)==-1){
+                           eModules.push(req.body.eModules[i]._id)
+                       }
+                   }
+                   
                    module.setAtt('intitulee',req.body.intitulee);
                    module.setAtt('universite',req.body.universite);
                    module.setAtt('etablissement',req.body.etablissement);
@@ -398,7 +406,7 @@ router.post('/remplireModule',conEnsure.ensureLoggedIn(0,"/login_",true),functio
                    module.setAtt('lastUpdate',new Date());                  
                    module.setAtt('updatedBy',req.body.userId);                  
                    module.setAtt('status',req.body.status);
-                   module.setAtt('eModules',req.body.eModules);
+                   module.setAtt('eModules',eModules);
                    module.setAtt('note_minimal',req.body.note_minimal);
                    module.save(function(err){
                        if(err) return callback({code : '002',message:"database problem!",data : err});
@@ -493,7 +501,7 @@ router.post('/generatePDF',conEnsure.ensureLoggedIn(0,"/login_",true),function(r
                function(callback){
                   var query =  databaseModels.modules.findById(req.body.moduleId);
                    query.populate('coordonnateur');
-                   query.populate('eModules._id');
+                   query.populate('eModules');
                    query.exec(
                    function(err,module){
                        if(err) return callback({code : '002',message :"database problem!!"});
@@ -568,38 +576,38 @@ router.post('/generatePDF',conEnsure.ensureLoggedIn(0,"/login_",true),function(r
                    
                    
                    for(var i = 0 ;i < module.eModules.length ; i++){
-                      data.prerequis = data.prerequis.concat("\n"+module.eModules[i]._id.prerequis);
-                      data.objectif = data.objectif.concat("\n"+module.eModules[i]._id.objectif);
+                      data.prerequis = data.prerequis.concat("\n"+module.eModules[i].prerequis);
+                      data.objectif = data.objectif.concat("\n"+module.eModules[i].objectif);
                       
-                      data.enseignementCours_total += module.eModules[i]._id.volume_horaire.cour;
-                      data.enseignementTd_total += module.eModules[i]._id.volume_horaire.td;
-                      data.enseignementTp_total += module.eModules[i]._id.volume_horaire.tp;
+                      data.enseignementCours_total += module.eModules[i].volume_horaire.cour;
+                      data.enseignementTd_total += module.eModules[i].volume_horaire.td;
+                      data.enseignementTp_total += module.eModules[i].volume_horaire.tp;
                       
                       data.eModules.push({
-                         intitulee : module.eModules[i]._id.intitulee, 
-                         cour :  module.eModules[i]._id.volume_horaire.cour,
-                         td : module.eModules[i]._id.volume_horaire.td,
-                         tp : module.eModules[i]._id.volume_horaire.tp
+                         intitulee : module.eModules[i].intitulee, 
+                         cour :  module.eModules[i].volume_horaire.cour,
+                         td : module.eModules[i].volume_horaire.td,
+                         tp : module.eModules[i].volume_horaire.tp
                       });
                       
-                      for(var j = 0 ; j <  module.eModules[i]._id.activitees_pratique.length ; j++){
-                          data.activitesTravauxTerrain_total += module.eModules[i]._id.activitees_pratique[j].travaux_terrain;
-                          data.activitesProjet_total += module.eModules[i]._id.activitees_pratique[j].projet;
-                          data.activitesStage_total += module.eModules[i]._id.activitees_pratique[j].stage;
-                          data.activitesVisiteEdute_total += module.eModules[i]._id.activitees_pratique[j].visite_etude;
+                      for(var j = 0 ; j <  module.eModules[i].activitees_pratique.length ; j++){
+                          data.activitesTravauxTerrain_total += module.eModules[i].activitees_pratique[j].travaux_terrain;
+                          data.activitesProjet_total += module.eModules[i].activitees_pratique[j].projet;
+                          data.activitesStage_total += module.eModules[i].activitees_pratique[j].stage;
+                          data.activitesVisiteEdute_total += module.eModules[i].activitees_pratique[j].visite_etude;
                           data.activites.push({
-                              libellee: module.eModules[i]._id.activitees_pratique[j].libellee,
-                              objectif: module.eModules[i]._id.activitees_pratique[j].objectif,
-                              travauxTerrain: module.eModules[i]._id.activitees_pratique[j].travaux_terrain,
-                              projet: module.eModules[i]._id.activitees_pratique[j].projet,
-                              stage: module.eModules[i]._id.activitees_pratique[j].stage,
-                              visiteEtude: module.eModules[i]._id.activitees_pratique[j].visite_etude,
+                              libellee: module.eModules[i].activitees_pratique[j].libellee,
+                              objectif: module.eModules[i].activitees_pratique[j].objectif,
+                              travauxTerrain: module.eModules[i].activitees_pratique[j].travaux_terrain,
+                              projet: module.eModules[i].activitees_pratique[j].projet,
+                              stage: module.eModules[i].activitees_pratique[j].stage,
+                              visiteEtude: module.eModules[i].activitees_pratique[j].visite_etude,
                           })
                       }
                       
                       data.contenu.push({
-                          intitulee : module.eModules[i]._id.intitulee,
-                          description : module.eModules[i]._id.description_programme,
+                          intitulee : module.eModules[i].intitulee,
+                          description : module.eModules[i].description_programme,
                       })
                    }
                    
