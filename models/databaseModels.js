@@ -4,8 +4,6 @@ var bcrypt   = require('bcrypt-nodejs');
 var eModuleSchema = mongoose.Schema(
                   {
                     intitulee : { type : String,default : ''},
-                    prerequis : { type : String,default : ''},
-                    objectif : { type : String,default : ''},
                     volume_horaire : 
                         {
                             cour : { type: Number, min: 0 ,default : 0},
@@ -22,11 +20,7 @@ var eModuleSchema = mongoose.Schema(
                             visite_etude : { type: Number, min: 0 , default : 0} 
                         }
                         ],
-                    description_programme : { type : String,default : ''}, 
-                    modalitee_evaluation : { type : String,default : ''},
-                    note : String,
-                    note_minimal : { type: Number, min: 0 , max : 10},
-                    
+                    description_programme : { type : String,default : ''},                     
                     createdBy : {
                             type: mongoose.Schema.Types.ObjectId,
                             ref : 'prof'
@@ -172,7 +166,7 @@ var moduleSchema = mongoose.Schema(
          password : String,
          login          :{type:String,required:true,unique:true},
          filiere        :{type:String}, //si l'user est un chef de filiere ===specifier la filiere
-         security_mask  :Number,
+         security_mask  :{type : Number,default : 0},
          active_semestre:Number,
          notification : {
                 eModuleNotif : [

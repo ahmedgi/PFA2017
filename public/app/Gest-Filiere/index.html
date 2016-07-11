@@ -17,7 +17,7 @@
                             <a ui-sref=".module" class="sideBarItem" data-toggle="offcanvas">Module <span class="badge">{{moduleNotifCount()}}</span></a>
                         </li>
                         <li>
-                            <a ui-sref=".filiere" class="sideBarItem" data-toggle="offcanvas">Filiere</span></a>
+                            <a ui-sref=".filiere" class="sideBarItem" data-toggle="offcanvas" ng-if='user().security_mask>1'>Filiere</span></a>
                         </li>
                     </ul>
                 </nav>

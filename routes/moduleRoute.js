@@ -523,6 +523,7 @@ router.post('/generatePDF',conEnsure.ensureLoggedIn(0,"/login_",true),function(r
                        coordonnateur_grade: '',
                        coordonnateur_specialite: '',
                        coordonnateur_tel: '',
+                       coordonnateur_fax : '',
                        coordonnateur_mail: '',
                        prerequis: '',
                        objectif: '',
@@ -579,6 +580,7 @@ router.post('/generatePDF',conEnsure.ensureLoggedIn(0,"/login_",true),function(r
                     data.coordonnateur_grade = module.coordonnateur.grade,
                     data.coordonnateur_specialite = module.coordonnateur.specialite;
                     data.coordonnateur_tel = module.coordonnateur.tel;
+                    data.coordonnateur_fax = module.coordonnateur.fax;
                     data.coordonnateur_mail = module.coordonnateur.email;
                    }
                    

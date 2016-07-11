@@ -19,9 +19,6 @@ var socket =  {
         return users[id];
     },
     start : function(io){
-       setInterval(function(){
-        console.log(JSON.stringify(Object.keys(users).length ,null,'\t'))
-       },4000)
        io.on('connection',function(socket){ 
        console.log("client connecté");
        socket.on('registerUser',function(id){

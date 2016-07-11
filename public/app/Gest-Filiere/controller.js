@@ -569,6 +569,7 @@ app.service('eModuleNotifList',function($rootScope,eModuleNotifService,profServi
                     .then(function successCallback(response){
                          return eModuleNotifService.getNotif({userId : profsList.getUser()._id, searchQuery : {_id : {$in : response.data.data[0].notification.eModuleNotif}},populate : [{path : 'eModule',select : 'intitulee'},{path : 'prof',select : 'nom prenom'}]})
                                     .then(function successCallback(response){
+                                       count = 0;
                                        items = response.data.data;
                                        if(items)
                                        for(var i=0 ; i< items.length ; i++){
@@ -979,7 +980,6 @@ app.controller('m_editeModalController',function($scope,$rootScope,moduleService
                 if(!$scope.editeForm.$pristine){
                     $scope.edite.req.lastUpdate = new Date();
                 }
-                alert(JSON.stringify($scope.edite.req.eModules,null,' '))
                 moduleService.edite($scope.edite.req)
                               .then(function successCallback(response){
                                         if(response.data.code == '200'){
@@ -1616,7 +1616,6 @@ app.controller('f_editeModalController',function($scope,$rootScope,moduleService
                                             $scope.edite.validation.taken = true;
                                             $('#editeModal').scrollTop(0)
                                         }else {
-                                            alert(JSON.stringify(response.data))
                                             $('#editeModal').modal('hide');
                                             var notify = {
                                                 type: 'error',
@@ -1794,14 +1793,15 @@ app.controller('f_creeController',function($scope,$rootScope,filiereService,prof
         
 })
 
-app.controller('gestionFilierController',function($scope,$rootScope,profService,modulesList,profsList,eModulesList,eModuleNotifList,moduleNotifList,moduleNotifService,eModuleNotifService,filiereList){
+app.controller('gestionFilierController',function($window,$scope,$rootScope,profService,modulesList,profsList,eModulesList,eModuleNotifList,moduleNotifList,moduleNotifService,eModuleNotifService,filiereList){
+        
         $scope.modulesList = modulesList.getItems;
         $scope.eModulesList = eModulesList.getItems;
         $scope.eModuleNotifCount = eModuleNotifList.getCount;
         $scope.moduleNotifCount = moduleNotifList.getCount; 
         $scope.filiereList = filiereList.getItems
         $scope.user = profsList.getUser;
-        profsList.getCurrentUser().then(function(){
+        profsList.getCurrentUser().then(function(){        
         profsList.load().then(function(){               
             eModulesList.load().then(function(){        
                 modulesList.load().then(function(){
@@ -1902,9 +1902,4 @@ app.controller('gestionFilierController',function($scope,$rootScope,profService,
                     });
                     
             })
-            
-            $rootScope.socket.on('_ping',function(){
-                alert("whattt")
-            })
-         
 });

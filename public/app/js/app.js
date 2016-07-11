@@ -28,6 +28,7 @@ var serverip = 'localhost:801'
       var socket = io('http://localhost:801');
 
       $rootScope.socket = socket;
+      
  })
 /**
  * Configuration du module principal : App
@@ -124,7 +125,15 @@ app.config(function($stateProvider, $urlRouterProvider) {
             })
             .state('Gest-Filiere.filiere', {
             url: "/filiere",
-            templateUrl: "./Gest-Filiere/filiere"
+            templateUrl: "./Gest-Filiere/filiere",
+            resolve:{
+                "check": function (profsList,$window) {
+                   profsList.getCurrentUser().then(function(){
+                       if (profsList.getUser().security_mask <= 1)
+                           $window.location.href = "http://" + serverip + "/app/";
+                    });
+                  }
+            }
             }).
 			state ('Gest-Scolarite', {
 			url : '/Gest-Scolarite',
@@ -134,7 +143,15 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			state ('Settings', {
             url : '/Settings',
 			templateUrl: 'Settings/Settings.html',
-            controller: 'SettingsCtrl'
+            controller: 'SettingsCtrl',
+            resolve:{
+                "check": function (profsList,$window) {
+                   profsList.getCurrentUser().then(function(){
+                       if (profsList.getUser().security_mask < 9)
+                           $window.location.href = "http://" + serverip + "/app/";
+                    });
+                  }
+            }
 			}).
 			state ('affectation', {
             url : '/affectation',
@@ -151,12 +168,14 @@ app.config(function($stateProvider, $urlRouterProvider) {
 app.controller('mainController',function($scope,$rootScope,$http,$window,profsList,moduleNotifList,eModuleNotifList){
       $scope.eModuleNotifCount = eModuleNotifList.getCount;
       $scope.moduleNotifCount = moduleNotifList.getCount; 
-      profsList.getCurrentUser().then(function(){
+      $scope.user = profsList.getUser;
+      profsList.getCurrentUser().then(function(){     
       moduleNotifList.load().then(function(){
            eModuleNotifList.load().then(function(){
-            })  
+           })  
         })
       }) 
+      
       
       
       $scope.logout = function(){
