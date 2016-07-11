@@ -4,7 +4,7 @@ var Schema=mongoose.Schema;
 var modSchema=new Schema({
    _resp   :{type:Schema.Types.ObjectId,ref:"profs"},
    _anneeScolaire:{type:Schema.Types.ObjectId,ref:"AnneeScolaire"},
-   _ref:{type:Schema.Types.ObjectId,ref:"Module"},
+   _ref:{type:Schema.Types.ObjectId,ref:"modules"},
    nom     :String,
    niveau  :Number,
    semestre:String,

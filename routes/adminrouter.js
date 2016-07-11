@@ -163,8 +163,12 @@ adminrouter.get('/matieres',/*conEnsure.ensureLoggedIn(2,"/login_"),*/function(r
       .exec(function(err,mats){
        if(!err){
         async.each(mats,function(mat,done){
+
+                            console.log("#############################")
+                           console.log(JSON.stringify(mat,null,'\t'))
+                           console.log("#############################")
+          
           console.log("------------------------------------------\n");
-          console.log(mat._mod);
           ijson.id      =mat._id;
           ijson.nom     =mat._ref.intitulee;
           ijson.idProf  =(mat._ens)?mat._ens._id:0;
@@ -372,15 +376,18 @@ adminrouter.post('/creeAnneeScolaire',function(req,res){
                     filliere:filiere._id,
                     liste : []
                   });
-
                  async.each(
                     module.eModules,
                     function(eModule,callback){
+                       setTimeout(function(){
+                           console.log("#################################")
+                           console.log(JSON.stringify(eModule,null,'\t'));
+                       },300)
                        var matiere=new Matiere({
                         _mod:md._id,
                         niveau  :1,
                         semestre:1,
-                        _ref:eModule._id,
+                        _ref:eModule,
                         _anneeScolaire:annee._id
                        });
 
@@ -431,10 +438,10 @@ adminrouter.post('/creeAnneeScolaire',function(req,res){
                         _mod:md._id,
                         niveau  :1,
                         semestre:2,
-                        _ref:eModule._id,
+                        _ref:eModule,
                         _anneeScolaire:annee._id
                        });
-
+                       
                        matiere.save(function(err){
                         if(err) callback(err);
                         else{
@@ -482,7 +489,7 @@ adminrouter.post('/creeAnneeScolaire',function(req,res){
                         _mod:md._id,
                         niveau  :2,
                         semestre:1,
-                        _ref:eModule._id,
+                        _ref:eModule,
                         _anneeScolaire:annee._id
                        });
 
@@ -533,7 +540,7 @@ adminrouter.post('/creeAnneeScolaire',function(req,res){
                         _mod:md._id,
                         niveau  :2,
                         semestre:2,
-                        _ref:eModule._id,
+                        _ref:eModule,
                         _anneeScolaire:annee._id
                        });
 
@@ -584,7 +591,7 @@ adminrouter.post('/creeAnneeScolaire',function(req,res){
                         _mod:md._id,
                         niveau  :3,
                         semestre:1,
-                        _ref:eModule._id,
+                        _ref:eModule,
                         _anneeScolaire:annee._id
                        });
 
@@ -635,7 +642,7 @@ adminrouter.post('/creeAnneeScolaire',function(req,res){
                         _mod:md._id,
                         niveau  :3,
                         semestre:2,
-                        _ref:eModule._id,
+                        _ref:eModule,
                         _anneeScolaire:annee._id
                        });
 
