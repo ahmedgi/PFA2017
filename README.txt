@@ -34,4 +34,8 @@ install mongodb :
    1	echo "deb http://repo.mongodb.org/apt/debian wheezy/mongodb-org/3.2 main" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.2.list
    2    apt-get update
    3    apt-get install -y mongodb-org
-											
+install curl 
+   1 apt-get install curl
+install nodejs 
+   1 curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+   2 apt-get install -y nodejs
