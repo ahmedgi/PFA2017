@@ -219,7 +219,7 @@ app.controller("affectationCont",function($scope,$filter,$http,affectionFactory,
        }else
        		$scope.matieres[$scope.activeSubject].nomProf=findProfName($scope.profs,$scope.matieres[$scope.activeSubject].idProf);
      },function err(res){
-     	alert(res.data.err);
+     	alert(res.data);
     });
 	}
 });
