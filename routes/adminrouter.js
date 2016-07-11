@@ -129,7 +129,9 @@ adminrouter.get('/matieres',/*conEnsure.ensureLoggedIn(2,"/login_"),*/function(r
   });*/
   console.log("zzzz");
   AnneeScolaire.findOne({active:true},function(err,annee){
-    console.log(annee);
+    if(err) res.json({"err":"erroor"});
+    if(annee){
+      console.log(annee);
       Matiere.find({_anneeScolaire:annee._id}/*,
       {
       _id:1,
@@ -184,6 +186,8 @@ adminrouter.get('/matieres',/*conEnsure.ensureLoggedIn(2,"/login_"),*/function(r
         res.status(200).json(tsend);
        }else res.status(500).json({err:"can not get matieres !"});
       });
+    }
+    
   })
 });
 
@@ -292,6 +296,7 @@ adminrouter.get('/anneeScolaire',function(req,res){
     select:"intitulee"
   }).exec(function(err,anneeData){
       if(!err){
+        console.log("---------"+anneeData+"----------------");
         res.status(200).json(anneeData);
       }
     });
@@ -384,7 +389,8 @@ adminrouter.post('/creeAnneeScolaire',function(req,res){
                         niveau  :1,
                         semestre:1,
                         _ref:eModule,
-                        _anneeScolaire:annee._id
+                        _anneeScolaire:annee._id,
+                        _filiere:filiere
                        });
 
                        matiere.save(function(err){
@@ -435,7 +441,8 @@ adminrouter.post('/creeAnneeScolaire',function(req,res){
                         niveau  :1,
                         semestre:2,
                         _ref:eModule,
-                        _anneeScolaire:annee._id
+                        _anneeScolaire:annee._id,
+                        _filiere:filiere
                        });
                        
                        matiere.save(function(err){
@@ -486,7 +493,8 @@ adminrouter.post('/creeAnneeScolaire',function(req,res){
                         niveau  :2,
                         semestre:1,
                         _ref:eModule,
-                        _anneeScolaire:annee._id
+                        _anneeScolaire:annee._id,
+                        _filiere:filiere
                        });
 
                        matiere.save(function(err){
@@ -537,7 +545,8 @@ adminrouter.post('/creeAnneeScolaire',function(req,res){
                         niveau  :2,
                         semestre:2,
                         _ref:eModule,
-                        _anneeScolaire:annee._id
+                        _anneeScolaire:annee._id,
+                        _filiere:filiere
                        });
 
                        matiere.save(function(err){
@@ -588,7 +597,8 @@ adminrouter.post('/creeAnneeScolaire',function(req,res){
                         niveau  :3,
                         semestre:1,
                         _ref:eModule,
-                        _anneeScolaire:annee._id
+                        _anneeScolaire:annee._id,
+                        _filiere:filiere
                        });
 
                        matiere.save(function(err){
@@ -639,7 +649,8 @@ adminrouter.post('/creeAnneeScolaire',function(req,res){
                         niveau  :3,
                         semestre:2,
                         _ref:eModule,
-                        _anneeScolaire:annee._id
+                        _anneeScolaire:annee._id,
+                        _filiere:filiere
                        });
 
                        matiere.save(function(err){
@@ -698,6 +709,7 @@ adminrouter.get('/getFillieres',function(req,res){
       if(err){
         res.json({"err":"err get fillieres"});
       }else{
+        console.log("-------"+result);
         res.json(result);
       }
       });

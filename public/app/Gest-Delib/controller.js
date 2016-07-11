@@ -1,3 +1,19 @@
+app.directive("fileread", [function () {
+    return {
+        scope: {
+            fileread: "="
+        },
+        link: function (scope, element, attributes) {
+            element.bind("change", function (changeEvent) {
+                scope.$apply(function () {
+                    scope.fileread = changeEvent.target.files[0];
+                    // or all selected files:
+                    // scope.fileread = changeEvent.target.files;
+                });
+            });
+        }
+    }   }
+ ]);
 
 app.controller("GestDelibCtrl",function($rootScope,$http,$scope,delibNoteFactory){
 	$scope.data={};
@@ -29,42 +45,67 @@ app.controller("GestDelibCtrl",function($rootScope,$http,$scope,delibNoteFactory
 		$scope.data.notes[$rootScope.Utils.keys($scope.data.notes)[i]]=$scope.data.tmpNote[$index];
 		$scope.data.editToggle[$index]=!$scope.data.editToggle[$index];
 	}
-
+/*
 	$scope.incrementStep=function(){
 		$scope.step++;
 	}
 
 	$scope.decrementStep=function(){
 		$scope.step--;
-	}
+	}*/
 
 	$scope.getListMatiereAndNote=function(){
 
 		delibNoteFactory.getListNote($scope.filiere,$scope.annee).then(function(arrItems){
-   console.log("$scope.filiere: "+$scope.filiere+"\n$scope.annee:"+$scope.annee);
-   console.log("-------getListMatiereAndNote---------");
-		$scope.data.matieres=arrItems.matiere;
+	   	//console.log("$scope.filiere: "+$scope.filiere+"\n$scope.annee:"+$scope.annee);
+	   	//console.log("-------getListMatiereAndNote---------");
+		$scope.data.matieres=arrItems;
+		console.log(arrItems);
         // $scope.data.nom= arrItems.matiere.nom;
         // $scope.data.notes=arrItems.matiere.notes;
        });
 
-		
-
 	}
 
-	$scope.chooseFiliere=function(filiere){
+	$scope.getListMatiereAndNote();
+
+	/*$scope.chooseFiliere=function(filiere){
 		$scope.filiere=filiere;
 	}
 
 	$scope.chooseAnnee=function(annee){
 		$scope.annee=annee;
 		$scope.getListMatiereAndNote();
-	}
+	}*/
 
 	$scope.clickMatiere=function(i){
-		$scope.data.notes=$scope.data.matieres[i].notes;
-		$scope.ready=true;
+ 		$scope.activeMatiere=$scope.data.matieres[i];
+		if($scope.ready){
+			$scope.data.notes=$scope.data.matieres[i].notes;
+		}
+		//$scope.ready=true;
 	}
+
+	$scope.upload=function(){
+		var fd=new FormData();
+		fd.append("file",$scope.noteFile);
+		fd.append("mat",$scope.activeMatiere._ref.intitulee);
+		fd.append("id",$scope.activeMatiere._id);
+  		console.log("active matiere="+$scope.activeMatiere._ref.intitulee);
+  
+
+		$http.post('/charger',fd,{
+            transformRequest: angular.identity,
+            headers: {'Content-Type':undefined}
+        })
+        .success(function(res){
+          console.log("success!!"+JSON.stringify(res));
+        })
+        .error(function(res){
+          console.log("error!!"+res.data);
+        });
+  
+  	}
 
  $scope.selected=function(files){
     if(files && files.length) $scope.file=files[0];
@@ -116,7 +157,7 @@ app.controller("replissageNotes",function($scope,$http){
 
 app.controller("anneeScolaireCtrl",function($scope,anneeScolaireFactory){
 
-
+	$scope.data={};
 	anneeScolaireFactory.getListAnnee().then(function(arrItems){
 		$scope.data.annees=arrItems;
        });
@@ -179,7 +220,6 @@ app.controller("affectationCont",function($scope,$filter,$http,affectionFactory,
 	profsList.getCurrentUser().then(function(){
 		profsList.load().then(function(){
 			$scope.profs = profsList.getItems;
-			alert(profsList.getItems());
 		});
 		
 	});
@@ -217,7 +257,7 @@ app.controller("affectationCont",function($scope,$filter,$http,affectionFactory,
        if(res.data.info=="non_auto"){
          alert(res.data.info); 
        }else
-       		$scope.matieres[$scope.activeSubject].nomProf=findProfName($scope.profs,$scope.matieres[$scope.activeSubject].idProf);
+       		$scope.matieres[$scope.activeSubject].nomProf=findProfName($scope.profs(),$scope.matieres[$scope.activeSubject].idProf);
      },function err(res){
      	alert(res.data);
     });

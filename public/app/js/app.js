@@ -92,8 +92,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
             }).
 		    state ('Gest-Delib', {
             url : '/Gest-Delib',
-            templateUrl: 'Gest-Delib/index.html',
-            controller: 'GestDelibCtrl'
+            templateUrl: 'Gest-Delib/index.html'
             }).
             
             state ('Gest-Delib.affectation', {

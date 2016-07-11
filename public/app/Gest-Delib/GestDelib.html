@@ -1,71 +1,94 @@
+<div class="panel panel-default" >
 
-<section class="navigation-side-bar" ng-switch="step" class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-
-	<div ng-switch-when="1" class="list-group">
-    <!--<a class="btn btn-warning" href="#/Gest-Delib-Remp">Uploader des notes</a>-->
-    <h1>Choisir la filière</h1>
-
-	  <a class="list-group-item" ng-click="incrementStep();chooseFiliere('GI')">GI</a>
-	  <a class="list-group-item" ng-click="incrementStep();chooseFiliere('GSEIR')">GSEIR</a>
-	  <a class="list-group-item" ng-click="incrementStep();chooseFiliere('GIndus')">GIndus</a>
-	  <a class="list-group-item" ng-click="incrementStep();chooseFiliere('GTR')">GTR</a>
-	  <a class="list-group-item" ng-click="incrementStep();chooseFiliere('GC')">GC</a>
-
-    
-	</div>
-
-
-	<div ng-switch-when="2" class="list-group">
-    <h1>Choisir le niveau</h1>
-    <a class="list-group-item" ng-click="incrementStep();chooseAnnee(1)">1 ere annee</a>
-	  <a class="list-group-item" ng-click="incrementStep();chooseAnnee(2)">2 eme annee</a>
-	  <a class="list-group-item" ng-click="incrementStep();chooseAnnee(3)">3 eme annee</a>
-
-  <a class="list-group-item list-group-item-info active" ng-click="decrementStep()">Back</a>
-	</div>
-
-	<div ng-switch-when="3" class="list-group">
-    <h1>Choisir la classe</h1>
-    <a class="list-group-item" ng-repeat="mat in data.matieres track by $index" ng-click="clickMatiere($index)">{{mat.nom}}</a>
-    <a class="list-group-item list-group-item-info active" ng-click="decrementStep()">Back</a>
-	</div>
-
-</section>
-
-<section class="note-section " class="col-lg-6 col-md-6 col-sm-6 col-xs-6" >
-<div ng-show="Utils.keys(data.notes).length==0 && ready">
-  <form>
-    
-    <input type="file" fileread="noteFile" enctype="multipart/form-data" method="post" />
-    <button class="btn btn-info" ng-click="upload()">Envoyer</button>
-  </form>
-</div>
-
-<div ng-show="Utils.keys(data.notes).length!=0 && ready">
-  <h1> liste des notes </h1>
-
+  <!-- Table -->
   <table class="table">
       <tr>
-        <th class="col-md-2">Nom Prenom</th>
-        <th class="col-md-3">Note</th>
-        <th class="col-md-3">Options</th>
+        <th >Nom</th>
+        <th >Filliere</th>
+        <th >Niveau</th>
+        <th >Semestre</th>
+        <th >Options</th>
       </tr>
-      <tr ng-repeat="i in [] | range:Utils.keys(data.notes).length ">
-        <td >{{Utils.keys(data.notes)[i]}}</td>
-        <td  ng-hide="data.editToggle[$index]">{{data.notes[Utils.keys(data.notes)[i]]}}</td>
-        <td  ng-show="data.editToggle[$index]">
-          <input type="text" ng-model="data.tmpNote[$index]" class="form-control"/>
+      <tr ng-repeat="a in data.matieres">
+        <td >
+             {{a._ref.intitulee}}
         </td>
-        <td  ng-hide="data.editToggle[$index]">
-          <button class="btn btn-warning" ng-click="editBtn(data.notes[Utils.keys(data.notes)[i]],$index)">Edit</button>
+        <td>
+            {{a._filiere.intitulee}} 
         </td>
-        <td  ng-show="data.editToggle[$index]">
-          <button class="btn btn-info" ng-click="confirmBtn(i,$index)">Confirmer</button>
-          <button class="btn btn-warning" ng-click="annulerBtn($index)">Annuler</button>
+        <td>
+            {{a.niveau}} 
+        </td>
+        <td>
+            {{a.semestre}}
+        </td>
+        <td>
+          <button class="btn btn-info"  aria-expanded="true" data-toggle="modal" data-target="#myModal" ng-click="options($index);clickMatiere($index)"><span class="glyphicon glyphicon-cog" /></button>
         </td>
       </tr>
   </table>
-
 </div>
 
-</section>
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content" ng-if="!ready">
+            <div class="center-block text-center">
+                <div class="modal-header">
+                  <h1></h1>
+                </div>
+                <div class="modal-body">
+                  <form>
+    
+                    <input type="file" fileread="noteFile" enctype="multipart/form-data" method="post" />
+                    <button class="btn btn-info" ng-click="upload()">Envoyer</button>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button class="btn btn-info" data-dismiss="modal">Annuler</button>
+                </div>
+            </div>
+
+    </div>
+    <div class="modal-content" ng-if="ready">
+            <div  class="center-block text-center">
+                <div class="modal-header">
+                  <h1></h1>
+                </div>
+                <div class="modal-body">
+                  <h1> liste des notes </h1>
+
+                  <table class="table">
+                      <tr>
+                        <th class="col-md-2">Nom Prenom</th>
+                        <th class="col-md-3">Note</th>
+                        <th class="col-md-3">Options</th>
+                      </tr>
+                      <tr ng-repeat="i in [] | range:Utils.keys(data.notes).length ">
+                        <td >{{Utils.keys(data.notes)[i]}}</td>
+                        <td  ng-hide="data.editToggle[$index]">{{data.notes[Utils.keys(data.notes)[i]]}}</td>
+                        <td  ng-show="data.editToggle[$index]">
+                          <input type="text" ng-model="data.tmpNote[$index]" class="form-control"/>
+                        </td>
+                        <td  ng-hide="data.editToggle[$index]">
+                          <button class="btn btn-warning" ng-click="editBtn(data.notes[Utils.keys(data.notes)[i]],$index)">Edit</button>
+                        </td>
+                        <td  ng-show="data.editToggle[$index]">
+                          <button class="btn btn-info" ng-click="confirmBtn(i,$index)">Confirmer</button>
+                          <button class="btn btn-warning" ng-click="annulerBtn($index)">Annuler</button>
+                        </td>
+                      </tr>
+                  </table>
+                </div>
+                <div class="modal-footer">
+                  <button class="btn btn-success" data-dismiss="modal" ng-click="">Confirmer</button>
+                  <button class="btn btn-info" data-dismiss="modal">Annuler</button>
+                </div>
+            </div>
+
+    </div>
+
+  </div>
+</div>
