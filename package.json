@@ -9,7 +9,9 @@
     "connect-ensure-login": "*",
     "connect-mongo": "*",
     "csvtojson": "*",
+    "docxtemplater": "^2.1.5",
     "express": "*",
+    "express-cluster": "0.0.4",
     "express-session": "*",
     "jade": "*",
     "mongodb": "*",
@@ -18,8 +20,7 @@
     "nodemailer": "^2.4.2",
     "passport": "*",
     "passport-local": "*",
-    "socket.io": "^1.4.8",
-    "docxtemplater": "*"
+    "socket.io": "^1.4.8"
   },
   "author": "me"
 }
