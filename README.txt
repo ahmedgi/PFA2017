@@ -15,6 +15,7 @@
 
  7)ouvrez un autre terminal ,deplacez vous vers le repertoir du projet et lancez: >node app
     ==>l'application est maintenant demarrée.
+ 
  8)Créer les champs manuellement dans la base de données. lancer dans un terminal >mongo
 	>shows dbs;
 	 local 
@@ -24,21 +25,37 @@
 	 profs 
 	 session
 	 ...
+	
 	Creation des comptes
+	 
 	 Pour l'administrateur :
+	 
 	 >db.profs.insert({"nom" : "Admin", "prenom" : "admin", "login" : "admin" , "password" : "admin", "security_mask" : "8"});
+	 
 	 Pour un chef de filière qui est aussi professeur :
+	 
 	 >db.profs.insert({"nom" : "nomChefF", "prenom" : "prenomChefF", "login" : "chefF" , "password" : "chefF", "security_mask" : "3"});
+	 
 	 ...
+	
 	Ce qui diffère d'un profil à un autre est le security_mask :
+		
 		si vous êtes administrateur security_mask = 8
+		
 		si vous êtes Chef de département security_mask= 4
+		
 		si vous êtes Chef de Filière security_mask = 2
+		
 		si vous êtes prof security_mask = 1
+	  
 	  D'autre cas possibles:
+		
 		Si vous êtes un chef de filière et aussi un professeur security_mask 2(chefF) + 1(prof) = 3
+		
 		Si vous êtes un chef de département et aussi un professeur security_mask 4(chefD) + 1(prof) = 5
+	
 	Vous fermez le terminal du serveur mongodb quand vient de lancer
+ 
  9)ouvrir deux fenetre de deux navigateurs differents pour differencier les sessions
   (session admin(pour chef de filière) ET session normale pour les professeurs )
  10)allez dans creer un compte et creer un compte admin! puis creez d'autres comptes et telecharger les notes à partir d'un csv
