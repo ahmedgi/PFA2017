@@ -58,13 +58,11 @@
  
  9)ouvrir deux fenetre de deux navigateurs differents pour differencier les sessions
   (session admin(pour chef de filière) ET session normale pour les professeurs )
+ 
  10)allez dans creer un compte et creer un compte admin! puis creez d'autres comptes et telecharger les notes à partir d'un csv
-  
+  		
 		
-		
-		
-		
-		to do : -deliberation apres rat
+		#to do : -deliberation apres rat
 		         deliberation avant rat 
 			 generation listes rat
                          notifications..
