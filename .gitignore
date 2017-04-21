@@ -1,4 +1,3 @@
-/node_modules
 /dist
 /.tmp
 /.sass-cache
@@ -6,3 +5,4 @@
 *.bat
 /data
 /public/app/Gest-Filiere/files
+/node_modules
