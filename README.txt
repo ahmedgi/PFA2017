@@ -4,19 +4,28 @@
  1)installer Node :https://nodejs.org/dist/v4.4.0/node-v4.4.0-x86.msi
 
  2)installer mongodb:https://www.mongodb.org/dr/fastdl.mongodb.org/win32/mongodb-win32-x86_64-3.2.4-signed.msi/download 
+ 
+ 3)installer git et bower avec 
+					$ npm install -g bower
 
- 3)copier les fichiers et dossier dans un repertoir de travail. et créer le dossier "data".
+ 4)copier les fichiers et dossier dans un repertoir de travail. et créer le dossier "data".
 
- 4)ouvrir un terminal en mode administrateur ,deplacez-vous dans ce repertoir (> cd chemin)
+ 5)ouvrir un terminal en mode administrateur ,deplacez-vous dans ce repertoir (> cd chemin)
 
- 5)tappez npm install (le fichier package.json doit exister dans le dossier)
+ 6)tappez npm install (le fichier package.json doit exister dans le dossier) puis déplacer dans la repertoire public :
 
- 6)lancer dans ce terminal la base de données mongo: mongod --dbpath <chemin_du dossier data>
+		$ cd public
 
- 7)ouvrez un autre terminal ,deplacez vous vers le repertoir du projet et lancez: >node app
+		installer les dépendances front-end :
+
+		$ bower install
+
+ 7)lancer dans ce terminal la base de données mongo: mongod --dbpath <chemin_du dossier data>
+
+ 8)ouvrez un autre terminal ,deplacez vous vers le repertoir du projet et lancez: >node app
     ==>l'application est maintenant demarrée.
  
- 8)Créer les champs manuellement dans la base de données. lancer dans un terminal >mongo
+ 9)Créer les champs manuellement dans la base de données. lancer dans un terminal >mongo
 	>shows dbs;
 	 local 
 	 test
@@ -56,10 +65,10 @@
 	
 	Vous fermez le terminal du serveur mongodb quand vient de lancer
  
- 9)ouvrir deux fenetre de deux navigateurs differents pour differencier les sessions
+ 10)ouvrir deux fenetre de deux navigateurs differents pour differencier les sessions
   (session admin(pour chef de filière) ET session normale pour les professeurs )
  
- 10)allez dans creer un compte et creer un compte admin! puis creez d'autres comptes et telecharger les notes à partir d'un csv
+ 11)allez dans creer un compte et creer un compte admin! puis creez d'autres comptes et telecharger les notes à partir d'un csv
   		
 		
 		#to do : -deliberation apres rat
