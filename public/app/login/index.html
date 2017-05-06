@@ -1,97 +1,224 @@
-<!doctype html>
-<html ng-app='loginApp' ng-controller="loginController">
+<!DOCTYPE html>
+<html lang="fr" html ng-app='loginApp' ng-controller="loginController">
   <head>
     <meta charset="utf-8">
-    <title></title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
-    <meta name="viewport" content="width=device-width">
-    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-    <!-- build:css(.) styles/vendor.css -->
-    <!-- bower:css -->
-    <!-- endbower -->
-    <!-- endbuild -->
-    <!-- build:css(.tmp) styles/main.css -->
-    <link rel="stylesheet" href="../../app/css/main.css">
-    <!-- endbuild -->
-	<!--CSS-->
-	<link href="../../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-  
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>Scholar Manager</title>
+
+    <!-- Bootstrap core CSS -->
+   <link href="../../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" href="../../app/css/login.css">
+    <script src="../../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="../../bower_components/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
   </head>
-  
+
   <body>
-    <!--[if lte IE 8]>
-      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-    <![endif]-->
 
-    <!-- Add your site or application content here -->
-    <div class="header">
-
-      	<nav class="navbar navbar-inverse navbar-fixed-top">
-          <div class="container-fluid">
-            <div class="navbar-header">
-              <a class="navbar-brand" href="#">Scholar-Manager</a>
-            </div>
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Scholar Manager</a>
           </div>
-         </nav>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li><a href='#win'><span class="glyphicon glyphicon-th-large"></span></span> Windows</a></li>
+              <li><a href="#linux"><span class="glyphicon glyphicon-lock"></span></span> Linux</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div><!--/.container-fluid -->
+      </nav>
 
-    </div>
-    
-    <div class="container" style="margin-top:10%">
-        <div class="row" >
-                        <div class="col-xs-12 col-sm-6 col-sm-offset-3">           
-                            <!--h1>School Gest</h1-->
-                            <h2>Sign In NOW !</h2>
-                                    
+
+    <div class="container">
+
+      <div class="blog-header">
+        <h2 class="blog-title">Scholar Manager</h2>
+      </div>
+
+      <div class="row">
+
+        <div class="col-sm-8 blog-main">
+          <div class="blog-post">
+            <h2 class="blog-post-title" id='linux'>Linux</h2>
+            <p>Pour pouvoir tester l'application il faut suivre les étapes suivantes : </p>
+            <hr>
+            <p>ouvrir un terminal </p>
+            <p>installer mongodb en tapant les commandes suivantes : </p>
+
+            <pre><code>$ echo "deb http://repo.mongodb.org/apt/debian wheezy/mongodb-org/3.2 main" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.2.list</code></pre>
+
+            <pre><code>$ sudo apt-get update</code></pre>
+
+            <pre><code>$ sudo apt-get install -y mongodb-org</code></pre>
+
+            <p>installer curl par la commande suivante:</p>
+            <pre><code>$ sudo apt-get install curl</code></pre>
+
+            <p>installer nodejs par les commande suivantes:</p>
+            <pre><code>$ curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -</code></pre>
+            <pre><code>$ sudo apt-get install -y nodejs</code></pre>
+
+            <p>installer bower : </p>
+
+            <pre><code>$ npm install -g bower</code></pre>
+
+
+            <p>installer git : </p>
+            <pre><code>$ sudo apt-get install git</code></pre>
+            <hr>
+
+            <p>cloner le projet : </p>
+            <pre><code>$ git clone https://github.com/messaooudi/PFA2015.git</code></pre>
+            <p>entrer dans la repertoire du projet : </p>
+            <pre><code>$ cd PFA2015 </code></pre>
+
+            <p>installer les dependances coté serveur : </p>
+            <pre><code>$ npm install </code></pre>
+
+            <p>creér une repertoire data : </p>
+            <pre><code>$ mkdir data </code></pre>
+
+            <p>lancer la base de donner mongodb : </p>
+            <pre><code>$ mongod -db path data</code></pre>
+
+            <p>lancer un autre terminal et deplacer dans la repertoire du projet PFA2015 : </p>
+            <p>puis déplacer dans la repertoire public : </p>
+            <pre><code>$ cd public</code></pre>
+
+            <p>installer les dépendances front-end : </p>
+            <pre><code>$ bower install</code></pre>
+            <pre><code>$ bower install angular-ui-router --save</code></pre>
+            <pre><code>$ bower install bootstrap-select --save</code></pre>
+
+            <p>revenir au repertoire courant PFA2015 et lancer l'application : </p>
+            <pre><code>$ node app.js</code></pre>
+
+            <p>l'url de l'application est : <a href='localhost:8010'>localhost:8010</a></p>
+
+
+
+
+
+
+
+          </div><!-- /.blog-post -->
+
+          <div class="blog-post">
+            <h2 class="blog-post-title" id="win">Windows</h2>
+      <p>Pour pouvoir tester l'application sur Windows, il faut suivre les étapes suivantes : </p>
+            <hr>
+      <h4>Etape 1 : Installation des outils nécessaires</h4>
+      <p>Pour pouvoir démarrer un serveur nodejs Rendu-vous à la page de téléchargement de <a href="https://nodejs.org/en/download/">nodejs</a> Cliquer sur Windows Installer pour une installation aisé, sinon Vous avez le choix du type d'installation.<p>
+      <p>Pour lancer le serveur SGBD orienté document (noSQL) MongoDB , consulter <a href="https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/">la documentation de mongoDB</a></p>
+      <p>Installez <a href="https://git-scm.com/downloads">git</a> pour pouvoir utilser bower par la suite.</p>
+      <p>Pour installez bower Ouvrir un terminal git bash et tapez :</p>
+            <pre><code>$ npm install -g bower</code></pre>
+      <h4>Etape 2 : Clonage du projet et installation des dépendances</h4>
+      <p>Ouvrir un terminal git bash et taper<p>
+      <pre><code>$ cd "chemin vers votre espace de travail" </code></pre>
+      <p>Ensuite, cloner le projet : </p>
+            <pre><code>$ git clone https://github.com/messaooudi/PFA2015.git</code></pre>
+      <p>Entrer dans la repertoire du projet : </p>
+            <pre><code>$ cd PFA2015 </code></pre>
+
+            <p>Installer les dependances côté serveur : </p>
+            <pre><code>$ npm install </code></pre>
+
+            <p>Creér une repertoire data : </p>
+            <pre><code>$ mkdir data </code></pre>
+      
+      <p>Lancer la base de donner mongodb en cmd admin: </p>
+            <pre><code>"C:\Program Files\MongoDB\Server\3.2\bin\mongod.exe" --dbpath=data -storageEngine=mmapv1</code></pre>
+      <p>Remplacer le chemin où mongodb est installé, lancer un autre terminal et aller au répertoire du projet PFA2015 : </p>
+            <p>Puis aller au repertoire public : </p>
+            <pre><code>$ cd public</code></pre>
+
+            <p>Installer les dépendances front-end : </p>
+            <pre><code>$ bower install</code></pre>
+            <pre><code>$ bower install angular-ui-router --save</code></pre>
+            <pre><code>$ bower install bootstrap-select --save</code></pre>
+      
+      <p>Revenir au repertoire PFA2015 et lancer l'application : </p>
+            <pre><code>$ node app.js</code></pre>
+
+            <p>l'url de l'application est : <a href='localhost:801'>localhost:801</a></p>
+      
+      <p>Et tester l'application, et si vous rencontrez des problèmes n'hésitez pas à nous contacter.</p>
+      
+      <p class="blog-post-meta">Mars, 2017 par <a href="#">Belhadj </a>et <a href="#">Rhorbal</a></p>
+         <!--<p class="blog-post-meta">December 23, 2013 by <a href="#">Jacob</a></p> -->
+
+
+          </div><!-- /.blog-post -->
+
+        </div><!-- /.blog-main -->
+
+
+        <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+          <div class="sidebar-module sidebar-module-inset">       
                             <form  role="form" class="form-horizontal" accept-charset="utf-8">
                                 <span class="glyphicon glyphicon-user"></span> Username : 
                                     <div class="form-group">
-                                        <div class="col-md-8">
                                             <input ng-model="login" name="login" placeholder="Idenfiant" class="form-control" type="text" id="UserUsername"/>
-                                        </div>
                                     </div> 
                                 <span class="glyphicon glyphicon-lock"></span> Password : 
                                     <div class="form-group">
-                                        <div class="col-md-8">
                                             <input ng-model="password" name="password" placeholder="Mot de passe" class="form-control" type="password" id="UserPassword"/>
-                                        </div>
                                     </div> 
                                 
                                 <div class="form-group">
-                                    <div class="col-md-offset-0 col-md-4">
-                                        <button  class="btn btn-success" ng-click="sendLoginCreditentials()">Connexion</button> 
-                                    </div>   
-                                    <div><a class="btn btn-link" href="/forgot">Forgot Password? </a>
-                                    </div>  
+                                    <button  class="btn btn-success" ng-click="sendLoginCreditentials()">Connexion</button> 
+                                    <a class="btn btn-link" href="/forgot">Forgot Password? </a> 
                                 </div>
                             </form>
-                            
-                        </div>
           </div>
-     </div>
-    
-    <div class="footer">
-      
-      <nav class="navbar navbar-inverse navbar-fixed-bottom">
-          <div class="container-fluid" >
-            <ul class="nav navbar-nav navbar-right">
-                <p class="navbar-text">CopyRights</p>
-            </ul>
+          <div class="sidebar-module">
+            <h4>Versions</h4>
+            <ol class="list-unstyled">
+              <li><a href="#">Versions 1.0</a></li>
+              <li><a href="#">Versions 2.0</a></li>
+            </ol>
           </div>
-      </nav>
-      
-    </div>
-    
-    <!-- jQuery -->
-    <script src="../../bower_components/jquery/dist/jquery.js"></script>
+          <div class="sidebar-module">
+            <h4>Télécharger l'application </h4>
+            <a class="btn btn-success" href="https://github.com/messaooudi/PFA2015">
+              Télécharger
+            </a>
+          </div>
+        </div><!-- /.blog-sidebar -->
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="../../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-	<script src="../../bower_components/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
-    
-	<!--Angular-->
-	<script src="../../bower_components/angular/angular.min.js"></script>
+      </div><!-- /.row -->
+
+    </div><!-- /.container -->
+
+    <footer class="blog-footer">
+       <p> &copy; 2017 All Right reserved</p>
+        <a href="#">Back to top</a>
+      </p>
+    </footer>
+
+
+    ================================================== -->
+      <!-- jQuery -->
+    <script src="../../bower_components/jquery/dist/jquery.js"></script>
+    <!-- Placed at the end of the document so the pages load faster -->
+  <script src="../../bower_components/angular/angular.min.js"></script>
     <script src="../../bower_components/angular-route/angular-route.js"></script>
     <script src="../../bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
     <script src="controller.js"></script>
-</body>
+  </body>
 </html>
