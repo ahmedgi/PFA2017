@@ -168,6 +168,9 @@ var moduleSchema = mongoose.Schema(
          filiere        :{type:String}, //si l'user est un chef de filiere ===specifier la filiere
          security_mask  :{type : Number,default : 0},
          active_semestre:Number,
+         firstlogin : {type : Number,default : 0},
+         resetPasswordToken: String,
+         resetPasswordExpires: Date,
          notification : {
                 eModuleNotif : [
                 {

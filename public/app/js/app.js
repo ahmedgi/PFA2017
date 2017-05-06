@@ -1,6 +1,6 @@
 /* global io */
 'use strict';
-var serverip = 'localhost:801'
+var serverip = 'localhost:8010'
 /**
  * @ngdoc overview
  * @name frontpfaApp
@@ -25,7 +25,7 @@ var serverip = 'localhost:801'
 ]);
  
  app.run(function($rootScope){
-      var socket = io('http://localhost:801');
+      var socket = io('http://localhost:8010');
 
       $rootScope.socket = socket;
       
@@ -142,7 +142,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			}).
 			state ('Settings', {
             url : '/Settings',
-			templateUrl: 'Settings/Settings.html',
+			      templateUrl: 'Settings/Settings.html',
             controller: 'SettingsCtrl',
             resolve:{
                 "check": function (profsList,$window) {

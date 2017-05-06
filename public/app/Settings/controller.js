@@ -88,7 +88,7 @@ app
         $http({
 			method:'POST',
 			data:{user_id:obj._id},
-			url   :'http://localhost:801/delete_user'
+			url   :'http://localhost:8010/delete_user'
 		}).then(function success(res){alert(JSON.stringify(res.data));},function err(res){alert(res.data.err);});
 	};
 

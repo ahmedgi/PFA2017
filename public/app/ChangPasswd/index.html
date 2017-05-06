@@ -1,0 +1,88 @@
+<!doctype html>
+<html ng-app='app'>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css(.) styles/vendor.css -->
+    <!-- bower:css -->
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" href="../../app/css/main.css"/>
+    <!-- endbuild -->
+  <!--CSS-->
+  <link href="../../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  </head>
+  
+  <body ng-controller="resetController">
+    <!--[if lte IE 8]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+    <!-- Add your site or application content here -->
+    <div class="header">
+
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <a class="navbar-brand" href="#">Scholar-Manager</a>
+            </div>
+          </div>
+         </nav>
+
+    </div>
+    
+  <div class="container" style="margin-top:10%">
+    <h2> Change your Password ! </h2>
+   <form method="post" name="myForm">
+      <span class="glyphicon glyphicon-lock"></span> password :
+      <div class='form-group'>
+         <input type="password" class="form-control" id="password" name="password" ng-model="password" ng-minlength="8" ng-maxlength="20" ng-pattern="/(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z])/" required  />
+         <span ng-show="myForm.password.$error.required && myForm.password.$dirty">required</span>
+         <span ng-show="!myForm.password.$error.required && (myForm.password.$error.minlength || myForm.password.$error.maxlength) && myForm.password.$dirty">Passwords must be between 8 and 20 characters.</span>
+         <span ng-show="!myForm.password.$error.required && !myForm.password.$error.minlength && !myForm.password.$error.maxlength && myForm.password.$error.pattern && myForm.password.$dirty">Must contain one lower &amp; uppercase letter, and one non-alpha character (a number or a symbol.)</span>
+    </div>
+       
+       
+       <span class="glyphicon glyphicon-lock"></span>Confirm Password : 
+       <div class='form-group'>
+        <input type="password" class="form-control" id="password_c" name="password_c" ng-model="password_c" valid-password-c="password" required />
+         <span class="error" ng-show="myForm.password_c.$error.required && myForm.password_c.$dirty">Please confirm your password.</span>
+         <span class='error' ng-show="myForm.password_c.$error.noMatch">Passwords do not match.</span>
+       </div>
+       <div class='form-group'>
+         <button type="submit" class="btn btn-success" ng-disabled="!myForm.$valid" ng-click="sendLoginCreditentials()">Submit</button>
+       </div>
+    </form>
+  </div>
+
+    
+  <div class="footer">
+      
+      <nav class="navbar navbar-inverse navbar-fixed-bottom">
+          <div class="container-fluid" >
+            <ul class="nav navbar-nav navbar-right">
+                <p class="navbar-text">CopyRights</p>
+            </ul>
+          </div>
+      </nav>
+  </div>
+
+ <!-- jQuery -->
+    <script src="../../bower_components/jquery/dist/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="../../bower_components/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+    
+  <!--Angular-->
+  <script src="../../bower_components/angular/angular.min.js"></script>
+    <script src="../../bower_components/angular-route/angular-route.js"></script>
+    <script src="../../bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+    <script src="controlleur.js"></script>
+
+</body>
+</html>

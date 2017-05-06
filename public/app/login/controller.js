@@ -13,6 +13,9 @@ app.controller("loginController",["$scope","$http","$window",function($scope,$ht
     url   :"/login"
     }
     ).then(function success(res){
+       if(res.data.ok =="firstlogin"){
+           $window.location.href= "/ChangPassword/"+loginData.login;
+        }
        if(res.data.ok =="success"){
            $window.location.href= "/app/";
         }

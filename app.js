@@ -9,7 +9,7 @@ var server = http.createServer(app)
 var io =require('socket.io')(server);
 var bodyParser=require('body-parser');
 var mongoose=require('mongoose');
-server.listen(801,"localhost");
+server.listen(8010,"localhost");
 var settings=require('./settings.js');
 var url =settings.url;
 var passport = require('passport'),
@@ -21,6 +21,7 @@ var socket = require('./socketHandler');
 socket.start(io);
 //-----routers-------------
 var prouter=require('./routes/prouter.js');
+var resetpasswd=require('./routes/Updatepasswd.js');
 var cfrouter=require('./routes/cfrouter.js');
 var adminrouter=require('./routes/adminrouter.js');
 var eModuleRouteHandler = require('./routes/eModuleRoute');
@@ -61,6 +62,7 @@ app.use('/Gest-Delib',express.static(__dirname+"/public/app/Gest-Delib"));
 app.use('/Gest-Filiere',express.static(__dirname+"/public/app/Gest-Filiere"));
 app.use('/Gest-Scolarite',express.static(__dirname+"/public/app/Gest-Scolarite"));
 app.use('/login',express.static(__dirname+"/public/app/login"));
+app.use('/ChangPassword',express.static(__dirname+"/public/app/ChangPasswd"));
 
 ////
 var expSession=require('express-session'),
@@ -71,7 +73,7 @@ app.use(passport.session());  //l'implementation de la session dans passport uti
 
 
 //mettre en place la strategie d'authentification passport 
-passport.use(new LocalStrategy(/*passReqToCallback:true*/{
+passport.use('local',new LocalStrategy(/*passReqToCallback:true*/{
                         usernameField: 'login',
                         passwordField: 'password'
 	                    },
@@ -105,13 +107,16 @@ app.use(bodyParser.json());
 
 //=======login_===========
 app.get('/login_',function(req,res){
+//  my code
   res.status(200).json({info:"non_auto"});
 });
+
 
 //=======installing routes===========
 app.use('/',prouter);
 app.use('/',cfrouter);
 app.use('/',adminrouter);
+app.use('/',resetpasswd);
 
 app.use('/gestionfiliere/eModules',eModuleRouteHandler);
 app.use('/gestionfiliere/modules',moduleRouteHandler);
@@ -133,11 +138,41 @@ app.post('/login',function(req,res) {
       }else {
         req.logIn(user,function(err){
          if(err) next(err);
-         else res.status(200).json({ok:"success"});
+         else if(!user.firstlogin){
+          res.status(200).json({ok:"firstlogin"});
+         }else{
+           res.status(200).json({ok:"success"});
+         }
         });    
         
       }
      })(req,res);
+});
+app.get('/ChangPassword/:admin',function(req,res){
+//  my code
+  res.sendFile('index.html', {root : __dirname + '/public/app/ChangPasswd'});
+});
+
+app.post('/ChangPassword/:admin',function(req, res) {
+  async.waterfall([
+    function(done) {
+      User.findOne({ login: req.user.login}, function(err, user) {
+        if (!user) {
+          res.status(401).json({err:'username invalid'});
+        }
+        user.password = req.body.password;
+        user.firstlogin = 1;
+
+        user.save(function(err) {
+          req.logIn(user, function(err) {
+            done(err, user);
+          });
+        });
+      });
+    }   
+  ], function(err) {
+    res.status(200).json({ok:"success"});
+  });
 });
 
 // app.get('/welcom',conEnsure.ensureLoggedIn(0,"/login"),function(req,res){
@@ -156,7 +191,7 @@ String.prototype.gtrim=function(){
 
 app.get('/logout',function(req,res){
 	 req.logout();
-	 res.status(200).json({ok:"logged_out"});
+	 res.redirect('/login');
 }); 
 
 
@@ -165,5 +200,29 @@ app.get('/logout',function(req,res){
  app.get("*",function(req,res){
 	  res.sendFile("/public/app/index.html",{root:__dirname});
  });
+
+ // check the database if its empty
+
+ User.find({}, function(err, users) {
+  if (err) throw err;
+  if(users.length==0){
+    console.log("database empty");
+    var admin=new User({
+       nom : 'admin',
+       prenom : 'admin',
+       password : 'admin',
+       login          :'admin',
+       security_mask  :8,
+       email:'christopher.blhj@gmail.com'
+    }); 
+
+    admin.save(function(err) {
+    if (err) throw err;
+      console.log('compte admin created successfully!');
+    });
+
+  };
+});
+
 
  
