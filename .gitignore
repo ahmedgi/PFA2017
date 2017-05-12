@@ -5,4 +5,5 @@
 *.bat
 /data
 /public/app/Gest-Filiere/files
+/public/app/ComptesUpload/files
 /node_modules
