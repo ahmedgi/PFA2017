@@ -45,7 +45,8 @@
                 <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-cog"  aria-hidden="true" /> <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                   <li><a href="#/Settings" ng-if='user().security_mask >= 8'> Settings </a></li>
-                  <li><a href="/app/login" ng-click="logout()">Loggout</a></li>
+				  <li><a href="/ComptesUpload/:admin" ng-if='user().security_mask >= 8'>Création des comptes</a></li>
+				  <li><a href="/app/login" ng-click="logout()">Loggout</a></li>
                 </ul>
               </li>
             </ul>

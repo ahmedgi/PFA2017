@@ -18,7 +18,7 @@
   <link href="../../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
   </head>
   
-  <body ng-controller="resetController">
+  <body ng-controller="uploadController">
     <!--[if lte IE 8]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
@@ -38,11 +38,11 @@
     
   <div class="container" style="margin-top:10%">
     <h4> Veulliez Uploader le fichier Excel qui contient les comptes ! </h2>
-   <form method="post" name="myForm" enctype="multipart/form-data">
+   <form action="/api/exemple/upload" method="post" name="myForm" enctype="multipart/form-data">
       <div class='form-group'>
       	<div class="fileupload fileupload-new" data-provides="fileupload">
 	    <span class="btn btn-primary btn-file"><span class="fileupload-new">Select file</span>
-	    <span class="fileupload-exists">Change</span>         <input type="file" /></span>
+	    <span class="fileupload-exists">Change</span>         <input type="file" name ="myFile" /></span>
 	    <span class="fileupload-preview"></span>
 	    <a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none">×</a>
 	  </div>
