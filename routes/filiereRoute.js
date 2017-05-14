@@ -2,7 +2,7 @@
 var express = require('express');
 var async = require('async')
 var conEnsure= require('connect-ensure-login');
-var databaseModels = require('../models/databaseModels')
+var filiere=require('../models/databaseModels').filiere;
 
 var errorMessage = function(code,message){
     return {code : code,message : message}
@@ -22,7 +22,7 @@ router.post("/getFiliere",conEnsure.ensureLoggedIn(0,"/login_",false),function(r
            console.log(JSON.stringify(req.body))
            async.series([
                function(callback){
-                  var query =  databaseModels.filiere.find(req.body.searchQuery,req.body.responseFields);
+                  var query = filiere.find(req.body.searchQuery,req.body.responseFields);
                    //query.populate('createdBy');
                    if(req.body.populate)
                    for(var i = 0 ; i<req.body.populate.length ; i++){
@@ -63,18 +63,19 @@ router.post("/creeFiliere",conEnsure.ensureLoggedIn(0,"/login_",true),function(r
            console.log("response is : ");
            async.waterfall([
                function(callback){
-                   databaseModels.filiere.find({intitulee : req.body.intitulee},function(err,doc){
+                   filiere.find({intitulee : req.body.intitulee},function(err,doc){
                        if(err) return callback({code : '002',message:"database problem!",data : err})
                        if(doc.length>0) return callback({code : '003',message : "Intitulee taken !!"});
                        callback(null);
                    });  
                },
                function(callback){
-                   var filiere = new databaseModels.filiere({
+                   var newfiliere = new filiere({
                                         intitulee : req.body.intitulee,
                                         createdBy : req.body.userId,
+                                        responsable: req.body.cordId,
                                         status : 'incomplet'});
-                   filiere.save(function(err){
+                   newfiliere.save(function(err){
                        if(err) return callback({code : '002',message :"database problem!"});
                        callback(null,module._id);
                    });
@@ -103,7 +104,7 @@ router.post("/deleteFiliere",conEnsure.ensureLoggedIn(0,"/login_",true),function
 
        console.log("response is : ");
            
-      databaseModels.filiere.remove({_id : req.body.filiereId},function(err){
+      filiere.remove({_id : req.body.filiereId},function(err){
           if (err){
              res.send(JSON.stringify({code : "001",message:"database Prob",data :'' },null,'\t'));
              console.log(JSON.stringify({code : "001",message:"database Prob",data :'' },null,'\t'));
@@ -123,14 +124,14 @@ router.post('/editeFiliere',conEnsure.ensureLoggedIn(0,"/login_",true),function(
            console.log("response is : ");
            async.waterfall([
                function(callback){
-                   databaseModels.filiere.find({intitulee : req.body.intitulee},function(err,doc){
+                   filiere.find({intitulee : req.body.intitulee},function(err,doc){
                        if(err) return callback({code : '002',message:"database problem! remplireFiliere",data : err})
                        if(doc.length>0&&req.body.filiereId!=doc[0]._id) return callback({code : '003',message : "Intitulee taken !!"});
                        callback(null);
                    });  
                },
                function(callback){
-                  databaseModels.filiere.findById(req.body.filiereId,function(err,filiere){
+                  filiere.findById(req.body.filiereId,function(err,filiere){
                       if(err) return callback({code : '002',message:"database problem!"})
                       if(!filiere) return callback({code : '004',message : "Filiere not found !!"});
                       callback(null,filiere);

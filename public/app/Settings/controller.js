@@ -32,10 +32,17 @@ app
 	}
 
 	$scope.valider=function(){//add a new prof to the list of profs (items)
-		var obj={"nom":$scope.user.nNom,"prenom":$scope.user.nPrenom,"tel":$scope.user.nTel,"email":$scope.user.nEmail,"grade":$scope.user.nGrade};
+		var mask=0;
+		if($scope.mask.prof)
+			mask=mask+1;
+		if($scope.mask.chefFil)
+			mask=mask+2;
+		if($scope.mask.chefDepart)
+			mask=mask+4;
+		if($scope.mask.admin)
+			mask=mask+8;
+		var obj={"nom":$scope.user.nNom,"prenom":$scope.user.nPrenom,"login":$scope.user.nLogin,"tel":$scope.user.nTel,"email":$scope.user.nEmail,"grade":$scope.user.nGrade,"passwd":$scope.user.npasswd,"security_mask":mask};
 		//var obj={"nom":"haaaada howa","prenom":$scope.user.nPrenom,"tel":$scope.user.nTel,"email":$scope.user.nEmail,"grade":$scope.user.nGrade};
-		
-  $scope.items.push(obj);
 		$scope.isEditable.push(false);
 		$scope.reset();
 
@@ -44,13 +51,16 @@ app
 			data:obj,
 			url:'/create'
 		}).then(
-    function success(res){
-      if(res.data.info=="non_auto"){
-        alert("vous n'êtes pas autorisé !!");
-      }
-      else alert(JSON.stringify(res.data));
-    },function err(res){
-      alert(JSON.stringify(res.data.err));
+    		function success(res){
+      			if(res.data.info=="non_auto"){
+        			alert("vous n'êtes pas autorisé !!");
+     				 }
+      			else {
+      				alert(JSON.stringify(res.data));
+      				//$scope.items.push(obj);
+      			}
+    		},function err(res){
+      		alert(JSON.stringify(res.data.err));
     });
 	}
 	
@@ -96,7 +106,7 @@ app
 	$scope.privilege=function(obj){//when click on privilege , show up the modal-lightbox of the privilege of the active prof
 		$scope.lightboxContentSwitch="settings";	
 		$scope.activeObj=obj;
-  console.log(JSON.stringify(obj.security_mask));
+  		console.log(JSON.stringify(obj.security_mask));
 		$scope.masks.prof=(obj.security_mask&1)==1?true:false;
 		$scope.masks.filliere=(obj.security_mask&2)==2?true:false;
 		$scope.masks.departement=(obj.security_mask&4)==4?true:false;
@@ -107,13 +117,13 @@ app
 	$scope.confirmPrivilege=function(){//when click on confirm(after privilege), change the privilege of a prof
 
 		//$scope.activeObj.mask=0;//????
-  console.log(JSON.stringify($scope.activeObj));
+  		console.log(JSON.stringify($scope.activeObj));
 		if($scope.masks.prof){$scope.activeObj.security_mask|=1;}
 		if($scope.masks.filliere){$scope.activeObj.security_mask|=2;}
 		if($scope.masks.departement){$scope.activeObj.security_mask|=4;}
 		if($scope.masks.admin){$scope.activeObj.security_mask|=8;}
-  alert(JSON.stringify($scope.activeObj.security_mask));
-  $http({
+  		alert(JSON.stringify($scope.activeObj.security_mask));
+  		$http({
 			method:'POST',
 			data:$scope.activeObj,
 			url:'/admin_data'
@@ -127,7 +137,7 @@ app
 		$scope.activeObj=obj;
 
 		$scope.test=$filter('filter')($scope.matieres,function(d){return d.idProf==obj._id});
-	}
+	};
 });
 
 

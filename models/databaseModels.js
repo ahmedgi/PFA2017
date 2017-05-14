@@ -232,7 +232,7 @@ profSchema.methods.setAtt = function(att,value){
                    ref : 'modules'
                  }
              ]
-         },
+                },
          annee2 : {
              s1 : [
                  {
@@ -246,7 +246,8 @@ profSchema.methods.setAtt = function(att,value){
                    ref : 'modules'
                  }
              ]
-         },annee3 : {
+                },
+         annee3 : {
              s1 : [
                  {
                    type : mongoose.Schema.Types.ObjectId,
@@ -261,8 +262,12 @@ profSchema.methods.setAtt = function(att,value){
              ]
          },
          createdBy : {
-                   type : mongoose.Schema.Types.ObjectId,
-                   ref : 'profs'
+                        type: mongoose.Schema.Types.ObjectId,
+                        ref : 'prof'
+                    },
+         responsable : {
+                   type: mongoose.Schema.Types.ObjectId,
+                   ref : 'prof'
                 },
         creationDate : { type: Date, default: Date.now },
         lastUpdate : { type: Date, default: Date.now },
@@ -281,6 +286,6 @@ profSchema.methods.setAtt = function(att,value){
      profs : mongoose.model('prof',profSchema),
      eModuleNotif : mongoose.model('eModuleNotif',eModuleNotifSchema),
      moduleNotif : mongoose.model('moduleNotif',moduleNotifSchema),
-     filiere : mongoose.model('filieres',filiereSchema)
- }
+     filiere : mongoose.model('filiere',filiereSchema)
+ };
               

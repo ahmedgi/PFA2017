@@ -1,4 +1,4 @@
-var app = angular.module('pfaApp')
+var app = angular.module('pfaApp');
 
 app
 .factory("settingFactory",function($http){

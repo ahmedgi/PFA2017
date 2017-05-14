@@ -147,7 +147,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
             resolve:{
                 "check": function (profsList,$window) {
                    profsList.getCurrentUser().then(function(){
-                       if (profsList.getUser().security_mask < 9)
+                       if (profsList.getUser().security_mask < 8)
                            $window.location.href = "http://" + serverip + "/app/";
                     });
                   }

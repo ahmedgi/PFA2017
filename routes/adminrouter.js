@@ -17,58 +17,65 @@ var dbModel = require("../models/databaseModels");
 
  adminrouter.post('/create'/* ,conEnsure.ensureLoggedIn(2,"/login") */,function(req,res){
     console.log("req --------received ! ");
+    var createuser=true;
     var nregx =new  RegExp(/^[a-zA-Z_]{3,}$/),
         pnregx=new  RegExp(/^[a-zA-Z_]{3,}$/),
         eregx =new  RegExp(/^[^]+@gmail.com$/),
         mregx =new  RegExp(/^([0-9]{1}|1[0-5])$/),
         gregx =new  RegExp(/^([a-zA-Z_]+)$/),
         nom   =req.body.nom,
-		email =req.body.email,
+        login=req.body.login,
+		    email =req.body.email,
         tel   =req.body.tel,
+        mask=req.body.security_mask,
         grade =req.body.grade,
-        passwd="0000000",//req.body.passwd,
+        passwd=req.body.passwd,//req.body.passwd,
         prenom=req.body.prenom;
     var transporter=nodemailer.createTransport({
         service:'Gmail',
         auth:{
-          user:"abfadllah@gmail.com",
-          pass:"___passwd_____"
+          user:"christopher.blhj@gmail.com",
+          pass:"scholarmanager"
         }        
     });
     var mailOptions={
        from:"example@gmail.com",
-       to  :"",
+       to  :email,
        subject:"mot de passe",
        text:"votre mot de pass: "+passwd
     };
     console.log("#########################"+nom)
-    if (nom.gtrim() == "" || !nregx.test(nom))
+    if (nom.trim() == "" || !nregx.test(nom)){
         res.json({ err: "vous devez entrez un nom valide" });
-    else if (typeof prenom == "undefined" || prenom.gtrim() == "" || !pnregx.test(prenom))
-        res.json({ err: "vous devez entrez un prenom valide" });
-    else if (typeof grade == "undefined" || grade.gtrim() == "" || !gregx.test(grade))
-        res.json({ err: "vous n'êtes pas serieux" });
+        createuser=false;}
+    else if (typeof prenom == "undefined" || prenom.trim() == "" || !pnregx.test(prenom))
+        {res.json({ err: "vous devez entrez un prenom valide" });
+        createuser=false;}
+    else if (typeof grade == "undefined" || grade.trim() == "" || !gregx.test(grade))
+        {res.json({ err: "vous n'êtes pas serieux" });
+        createuser=false;}
     else if (!email || !eregx.test(email)) {
       res.json({err:"email invalide !!"});
+      createuser=false;
     }
-				else{
+		if(createuser){
       //console.log('security_mask='+mask);
       var user=new User({
-        login        :nom+"_"+prenom,
+        login        :login,
         nom          :nom,
         prenom       :prenom,
         tel          :tel,
         email        :email,
         grade        :grade,
-        security_mask: 0,
+        security_mask: mask,
         matieres     : [],
         modules      : []
       });
       console.log(JSON.stringify(user));
       user.password=passwd;
-      User.findOne({login:nom},function(err,doc){
+      User.findOne({login:login},function(err,doc){
             if(typeof doc!='undefined' && doc!=null){
-              if(doc.login.gtrim().toUpperCase()==nom.gtrim().toUpperCase())
+              if(doc.login.trim().toUpperCase()==login.trim().toUpperCase())
 																	res.json({err:"ce nom d'user existe déja !"});
             }
             else {
@@ -259,11 +266,11 @@ adminrouter.post("/update_user",function(req,res){
             eregx =new  RegExp(/^[^]+@gmail.com$/),
             mregx =new  RegExp(/^([0-9]{1}|1[0-5])$/),
             gregx =new  RegExp(/^([a-zA-Z_]+)$/);
-    if (req.body.nom && (req.body.nom.gtrim() == "" || !nregx.test(req.body.nom)))
+    if (req.body.nom && (req.body.nom.trim() == "" || !nregx.test(req.body.nom)))
         res.json({ err: "vous devez entrez un nom valide" });
-    else if (req.body.prenom && (req.body.prenom.gtrim() == "" || !pnregx.test(req.body.prenom)))
+    else if (req.body.prenom && (req.body.prenom.trim() == "" || !pnregx.test(req.body.prenom)))
         res.json({ err: "vous devez entrez un prenom valide" });
-    else if (req.body.grade && (req.body.grade.gtrim() == "" || !gregx.test(req.body.grade)))
+    else if (req.body.grade && (req.body.grade.trim() == "" || !gregx.test(req.body.grade)))
         res.json({ err: "vous n'êtes pas serieux" });
     else if (req.body.email && !eregx.test(req.body.email)) {
       res.json({err:"email invalide !!"});
@@ -291,8 +298,8 @@ adminrouter.post("/update_user",function(req,res){
 adminrouter.get('/anneeScolaire',function(req,res){
 
   AnneeScolaire.find({}).populate({
-    path:"fillieres",
-    model:"filieres",
+    path:"filliere",
+    model:"filiere",
     select:"intitulee"
   }).exec(function(err,anneeData){
       if(!err){

@@ -56,9 +56,9 @@ app.use('/bower_components',express.static(__dirname+"/public/bower_components")
 app.use('/js',express.static(__dirname+"/public/app/js"));
 app.use('/css',express.static(__dirname+"/public/app/css"));
 app.use('/dist',express.static(__dirname+"/public/bower_components/jquery/dist"));
-app.use('/Settings',express.static(__dirname+"/public/app/Settings"));
 app.use('/Gest-Charges',express.static(__dirname+"/public/app/Gest-Charges"));
 app.use('/Gest-Delib',express.static(__dirname+"/public/app/Gest-Delib"));
+app.use('/Settings',express.static(__dirname+"/public/app/Settings"));
 app.use('/Gest-Filiere',express.static(__dirname+"/public/app/Gest-Filiere"));
 app.use('/Gest-Scolarite',express.static(__dirname+"/public/app/Gest-Scolarite"));
 app.use('/login',express.static(__dirname+"/public/app/login"));
@@ -213,7 +213,7 @@ app.get('/logout',function(req,res){
        password : 'admin',
        login          :'admin',
        security_mask  :8,
-       email:'christopher.blhj@gmail.com'
+       email:'belhadj.gi@gmail.com'
     }); 
 
     admin.save(function(err) {

@@ -627,7 +627,7 @@ app.controller('m_creeModalController',function($scope,$rootScope,moduleService,
                //$('.selectpicker').selectpicker('deselectAll');
                // $('.selectpicker').selectpicker('refresh');
 
-                $scope.cree.req.userId = profsList.getUser()._id
+                $scope.cree.req.userId = profsList.getUser()._id;
                 $scope.cree.validation.WTaken = false;
                 $scope.cree.validation.taken = false;
                 $scope.cree.req.intitulee = '';
@@ -637,7 +637,7 @@ app.controller('m_creeModalController',function($scope,$rootScope,moduleService,
             ,
             submit : function(){
                 //if($scope.cree.req.cordId._id)
-                $scope.cree.req.cordId = $scope.cree.req.cordId._id;
+                $scope.cree.req.cordId = $scope.cree.req.userId._id;
                 moduleService.cree($scope.cree.req)
                               .then(function successCallback(response){
                                         if(response.data.code == '200'){
@@ -1683,8 +1683,14 @@ app.controller('f_deleteModalController',function($scope,$rootScope,moduleServic
         }
 });
 
-app.controller('f_filiereTableController',function($scope,$rootScope,moduleService,profService,modulesList,filiereService,filiereList){
+app.controller('f_filiereTableController',function($scope,$rootScope,moduleService,profService,modulesList,filiereService,filiereList,profsList){
         $scope.selectedItemIndex = filiereList.getSelectedItemIndex;
+        var prof=profsList.getItems;
+        $scope.responsable=function(id){
+            return prof().filter(function(v){
+                return v._id===id;
+            });
+        };
         $scope.filiereTable = {
             items : filiereList.getItems,
             search : '',
@@ -1730,24 +1736,28 @@ app.controller('f_headerController',function($scope,$rootScope,filiereService,pr
 })
 app.controller('f_creeController',function($scope,$rootScope,filiereService,profService,filiereList,profsList){
          $scope.filieres = filiereList.getItems;
+         $scope.profs = profsList.getItems;
          $scope.cree = {
             req : {
                 userId : '',
                 intitulee : '',
+                cordId :'',
             },
             validation : {
                  taken : false,
                  WTaken : false
             },
             init : function(){
-                $scope.cree.req.userId = profsList.getUser()._id
+                $scope.cree.req.userId = profsList.getUser()._id;
                 $scope.cree.validation.WTaken = false;
                 $scope.cree.validation.taken = false;
                 $scope.cree.req.intitulee = '';
+                $scope.cree.req.cordId = '';
                 $scope.creeFiliereForm.intitulee.$setUntouched();
             }
             ,
             submit : function(){
+                $scope.cree.req.cordId = $scope.cree.req.cordId._id;
                 filiereService.cree($scope.cree.req)
                               .then(function successCallback(response){
                                         if(response.data.code == '200'){

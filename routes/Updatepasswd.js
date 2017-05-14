@@ -45,8 +45,8 @@ router.post('/forgot', function(req, res, next) {
         port : 587,
         secure : false,
         auth: {
-          user: 'belhadj.gi@gmail.com',
-          pass: 'caramel019'
+          user: 'christopher.blhj@gmail.com',
+          pass: 'scholarmanager'
         }
       }));
       var mailOptions = {
@@ -106,8 +106,8 @@ router.post('/reset/:token', function(req, res) {
         port : 587,
         secure : false,
         auth: {
-          user: 'belhadj.gi@gmail.com',
-          pass: 'caramel019'
+          user: 'christopher.blhj@gmail.com',
+          pass: 'scholarmanager'
         }
       }));
       var mailOptions = {

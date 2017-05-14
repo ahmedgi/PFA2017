@@ -52,3 +52,9 @@
 .dropdown-menu{
     cursor: pointer;
 }
+.adduser{
+    margin-left: 40px;
+}
+.adduser div{
+    width:70%;
+}

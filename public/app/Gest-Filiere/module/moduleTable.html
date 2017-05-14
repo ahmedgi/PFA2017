@@ -5,6 +5,7 @@
                     <th>#</th>
                     <th>Intitulée</th>
                     <th>Propriétaire</th>
+                    <th>Departement</th>
                     <th>Dernière modification</th>
                  </tr>
            </thead>
@@ -13,6 +14,7 @@
                     <td>{{$index}}</td>
                     <td>{{module.intitulee}}</td>
                     <td>{{module.createdBy._id==user()._id?'Vous':module.createdBy.nom+" "+module.createdBy.prenom}}</td>
+                    <td>{{module.departement}}</td>
                     <td>{{module.lastUpdate | date:'yyyy-MM-dd HH:mm:ss'}} <h6>{{module.createdBy._id==user()._id?'Vous':module.updatedBy.nom+" "+module.updatedBy.prenom}}</h6></td>
                  </tr>
             </tbody>

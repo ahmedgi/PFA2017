@@ -23,7 +23,7 @@ prouter.get('/list',conEnsure.ensureLoggedIn(1,"/login"),function(req,res){
 	Matiere.find({_ens:req.user._id,_anneeScolaire:annee._id})
 	.populate({
 		path:"_filiere",
-		model:"filieres"
+		model:"filiere"
 	}).populate({
 		path:"_ref",
 		model:"eModules"

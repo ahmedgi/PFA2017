@@ -16,6 +16,13 @@
                     <p ng-show="creeFiliereForm.intitulee.$invalid &&  creeFiliereForm.intitulee.$touched" class="help-block">intitulee obligatoire !!.</p>                
                    
                 </div>
+                <div class="form-group">
+                    <label for="coordonnateur">Responsable :</label>
+                    <div class="form-inline">
+                        <select id="sendToList" class="form-control"  title="..." data-live-search="true" ng-options="prof.nom+' '+prof.prenom  for prof in profs()"  ng-model="cree.req.cordId">
+                        </select>
+                   </div>
+                </div>
           </form>
         </div>
         <div class="modal-footer">
