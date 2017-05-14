@@ -28,6 +28,7 @@ var eModuleRouteHandler = require('./routes/eModuleRoute');
 var moduleRouteHandler = require('./routes/moduleRoute');
 var profRouteHandler = require('./routes/profRoute');
 var filiereRouteHandler = require('./routes/filiereRoute');
+var uploadComptes = require ("./routes/CompteUpload.js");
 //-----models---------------
 //var User=require("./models/User");
 var User = require("./models/databaseModels").profs
@@ -63,6 +64,7 @@ app.use('/Gest-Filiere',express.static(__dirname+"/public/app/Gest-Filiere"));
 app.use('/Gest-Scolarite',express.static(__dirname+"/public/app/Gest-Scolarite"));
 app.use('/login',express.static(__dirname+"/public/app/login"));
 app.use('/ChangPassword',express.static(__dirname+"/public/app/ChangPasswd"));
+app.use('/ComptesUpload',express.static(__dirname+"/public/app/ComptesUpload"));
 
 ////
 var expSession=require('express-session'),
@@ -117,6 +119,7 @@ app.use('/',prouter);
 app.use('/',cfrouter);
 app.use('/',adminrouter);
 app.use('/',resetpasswd);
+app.use('/',uploadComptes);
 
 app.use('/gestionfiliere/eModules',eModuleRouteHandler);
 app.use('/gestionfiliere/modules',moduleRouteHandler);
@@ -153,6 +156,7 @@ app.get('/ChangPassword/:admin',function(req,res){
   res.sendFile('index.html', {root : __dirname + '/public/app/ChangPasswd'});
 });
 
+
 app.post('/ChangPassword/:admin',function(req, res) {
   async.waterfall([
     function(done) {
@@ -179,6 +183,13 @@ app.post('/ChangPassword/:admin',function(req, res) {
     // console.log(JSON.stringify(req.user));
 	   // res.render("welcom",{user:req.user.name});
 // });
+
+//Creation des comptes
+app.get('/ComptesUpload',function(req,res){
+//  here je redirige vers la page de la creation des comptes
+  res.sendFile('index.html', {root : __dirname + '/public/app/ComptesUpload'});
+});
+
 
 //==============outil: js global trim====================================================
 

@@ -4,5 +4,6 @@
 /bower_components
 *.bat
 /data
-/public/app/Gest-Filiere/files
+/public/app/Gest-Filiere/files/*
+/public/app/ComptesUpload/files/*
 /node_modules
