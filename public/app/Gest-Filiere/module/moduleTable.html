@@ -4,16 +4,16 @@
                 <tr>
                     <th>#</th>
                     <th>Intitulée</th>
-                    <th>Propriétaire</th>
+                    <th>Coordinateur</th>
                     <th>Departement</th>
                     <th>Dernière modification</th>
                  </tr>
            </thead>
            <tbody>
-                 <tr ng-repeat="module in moduleTable.items() | filter : moduleTable.search" class="{{module.status =='complet'?'tr_complet':'tr_incomplet'}}" ng-class="{'tr_active' : moduleTable.selectedIndex == $index}" ng-mousedown="moduleTable.clicked($index,module._id,module.intitulee)" context-menu="moduleTable.menuOptions{{modulesList()[selectedItemIndex()].createdBy._id == user()._id?'':getPermision(modulesList()[selectedItemIndex()]._id)}}"  ng-click="moduleTable.clicked($index,module._id,module.intitulee)">
+                 <tr ng-repeat="module in moduleTable.items() | filter : moduleTable.search |unique:'intitulee'" class="{{module.status =='complet'?'tr_complet':'tr_incomplet'}}" ng-class="{'tr_active' : moduleTable.selectedIndex == $index}" ng-mousedown="moduleTable.clicked($index,module._id,module.intitulee)" context-menu="moduleTable.menuOptions{{modulesList()[selectedItemIndex()].createdBy._id == user()._id?'':getPermision(modulesList()[selectedItemIndex()]._id)}}"  ng-click="moduleTable.clicked($index,module._id,module.intitulee)">
                     <td>{{$index}}</td>
                     <td>{{module.intitulee}}</td>
-                    <td>{{module.createdBy._id==user()._id?'Vous':module.createdBy.nom+" "+module.createdBy.prenom}}</td>
+                    <td>{{module.coordonnateur._id==user()._id?'Vous':module.coordonnateur.nom+" "+module.coordonnateur.prenom}}</td>
                     <td>{{module.departement}}</td>
                     <td>{{module.lastUpdate | date:'yyyy-MM-dd HH:mm:ss'}} <h6>{{module.createdBy._id==user()._id?'Vous':module.updatedBy.nom+" "+module.updatedBy.prenom}}</h6></td>
                  </tr>

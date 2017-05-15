@@ -9,12 +9,13 @@ app
 	$scope.masks     ={};//the masks of privilege
 	$scope.items     =[];//list of the profs 
 	$scope.user      ={};//the tmp information of the prof in the form add prof
-
+	var refresh=function(){
 	settingFactory.getListProf().then(function(arrItems){//fetch the informations of the profs from the factory
          $scope.items = arrItems;
          $scope.isEditable.push(false);
        });
-
+	};
+	refresh();
 	settingFactory.getListMatiere().then(function(arrItems){//fetch the informations of the subjects from the factory
          $scope.matieres = arrItems;
        });
@@ -57,7 +58,8 @@ app
      				 }
       			else {
       				alert(JSON.stringify(res.data));
-      				//$scope.items.push(obj);
+      				$scope.addVisible=false;
+      				refresh();
       			}
     		},function err(res){
       		alert(JSON.stringify(res.data.err));

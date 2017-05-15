@@ -31,7 +31,7 @@ var dbModel = require("../models/databaseModels");
         grade =req.body.grade,
         passwd=req.body.passwd,//req.body.passwd,
         prenom=req.body.prenom;
-    var transporter=nodemailer.createTransport({
+   /* var transporter=nodemailer.createTransport({
         service:'Gmail',
         auth:{
           user:"christopher.blhj@gmail.com",
@@ -43,8 +43,8 @@ var dbModel = require("../models/databaseModels");
        to  :email,
        subject:"mot de passe",
        text:"votre mot de pass: "+passwd
-    };
-    console.log("#########################"+nom)
+    };*/
+    //console.log("#########################"+nom)
     if (nom.trim() == "" || !nregx.test(nom)){
         res.json({ err: "vous devez entrez un nom valide" });
         createuser=false;}
@@ -71,7 +71,7 @@ var dbModel = require("../models/databaseModels");
         matieres     : [],
         modules      : []
       });
-      console.log(JSON.stringify(user));
+      //console.log(JSON.stringify(user));
       user.password=passwd;
       User.findOne({login:login},function(err,doc){
             if(typeof doc!='undefined' && doc!=null){
@@ -82,11 +82,12 @@ var dbModel = require("../models/databaseModels");
               user.save(function(err){
                         if(err)res.json({err:"vos infos ne sont pas saisies , veuillez vérifier"});
                         else {
-                         mailOptions.to=email;
+                          res.json({ok:"compte créé  correctement !"});
+                        /* mailOptions.to=email;
                          transporter.sendMail(mailOptions,function(err,info){
                             if(!err) res.json({ok:"compte créé ! -info:"+info.response});
                             else res.json({err:"une erreur s'est produite"+JSON.stringify(err)});
-                         });
+                         });*/
                         }
               });     
             }
@@ -113,12 +114,13 @@ adminrouter.get('/profs',/* conEnsure.ensureLoggedIn(2,"/login_"), */function(re
     tel   :1,
     email :1,
     grade :1,
+    login:1,
     security_mask:1
     }).exec(function(err,profs){
       if(!err) {
        tsend.data=profs;
        console.log("les profs :\n "+JSON.stringify(tsend));
-       res.status(200).json(tsend); 
+       res.status(200).json(tsend);
       }
       else res.status(500).json({err:""});
    });
@@ -265,13 +267,13 @@ adminrouter.post("/update_user",function(req,res){
             pnregx=new  RegExp(/^[a-zA-Z_]{3,}$/),
             eregx =new  RegExp(/^[^]+@gmail.com$/),
             mregx =new  RegExp(/^([0-9]{1}|1[0-5])$/),
-            gregx =new  RegExp(/^([a-zA-Z_]+)$/);
+            gregx =new  RegExp(/^[a-zA-Z_]{3,}$/);
     if (req.body.nom && (req.body.nom.trim() == "" || !nregx.test(req.body.nom)))
         res.json({ err: "vous devez entrez un nom valide" });
     else if (req.body.prenom && (req.body.prenom.trim() == "" || !pnregx.test(req.body.prenom)))
         res.json({ err: "vous devez entrez un prenom valide" });
-    else if (req.body.grade && (req.body.grade.trim() == "" || !gregx.test(req.body.grade)))
-        res.json({ err: "vous n'êtes pas serieux" });
+    else if (req.body.login && (req.body.login.trim() == "" || !gregx.test(req.body.login)))
+        res.json({ err: "vous devez entrez un username valide" });
     else if (req.body.email && !eregx.test(req.body.email)) {
       res.json({err:"email invalide !!"});
     }else{
@@ -281,9 +283,9 @@ adminrouter.post("/update_user",function(req,res){
             else {
                 user.setAtt('nom',req.body.nom);
                 user.setAtt('prenom',req.body.prenom);
-                user.setAtt('tel',req.body.tel);
-                user.setAtt('grade',req.body.grade);
                 user.setAtt('email',req.body.email);
+                user.setAtt('tel',req.body.tel);
+                user.setAtt('login',req.body.login);
                 user.save(function(err){
                     if(err) res.json({err:"saving prof Prob"})
                     else  res.json({ok:"prof updated"})

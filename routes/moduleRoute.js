@@ -30,12 +30,16 @@ router.post("/creeModule",conEnsure.ensureLoggedIn(0,"/login_",true),function(re
                    });  
                },
                function(callback){
+                var cordid=req.body.cordId;
+                if(!cordid){
+                  cordid=req.body.userId;
+                };
                    var module = new databaseModels.modules({
                                         intitulee : req.body.intitulee,
                                         universite : req.body.universite,
                                         etablissement : req.body.etablissement,
                                         departement : req.body.departement,
-                                        coordonnateur : req.body.cordId,
+                                        coordonnateur : cordid,
                                         eModules : req.body.eModules,
                                         createdBy : req.body.userId,
                                         creationDate : new Date(),

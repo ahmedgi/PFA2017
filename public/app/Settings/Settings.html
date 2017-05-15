@@ -1,7 +1,7 @@
 <div class="navbar navbar-default" role="navigation" >
-            <button type="button" class="btn btn-info" ng-click="add()" ng-disabled="addVisible"><span class="glyphicon glyphicon-plus" aria-hidden="true" title='ajouter un compte'></span></button>
+            <button type="button" class="btn btn-info" ng-click="add()" ng-disabled="addVisible"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+            <a class="btn btn-primary" href="/ComptesUpload">Importer un fichier excel</a>
             <input type="text" ng-model="q" class="search-input" placeholder="Chercher par Nom .."/>
-            <a class="btn btn-primary" href="/ComptesUpload">Télécharger un fichier excel</a>
           
  </div>
  
@@ -84,17 +84,17 @@
       <tr>
         <th >Nom</th>
         <th >Prenom</th>
+        <th>Username</th>
         <th >Tel</th>
         <th >Email</th>
-        <th >Grade</th>
         <th >Options</th>
       </tr>
       <tr ng-repeat="a in items | filter:{nom:q} | orderBy:'nom' track by $index">
         <td ng-show="isEditable[$index]"><input class="form-control" type="text" ng-model="tmpEdit[$index].nom" /></td>
         <td ng-show="isEditable[$index]"><input class="form-control" type="text" ng-model="tmpEdit[$index].prenom" /></td>
+        <td ng-show="isEditable[$index]"><input class="form-control" type="text" ng-model="tmpEdit[$index].login" /></td>
         <td ng-show="isEditable[$index]"><input class="form-control" type="text" ng-model="tmpEdit[$index].tel" /></td>
-        <td ng-show="isEditable[$index]"><input class="form-control" type="text" ng-model="tmpEdit[$index].email"/></td>
-        <td ng-show="isEditable[$index]"><input class="form-control" type="text" ng-model="tmpEdit[$index].grade"/></td>
+        <td ng-show="isEditable[$index]"><input class="form-control" type="text" ng-model="tmpEdit[$index].email" /></td>
         <td ng-show="isEditable[$index]">
             <button class="btn btn-success" ng-click="confirm($index,a)">Confirmer</button>
             <button class="btn btn-info" ng-click="annuler($index)">Annuler</button>
@@ -102,9 +102,9 @@
 
         <td ng-hide="isEditable[$index]" >{{a.nom}}</td>
         <td ng-hide="isEditable[$index]" >{{a.prenom}}</td>
+        <td ng-hide="isEditable[$index]" >{{a.login}}</td>
         <td ng-hide="isEditable[$index]" >{{a.tel}}</td>
         <td ng-hide="isEditable[$index]" >{{a.email}}</td>
-        <td ng-hide="isEditable[$index]" >{{a.grade}}</td>
         <td ng-hide="isEditable[$index]" >
           <button class="btn btn-warning" ng-click="editer(a,$index)">editer</button>
           <button class="btn btn-danger"  ng-click="delete(a)" data-toggle="modal" data-target="#myModal">Suprimer</button>
@@ -112,8 +112,8 @@
             <button class="btn btn-info dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" ><span class="glyphicon glyphicon-cog" /></button>
             
               <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                <li ng-click="privilege(a)" data-toggle="modal" data-target="#myModal"><a>Privileges</a></li>
-                <li ng-click="matiere(a)" data-toggle="modal" data-target="#myModal"><a>Matiere</a></li>
+                <li ng-click="privilege(a)" data-toggle="modal" data-target="#myModal"><a>Roles</a></li>
+               <!-- <li ng-click="matiere(a)" data-toggle="modal" data-target="#myModal"><a>Matiere</a></li>-->
               </ul>
         </div>
         </td>

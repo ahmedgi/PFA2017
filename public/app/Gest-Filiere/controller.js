@@ -2,10 +2,28 @@
 var serverip = 'localhost:8010'
 
 
-
-
 var app = angular.module('pfaApp');
 
+//filterres
+
+app.filter('unique', function() {
+        return function(collection, primaryKey, secondaryKey) { //optional secondary key
+          var output = [], 
+              keys = [];
+
+          angular.forEach(collection, function(item) {
+                var key;
+                secondaryKey === undefined ? key = item[primaryKey] : key = item[primaryKey][secondaryKey];
+
+                if(keys.indexOf(key) === -1) {
+                  keys.push(key);
+                  output.push(item);
+                }
+          });
+
+          return output;
+        };
+    });
 //filiere Service
 app.service('filiereService',function($http){
     this.get = function(req){
@@ -637,7 +655,7 @@ app.controller('m_creeModalController',function($scope,$rootScope,moduleService,
             ,
             submit : function(){
                 //if($scope.cree.req.cordId._id)
-                $scope.cree.req.cordId = $scope.cree.req.userId._id;
+                $scope.cree.req.cordId = $scope.cree.req.cordId._id;
                 moduleService.cree($scope.cree.req)
                               .then(function successCallback(response){
                                         if(response.data.code == '200'){
@@ -1686,6 +1704,12 @@ app.controller('f_deleteModalController',function($scope,$rootScope,moduleServic
 app.controller('f_filiereTableController',function($scope,$rootScope,moduleService,profService,modulesList,filiereService,filiereList,profsList){
         $scope.selectedItemIndex = filiereList.getSelectedItemIndex;
         var prof=profsList.getItems;
+        $scope.moreinfo=function(){
+             return function($itemScope){
+                   $rootScope.$broadcast('init_editeModal',{});
+                    $('#editeModal').modal('show');
+                };
+        };
         $scope.responsable=function(id){
             return prof().filter(function(v){
                 return v._id===id;
