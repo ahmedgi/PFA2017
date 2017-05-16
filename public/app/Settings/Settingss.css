@@ -53,8 +53,28 @@
     cursor: pointer;
 }
 .adduser{
-    margin-left: 40px;
+    margin-left: 50px;
+    padding-right: 50px;
 }
-.adduser div{
-    width:70%;
+legend{
+    width: 80%;
+}
+legend{
+    border-bottom: none;
+}
+fieldset {
+    border: 1px solid #555555;
+    padding: 20px;
+}
+.border td, .border th {
+    border: none !important;
+    width: 50% !important;
+}
+.list{
+    margin-left: 20px;
+    margin-right: 20px;
+}
+.image img{
+    width: 80px;
+    height: 80px;
 }

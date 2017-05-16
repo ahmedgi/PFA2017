@@ -41,7 +41,7 @@ router.post('/api/exemple/upload',function(req,res){
         if(err) {
             return res.end("Error uploading file or not Excel files are uploaded.");
         }
-        res.end("File is uploaded");
+        res.redirect('/app');
     });
 });
 

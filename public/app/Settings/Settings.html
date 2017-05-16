@@ -8,117 +8,139 @@
 <div class="panel panel-default" >
 
   <div class="adduser">
-    <form ng-show="addVisible" class="form-horizontal">
-
-      <div class="form-group"> <!-- Name field -->
-        <label class="control-label " for="name">Nom :</label>
-        <input type="text" class="form-control" ng-model="user.nNom"/>
-      </div>
-      <div class="form-group"> <!-- Name field -->
-        <label class="control-label " for="name">Prenom :</label>
-        <input type="text" class="form-control" ng-model="user.nPrenom"/>
-      </div>
-      <div class="form-group"> <!-- Name field -->
-        <label class="control-label " for="name">Username :</label>
-        <input type="text" class="form-control" ng-model="user.nLogin"/>
-      </div>
-      
-      <div class="form-group"> <!-- Email field -->
-        <label class="control-label requiredField" for="email">Email :</label>
-        <input type="text" class="form-control" ng-model="user.nEmail"  />
-      </div>
-      
-      <div class="form-group"> <!-- Subject field -->
-        <label class="control-label " for="subject">Tel :</label>
-        <input type="text" class="form-control" ng-model="user.nTel"/>
-      </div>
-      <div class="form-group"> <!-- Subject field -->
-        <label class="control-label " for="subject">Grade :</label>
-        <input type="text" class="form-control" ng-model="user.nGrade"/>
-      </div>
-      <div class="form-group"> <!-- Subject field -->
-        <label class="control-label " for="subject">Password :</label>
-        <input type="password" class="form-control" ng-model="user.npasswd"/>
-      </div>
-      <div class="form-group"> <!-- Frequency Field -->
-          <label class="control-label col-sm-2">Role :</label>
-          <div class="col-sm-10">
-            <div class="checkbox">
-              <label class="checkbox">
-                <input ng-model="mask.prof" type="checkbox" id="professeur"/>
-                Professeur
-              </label>
-            </div>
-            <div class="checkbox">
-              <label class="checkbox">
-                <input ng-model="mask.chefFil" type="checkbox" id="chefFilliere"/>
-                Chef de filiere
-              </label>
-            </div>  
-            <div class="checkbox">
-              <label class="checkbox">
-                <input ng-model="mask.chefDepart" type="checkbox" id="chefDepartement"/>
-                Chef de departement
-              </label>
-            </div>  
-            <div class="checkbox">
-              <label class="checkbox">
-                <input ng-model="mask.admin" type="checkbox" id="admin"/>
-                Administrateur
-              </label>
-            </div>                     
-          </div>
-        </div>
-      
-      <div class="form-group">
+    <form ng-show="addVisible" enctype="multipart/form-data">
+      <fieldset>
+        <legend>Ajouter Comptes</legend>
+        <table class="table border">
+          <tr>
+            <td class="image">
+              <img src="./images/imageupload.png" id="upfile1" style="cursor:pointer" />
+              <input type="file" id="file1"  name="file1" style="display:none" />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label class="control-label " for="name">Nom :</label>
+              <input type="text" class="form-control" ng-model="user.nNom"/>
+            </td>
+            <td>
+              <label class="control-label " for="name">Prenom :</label>
+              <input type="text" class="form-control" ng-model="user.nPrenom"/>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label class="control-label " for="name">Username :</label>
+              <input type="text" class="form-control" ng-model="user.nLogin"/>
+            </td>
+            <td>
+              <label class="control-label requiredField" for="email">Email :</label>
+              <input type="text" class="form-control" ng-model="user.nEmail"  />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label class="control-label " for="subject">Tel :</label>
+            <input type="text" class="form-control" ng-model="user.nTel"/>
+            </td>
+            <td>
+              <label class="control-label " for="subject">Type :</label>
+              <select class="form-control" id="exampleSelect1">
+                <option>Professeur</option>
+                <option>Ingenieurs</option>
+              </select>
+            </td>  
+          </tr>
+          <tr>
+            <td>
+              <label class="control-label " for="subject">Password :</label>
+              <input type="password" class="form-control" ng-model="user.npasswd"/>
+            </td>
+            <td>
+              <label class="control-label " for="subject">Grade :</label>
+              <select class="form-control" id="exampleSelect1">
+                <option>PA</option>
+                <option>PH</option>
+                <option>PES</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>
+                  <label class="control-label col-sm-2">Role :</label>
+                  <label class="checkbox-inline">
+                    <input ng-model="mask.prof" type="checkbox" id="professeur"/>
+                    Professeur
+                  </label>
+                  <label class="checkbox-inline">
+                     <input ng-model="mask.chefDepart" type="checkbox" id="chefDepartement"/>
+                    Chef de departement
+                  </label><br/>
+                  <label class="checkbox-inline">
+                    <input ng-model="mask.chefFil" type="checkbox" id="chefFilliere"/>
+                    Chef de filliere
+                  </label>
+                  <label class="checkbox-inline">
+                     <input ng-model="mask.chefDepart" type="checkbox" id="chefDepartement"/>
+                    Chef de departement
+                  </label>
+            </td>
+            <tr>
+            <td>
               <button class="btn btn-success" ng-click="valider()">Ajouter</button>
               <button class="btn btn-warning" ng-click="hideAdd()">Annuler</button>
-      </div>
-    
+            </td>
+            </tr>
+          </tr>
+        </table>
+      </fieldset>
     </form> 
   </div>
 
 
   <!-- Table -->
-  <table class="table">
-      <tr>
-        <th >Nom</th>
-        <th >Prenom</th>
-        <th>Username</th>
-        <th >Tel</th>
-        <th >Email</th>
-        <th >Options</th>
-      </tr>
-      <tr ng-repeat="a in items | filter:{nom:q} | orderBy:'nom' track by $index">
-        <td ng-show="isEditable[$index]"><input class="form-control" type="text" ng-model="tmpEdit[$index].nom" /></td>
-        <td ng-show="isEditable[$index]"><input class="form-control" type="text" ng-model="tmpEdit[$index].prenom" /></td>
-        <td ng-show="isEditable[$index]"><input class="form-control" type="text" ng-model="tmpEdit[$index].login" /></td>
-        <td ng-show="isEditable[$index]"><input class="form-control" type="text" ng-model="tmpEdit[$index].tel" /></td>
-        <td ng-show="isEditable[$index]"><input class="form-control" type="text" ng-model="tmpEdit[$index].email" /></td>
-        <td ng-show="isEditable[$index]">
-            <button class="btn btn-success" ng-click="confirm($index,a)">Confirmer</button>
-            <button class="btn btn-info" ng-click="annuler($index)">Annuler</button>
-        </td>
+  <fieldset class="list">
+    <legend> La listes de Comptes</legend>
+    <table class="table">
+        <tr>
+          <th >Nom</th>
+          <th >Prenom</th>
+          <th>Username</th>
+          <th >Tel</th>
+          <th >Email</th>
+          <th >Options</th>
+        </tr>
+        <tr ng-repeat="a in items | filter:{nom:q} | orderBy:'nom' track by $index">
+          <td ng-show="isEditable[$index]"><input class="form-control" type="text" ng-model="tmpEdit[$index].nom" /></td>
+          <td ng-show="isEditable[$index]"><input class="form-control" type="text" ng-model="tmpEdit[$index].prenom" /></td>
+          <td ng-show="isEditable[$index]"><input class="form-control" type="text" ng-model="tmpEdit[$index].login" /></td>
+          <td ng-show="isEditable[$index]"><input class="form-control" type="text" ng-model="tmpEdit[$index].tel" /></td>
+          <td ng-show="isEditable[$index]"><input class="form-control" type="text" ng-model="tmpEdit[$index].email" /></td>
+          <td ng-show="isEditable[$index]">
+              <button class="btn btn-success" ng-click="confirm($index,a)">Confirmer</button>
+              <button class="btn btn-info" ng-click="annuler($index)">Annuler</button>
+          </td>
 
-        <td ng-hide="isEditable[$index]" >{{a.nom}}</td>
-        <td ng-hide="isEditable[$index]" >{{a.prenom}}</td>
-        <td ng-hide="isEditable[$index]" >{{a.login}}</td>
-        <td ng-hide="isEditable[$index]" >{{a.tel}}</td>
-        <td ng-hide="isEditable[$index]" >{{a.email}}</td>
-        <td ng-hide="isEditable[$index]" >
-          <button class="btn btn-warning" ng-click="editer(a,$index)">editer</button>
-          <button class="btn btn-danger"  ng-click="delete(a)" data-toggle="modal" data-target="#myModal">Suprimer</button>
-          <div class="dropdown">
-            <button class="btn btn-info dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" ><span class="glyphicon glyphicon-cog" /></button>
-            
-              <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                <li ng-click="privilege(a)" data-toggle="modal" data-target="#myModal"><a>Roles</a></li>
-               <!-- <li ng-click="matiere(a)" data-toggle="modal" data-target="#myModal"><a>Matiere</a></li>-->
-              </ul>
-        </div>
-        </td>
-      </tr>
-  </table>
+          <td ng-hide="isEditable[$index]" >{{a.nom}}</td>
+          <td ng-hide="isEditable[$index]" >{{a.prenom}}</td>
+          <td ng-hide="isEditable[$index]" >{{a.login}}</td>
+          <td ng-hide="isEditable[$index]" >{{a.tel}}</td>
+          <td ng-hide="isEditable[$index]" >{{a.email}}</td>
+          <td ng-hide="isEditable[$index]" >
+            <button class="btn btn-warning" ng-click="editer(a,$index)">editer</button>
+            <button class="btn btn-danger"  ng-click="delete(a)" data-toggle="modal" data-target="#myModal">Suprimer</button>
+            <div class="dropdown">
+              <button class="btn btn-info dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" ><span class="glyphicon glyphicon-cog" /></button>
+              
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                  <li ng-click="privilege(a)" data-toggle="modal" data-target="#myModal"><a>Roles</a></li>
+                 <!-- <li ng-click="matiere(a)" data-toggle="modal" data-target="#myModal"><a>Matiere</a></li>-->
+                </ul>
+          </div>
+          </td>
+        </tr>
+    </table>
+  </fieldset>
 </div>
 
 
@@ -186,3 +208,8 @@
   </div>
 </div>
 
+<script type="text/javascript">
+$("#upfile1").click(function () {
+    $("#file1").trigger('click');
+});
+</script>
