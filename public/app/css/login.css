@@ -7,7 +7,8 @@ body {
 }
 
 .container {
-    width: 970px;
+    width: 87%;
+	margin-left : 10%;
 }
 
 h1, .h1,
@@ -21,8 +22,15 @@ h6, .h6 {
   font-weight: normal;
   color: #333;
 }
-
-
+/* style des lein windows et linux */
+.OSlien
+{
+	border:0.5px solid black;//black ou le color que vous voulez ici
+	-moz-border-radius:7px;
+	-webkit-border-radius:7px;
+	border-radius:7px;
+	background-color : rgb(236, 238, 239);/*le color que vous voulez ici*/
+}
 
 /*
  * Masthead for nav
