@@ -53,8 +53,8 @@
     cursor: pointer;
 }
 .adduser{
-    margin-left: 50px;
-    padding-right: 50px;
+    margin-left: 20px;
+    margin-right: 20px;
 }
 legend{
     width: 80%;
@@ -71,8 +71,8 @@ fieldset {
     width: 50% !important;
 }
 .list{
-    margin-left: 20px;
-    margin-right: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 .image img{
     width: 80px;

@@ -102,6 +102,10 @@ var dbModel = require("../models/databaseModels");
       });
     }
  });*/
+// create university
+adminrouter.post('/createuniv',function(req,res){
+  console.log('req from univ received');
+});
 
 //---------get prof list-----------------------------------
 

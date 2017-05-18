@@ -9,6 +9,51 @@ app
 	$scope.masks     ={};//the masks of privilege
 	$scope.items     =[];//list of the profs 
 	$scope.user      ={};//the tmp information of the prof in the form add prof
+	$scope.TypeList=["Professeur","Ingenieurs"];
+	$scope.GradeList=["PA","PH","PES"];
+	$scope.adduniv=false;
+
+	// ajouter une universiter
+	$scope.hideAddUniv=function(){
+		$scope.adduniv=false;
+	};
+	$scope.Adduniv=function(){
+		$scope.adduniv=true;
+		$scope.addVisible=false;
+	};
+	$scope.ajouteruniv=function(){
+		$scope.addVisible=false;
+		var univ={"univ":$scope.univ.nom,"dep1":$scope.dep.nom,"dep2":$scope.dep.nom2,"etab":$scope.etab.nom,"univabv":$scope.univ.abrev,
+		"depabv1":$scope.dep.abrev,"depabv2":$scope.dep.abrev2,"etababv":$scope.etab.abrev};
+		console.log(univ);
+		$scope.adduniv=false;
+		$http({
+			method:'POST',
+			data:univ,
+			url:'/createuniv'
+		}).then(
+    		function success(res){
+      			if(res.data.info=="non_auto"){
+        			alert("vous n'êtes pas autorisé !!");
+     				 }
+      			else {
+      				alert(JSON.stringify(res.data));
+      			}
+    		},function err(res){
+      		alert(JSON.stringify(res.data.err));
+    });
+	};
+	// add departement
+	$scope.deplist=[];
+	$scope.Adddep=function(){
+		$scope.adddep=true;
+		if($scope.dep.nom){
+			$scope.deplist.push($scope.dep.nom);
+			$scope.dep.nom="";
+		}
+	};
+
+
 	var refresh=function(){
 	settingFactory.getListProf().then(function(arrItems){//fetch the informations of the profs from the factory
          $scope.items = arrItems;
@@ -22,6 +67,7 @@ app
 
 	$scope.add=function(){//when click on the + button , it show up the form add prof
 		$scope.addVisible=true;
+		$scope.adduniv=false;
 	}
 
 	$scope.hideAdd=function(){//when click on hide (after +), it hide the form add prof
@@ -42,7 +88,9 @@ app
 			mask=mask+4;
 		if($scope.mask.admin)
 			mask=mask+8;
-		var obj={"nom":$scope.user.nNom,"prenom":$scope.user.nPrenom,"login":$scope.user.nLogin,"tel":$scope.user.nTel,"email":$scope.user.nEmail,"grade":$scope.user.nGrade,"passwd":$scope.user.npasswd,"security_mask":mask};
+		var obj={"nom":$scope.user.nNom,"prenom":$scope.user.nPrenom,"login":$scope.user.nLogin,"tel":$scope.user.nTel,"email":$scope.user.nEmail,"grade":$scope.selectedgrade,"passwd":$scope.user.npasswd,"security_mask":mask,
+				"type":$scope.selectedtype,
+					};
 		//var obj={"nom":"haaaada howa","prenom":$scope.user.nPrenom,"tel":$scope.user.nTel,"email":$scope.user.nEmail,"grade":$scope.user.nGrade};
 		$scope.isEditable.push(false);
 		$scope.reset();

@@ -35,7 +35,7 @@
             <ul class="nav navbar-nav">
               <li><a class="active" href="#/home"> <span class="glyphicon glyphicon-home" ></span> acceuil</a></li>
 				<li><a ui-sref="Gest-Charges"><span class="glyphicon glyphicon-calendar"></span> Gestion de charge</a></li>
-				<li><a ui-sref="Gest-Filiere.module"><span class="glyphicon glyphicon-file"></span> Acréditation de filières <span class="badge">{{eModuleNotifCount()+moduleNotifCount()}}</span></a></li>
+				<li><a ui-sref="Gest-Filiere.module"><span class="glyphicon glyphicon-file"></span> Acréditation de filières <span class="badge" title="Notification">{{eModuleNotifCount()+moduleNotifCount()}}</span></a></li>
 				<li><a ui-sref="Gest-Delib.anneeScolaire"><span class="glyphicon glyphicon-ok"></span> Gestion des délibérations</a></li>
 				<li><a ui-sref="Gest-Scolarite"><span class="glyphicon glyphicon-folder-open"/> Gestion de scolarité</a></li>
               
@@ -69,6 +69,9 @@
 	<script src="../bower_components/angular/angular.min.js"></script>
     <script src="../bower_components/angular-route/angular-route.js"></script>
     <script src="../bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+    <script src="../bower_components/ng-file-upload/ng-file-upload.min.js"></script>
+    <script src="../bower_components/ng-file-upload/ng-file-upload-shim.min.js"></script>
+
 	<script src="js/app.js"></script>
 	
 	<script src="Settings/service.js"></script>

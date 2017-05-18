@@ -167,6 +167,7 @@ var moduleSchema = mongoose.Schema(
          login          :{type:String,required:true,unique:true},
          filiere        :{type:String}, //si l'user est un chef de filiere ===specifier la filiere
          security_mask  :{type : Number,default : 0},
+         type : { type : String,default : ''},
          active_semestre:Number,
          firstlogin : {type : Number,default : 0},
          resetPasswordToken: String,

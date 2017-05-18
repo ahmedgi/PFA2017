@@ -1,5 +1,6 @@
 <div class="navbar navbar-default" role="navigation" >
-            <button type="button" class="btn btn-info" ng-click="add()" ng-disabled="addVisible"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+            <button type="button" class="btn btn-info" ng-click="add()" ng-disabled="addVisible"><span class="glyphicon glyphicon-plus" aria-hidden="true" title="Ajouter Comptes"></span></button>
+            <button type="button" class="btn btn-info" ng-click="Adduniv()" ng-disabled="adduniv"> Ajouter Universités</button>
             <a class="btn btn-primary" href="/ComptesUpload">Importer un fichier excel</a>
             <input type="text" ng-model="q" class="search-input" placeholder="Chercher par Nom .."/>
           
@@ -15,22 +16,22 @@
           <tr>
             <td class="image">
               <img src="./images/imageupload.png" id="upfile1" style="cursor:pointer" />
-              <input type="file" id="file1"  name="file1" style="display:none" />
+              <input type="file" id="file1"  name="file1" style="display:none" ngf-pattern="'image/*'" ngf-max-size="20MB" accept="image/*" ng-model="up.file"/>
             </td>
           </tr>
           <tr>
             <td>
-              <label class="control-label " for="name">Nom :</label>
-              <input type="text" class="form-control" ng-model="user.nNom"/>
+              <label class="control-label " for="nomp">Nom :</label>
+              <input type="text" class="form-control" ng-model="user.nNom" accept=".png,.jpeg"/>
             </td>
             <td>
-              <label class="control-label " for="name">Prenom :</label>
+              <label class="control-label " for="Prenom">Prenom :</label>
               <input type="text" class="form-control" ng-model="user.nPrenom"/>
             </td>
           </tr>
           <tr>
             <td>
-              <label class="control-label " for="name">Username :</label>
+              <label class="control-label " for="username">Username :</label>
               <input type="text" class="form-control" ng-model="user.nLogin"/>
             </td>
             <td>
@@ -40,29 +41,25 @@
           </tr>
           <tr>
             <td>
-              <label class="control-label " for="subject">Tel :</label>
+              <label class="control-label " for="tel">Tel :</label>
             <input type="text" class="form-control" ng-model="user.nTel"/>
             </td>
             <td>
-              <label class="control-label " for="subject">Type :</label>
-              <select class="form-control" id="exampleSelect1">
-                <option>Professeur</option>
-                <option>Ingenieurs</option>
+              <label class="control-label " for="type">Type :</label>
+              <select class="form-control" id="exampleSelect1" ng-model="selectedtype">
+                <option ng-repeat="type in TypeList">{{type}}</option>
               </select>
             </td>  
           </tr>
           <tr>
             <td>
-              <label class="control-label " for="subject">Password :</label>
+              <label class="control-label " for="passwd">Password :</label>
               <input type="password" class="form-control" ng-model="user.npasswd"/>
             </td>
-            <td>
+            <td ng-hide="selectedtype==Professeur">
               <label class="control-label " for="subject">Grade :</label>
-              <select class="form-control" id="exampleSelect1">
-                <option>PA</option>
-                <option>PH</option>
-                <option>PES</option>
-              </select>
+              <select class="form-control" id="exampleSelect1" ng-model="selectedgrade">
+                <option ng-repeat="grade in GradeList">{{grade}}</option>
             </td>
           </tr>
           <tr>
@@ -85,6 +82,7 @@
                     Chef de departement
                   </label>
             </td>
+          </tr>
             <tr>
             <td>
               <button class="btn btn-success" ng-click="valider()">Ajouter</button>
@@ -95,6 +93,65 @@
         </table>
       </fieldset>
     </form> 
+  </div>
+
+  <div ng-class="expression"="adduser">
+        <form ng-show="adduniv">
+          <fieldset>
+            <legend>Ajouter Universités</legend>
+            <table class="table border">
+              <tr>
+                <td>
+                  <label class="control-label " for="univ">Universités :</label>
+                  <input type="text" class="form-control" ng-model="univ.nom"/>
+                </td>
+                <td>
+                  <label class="control-label " for="univabv">Abreviation :</label>
+                  <input type="text" class="form-control" ng-model="univ.abrev"/>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="control-label " for="etab">Etablissement :</label>
+                  <input type="text" class="form-control" ng-model="etab.nom"/>
+                </td>
+                <td>
+                  <label class="control-label requiredField" for="etababv">Abreviation :</label>
+                  <input type="text" class="form-control" ng-model="etab.abrev"  />
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label class="control-label requiredField" for="dep">Departement :</label>
+                  <input type="text" class="form-control" ng-model="dep.nom"/>
+                </td>
+                <td>
+                  <label class="control-label " for="depabv">Abreviation :</label>
+                 <input type="text" class="form-control" ng-model="dep.abrev"/>
+                </td>
+              </tr>
+              <tr ng-show="adddep">
+                <td>
+                  <label class="control-label requiredField" for="dep">Departement :</label>
+                  <input type="text" class="form-control" ng-model="dep.nom2"/>
+                </td>
+                <td>
+                  <label class="control-label " for="depabv">Abreviation :</label>
+                 <input type="text" class="form-control" ng-model="dep.abrev2"/>
+                </td>
+              </tr>
+                <tr>
+                <td><button class="btn btn-info" ng-click="Adddep()">AjouterDepartement</button></td>
+                <td>
+                  <button class="btn btn-success" ng-click="ajouteruniv()">Valider</button>
+                  <button class="btn btn-warning" ng-click="hideAddUniv()">Annuler</button>
+                </td>
+                </tr>
+              </tr>
+            </table>
+          </fieldset>
+    </form> 
+
   </div>
 
 
@@ -111,12 +168,12 @@
           <th >Options</th>
         </tr>
         <tr ng-repeat="a in items | filter:{nom:q} | orderBy:'nom' track by $index">
-          <td ng-show="isEditable[$index]"><input class="form-control" type="text" ng-model="tmpEdit[$index].nom" /></td>
-          <td ng-show="isEditable[$index]"><input class="form-control" type="text" ng-model="tmpEdit[$index].prenom" /></td>
-          <td ng-show="isEditable[$index]"><input class="form-control" type="text" ng-model="tmpEdit[$index].login" /></td>
-          <td ng-show="isEditable[$index]"><input class="form-control" type="text" ng-model="tmpEdit[$index].tel" /></td>
-          <td ng-show="isEditable[$index]"><input class="form-control" type="text" ng-model="tmpEdit[$index].email" /></td>
-          <td ng-show="isEditable[$index]">
+          <td class='input' ng-show="isEditable[$index]"><input class="form-control" type="text" ng-model="tmpEdit[$index].nom" /></td>
+          <td class='input' ng-show="isEditable[$index]"><input class="form-control" type="text" ng-model="tmpEdit[$index].prenom" /></td>
+          <td class='input' ng-show="isEditable[$index]"><input class="form-control" type="text" ng-model="tmpEdit[$index].login" /></td>
+          <td class='input' ng-show="isEditable[$index]"><input class="form-control" type="text" ng-model="tmpEdit[$index].tel" /></td>
+          <td class='input' ng-show="isEditable[$index]"><input class="form-control" type="text" ng-model="tmpEdit[$index].email" /></td>
+          <td class='input' ng-show="isEditable[$index]">
               <button class="btn btn-success" ng-click="confirm($index,a)">Confirmer</button>
               <button class="btn btn-info" ng-click="annuler($index)">Annuler</button>
           </td>
