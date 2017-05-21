@@ -1,5 +1,5 @@
 app
-.controller('SettingsCtrl',function($scope,$http,$filter,settingFactory){
+.controller('SettingsCtrl',function($scope,$http,$filter,settingFactory,multipartForm){
 
 	$scope.tmpEdit   =[];//hold the tmp info of the prof in editing time
 	$scope.isEditable=[];//hold the statut of a table line if it's editable or not
@@ -12,8 +12,11 @@ app
 	$scope.TypeList=["Professeur","Ingenieurs"];
 	$scope.GradeList=["PA","PH","PES"];
 	$scope.adduniv=false;
+	$scope.addetab=[];
+	$scope.adddep=[];
+	$scope.ListPrametre=[];
 
-	// ajouter une universiter
+	// ajouter une université
 	$scope.hideAddUniv=function(){
 		$scope.adduniv=false;
 	};
@@ -21,12 +24,14 @@ app
 		$scope.adduniv=true;
 		$scope.addVisible=false;
 	};
+	//uploade images
 	$scope.ajouteruniv=function(){
 		$scope.addVisible=false;
-		var univ={"univ":$scope.univ.nom,"dep1":$scope.dep.nom,"dep2":$scope.dep.nom2,"etab":$scope.etab.nom,"univabv":$scope.univ.abrev,
-		"depabv1":$scope.dep.abrev,"depabv2":$scope.dep.abrev2,"etababv":$scope.etab.abrev};
-		console.log(univ);
+		$scope.addetab.push($scope.etab);
+		$scope.adddep.push($scope.dep);
+		var univ={"nom":$scope.univ.nom,"abrev":$scope.univ.abrev,"etablissements":$scope.addetab,"departements":$scope.adddep};
 		$scope.adduniv=false;
+		$scope.ListPrametre.push(univ);
 		$http({
 			method:'POST',
 			data:univ,
@@ -44,13 +49,19 @@ app
     });
 	};
 	// add departement
-	$scope.deplist=[];
-	$scope.Adddep=function(){
-		$scope.adddep=true;
-		if($scope.dep.nom){
-			$scope.deplist.push($scope.dep.nom);
-			$scope.dep.nom="";
-		}
+	$scope.Addep=function(){
+		$scope.adddep.push({});
+	};
+	$scope.deldep=function(id){
+		$scope.adddep.splice(id,1);
+	}
+	// ajouter etablisement
+
+	$scope.Addetab=function(){
+		$scope.addetab.push({});
+	};
+	$scope.deletab=function(id){
+		$scope.addetab.splice(id,1);
 	};
 
 
@@ -64,7 +75,9 @@ app
 	settingFactory.getListMatiere().then(function(arrItems){//fetch the informations of the subjects from the factory
          $scope.matieres = arrItems;
        });
-
+	settingFactory.getParametre().then(function(array){
+		$scope.ListPrametre=array;
+	});
 	$scope.add=function(){//when click on the + button , it show up the form add prof
 		$scope.addVisible=true;
 		$scope.adduniv=false;
@@ -79,40 +92,13 @@ app
 	}
 
 	$scope.valider=function(){//add a new prof to the list of profs (items)
-		var mask=0;
-		if($scope.mask.prof)
-			mask=mask+1;
-		if($scope.mask.chefFil)
-			mask=mask+2;
-		if($scope.mask.chefDepart)
-			mask=mask+4;
-		if($scope.mask.admin)
-			mask=mask+8;
-		var obj={"nom":$scope.user.nNom,"prenom":$scope.user.nPrenom,"login":$scope.user.nLogin,"tel":$scope.user.nTel,"email":$scope.user.nEmail,"grade":$scope.selectedgrade,"passwd":$scope.user.npasswd,"security_mask":mask,
-				"type":$scope.selectedtype,
-					};
-		//var obj={"nom":"haaaada howa","prenom":$scope.user.nPrenom,"tel":$scope.user.nTel,"email":$scope.user.nEmail,"grade":$scope.user.nGrade};
+
+		var obj={nom:$scope.user.nom,prenom:$scope.user.prenom,login:$scope.user.username,tel:$scope.user.tel,email:$scope.user.email};
+		$scope.items.push(obj);
+		multipartForm.post('/create', $scope.user);
 		$scope.isEditable.push(false);
 		$scope.reset();
-
-		$http({
-			method:'POST',
-			data:obj,
-			url:'/create'
-		}).then(
-    		function success(res){
-      			if(res.data.info=="non_auto"){
-        			alert("vous n'êtes pas autorisé !!");
-     				 }
-      			else {
-      				alert(JSON.stringify(res.data));
-      				$scope.addVisible=false;
-      				refresh();
-      			}
-    		},function err(res){
-      		alert(JSON.stringify(res.data.err));
-    });
-	}
+	};
 	
 	$scope.editer=function(obj,id){//when click on editer button, it turn the line of the table to a form
 		$scope.isEditable[id]=true;
@@ -142,6 +128,19 @@ app
 		$scope.activeObj=obj;
 		$scope.lightboxContentSwitch="delete";
 	};
+	// delete the parametre
+	$scope.deleteP=function(parametre){
+		$scope.ListPrametre.splice($scope.ListPrametre.indexOf(parametre),1);
+		$http({
+			method:"post",
+			data:parametre,
+			url:'/delete_param'
+		}).then(function success(res){
+			alert(res.data.ok);
+		},function err(res){
+			alert(res.data.err);
+		});
+	};
 
 	$scope.confirmDelete=function(obj){//when click on confirmer(after delete), it delete the active prof
 		$scope.items.splice($scope.items.indexOf(obj),1);
@@ -149,7 +148,8 @@ app
 			method:'POST',
 			data:{user_id:obj._id},
 			url   :'http://localhost:8010/delete_user'
-		}).then(function success(res){alert(JSON.stringify(res.data));},function err(res){alert(res.data.err);});
+		}).then(function success(res){alert(JSON.stringify(res.data));
+		},function err(res){alert(res.data.err);});
 	};
 
 	//----------------------------Privelege Modal-----------------------------------------------------------------------------------------------------------------------------------

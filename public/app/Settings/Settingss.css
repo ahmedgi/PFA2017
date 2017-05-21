@@ -78,3 +78,10 @@ fieldset {
     width: 80px;
     height: 80px;
 }
+.parametre td{
+    border: none !important;
+    width: 25% ;
+}
+#ajouterparametre{
+    margin-right: 20px;
+}

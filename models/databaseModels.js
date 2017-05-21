@@ -280,6 +280,21 @@ profSchema.methods.setAtt = function(att,value){
         this[att] = value;
     }
 }
+// parametre shema
+var Univshema=mongoose.Schema({
+    nom:String,
+    abrev:String,
+    etablissements:[
+    {
+        nom:String,
+        abrev:String
+    }
+    ],
+    departements:[{
+        nom:String,
+        abrev:String
+    }]
+});
  
  module.exports = {
      eModules : mongoose.model('eModules',eModuleSchema),
@@ -287,6 +302,7 @@ profSchema.methods.setAtt = function(att,value){
      profs : mongoose.model('prof',profSchema),
      eModuleNotif : mongoose.model('eModuleNotif',eModuleNotifSchema),
      moduleNotif : mongoose.model('moduleNotif',moduleNotifSchema),
-     filiere : mongoose.model('filiere',filiereSchema)
+     filiere : mongoose.model('filiere',filiereSchema),
+     universite : mongoose.model('universite',Univshema)
  };
               

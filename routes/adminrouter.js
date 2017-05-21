@@ -3,6 +3,9 @@ var adminrouter=express.Router();
 var async     =require('async');
 var conEnsure =require('connect-ensure-login');
 var nodemailer=require('nodemailer');
+var multer = require('multer');
+var fs=require('fs');
+adminrouter.use(multer({dest: './public/app/images/'}).any());
 //-----models---------------
 var User = require("../models/databaseModels").profs;
 var eModule = require("../models/databaseModels").eModule;
@@ -12,25 +15,67 @@ var Notes  =require("../models/Notes");
 var ModuleAnnee =require("../models/Module");
 var AnneeScolaire=require("../models/AnneeScolaire");
 var dbModel = require("../models/databaseModels");
+var universite=require("../models/databaseModels").universite;
 
 //==================================creer un compte=======================================
 
- adminrouter.post('/create'/* ,conEnsure.ensureLoggedIn(2,"/login") */,function(req,res){
-    console.log("req --------received ! ");
-    var createuser=true;
-    var nregx =new  RegExp(/^[a-zA-Z_]{3,}$/),
-        pnregx=new  RegExp(/^[a-zA-Z_]{3,}$/),
-        eregx =new  RegExp(/^[^]+@gmail.com$/),
-        mregx =new  RegExp(/^([0-9]{1}|1[0-5])$/),
-        gregx =new  RegExp(/^([a-zA-Z_]+)$/),
-        nom   =req.body.nom,
-        login=req.body.login,
-		    email =req.body.email,
-        tel   =req.body.tel,
-        mask=req.body.security_mask,
-        grade =req.body.grade,
-        passwd=req.body.passwd,//req.body.passwd,
-        prenom=req.body.prenom;
+
+ adminrouter.post('/create'/* ,conEnsure.ensureLoggedIn(2,"/login") */,function(req,res){ 
+  if(req.files[0]){
+    fs.rename(req.files[0].path, './public/app/images/'+req.body.username+'.png', function(err) {
+    if ( err ) console.log('ERROR: ' + err);
+      });
+  };
+  var mask=0;
+    if(req.body.maskprof)
+      mask=mask+1;
+    if(req.body.maskchefFil)
+      mask=mask+2;
+    if(req.body.maskchefDepart)
+      mask=mask+4;
+    if(req.body.maskadmin)
+      mask=mask+8;
+
+    nom=req.body.nom,
+    login=req.body.username,
+    email =req.body.email,
+    tel   =req.body.tel,
+    grade =req.body.selectedgrade,
+    type=req.body.selectedtype,
+    passwd=req.body.password,//req.body.passwd,
+    prenom=req.body.prenom;
+
+    var user=new User({
+    login        :login,
+    nom          :nom,
+    prenom       :prenom,
+    tel          :tel,
+    email        :email,
+    grade        :grade,
+    security_mask: mask,
+    matieres     : [],
+    modules      : []
+    });
+
+    User.findOne({login:login},function(err,doc){
+      if(typeof doc!='undefined' && doc!=null){
+        if(doc.login.trim().toUpperCase()==login.trim().toUpperCase())
+                            res.json({err:"ce nom d'user existe déja !"});
+      }
+      else {
+        user.save(function(err){
+                  if(err)res.json({err:"vos infos ne sont pas saisies , veuillez vérifier"});
+                  else {
+                    res.json({ok:"compte créé  correctement !"});
+                  /* mailOptions.to=email;
+                   transporter.sendMail(mailOptions,function(err,info){
+                      if(!err) res.json({ok:"compte créé ! -info:"+info.response});
+                      else res.json({err:"une erreur s'est produite"+JSON.stringify(err)});
+                   });*/
+                  }
+        });     
+      }
+    });
    /* var transporter=nodemailer.createTransport({
         service:'Gmail',
         auth:{
@@ -44,55 +89,14 @@ var dbModel = require("../models/databaseModels");
        subject:"mot de passe",
        text:"votre mot de pass: "+passwd
     };*/
-    //console.log("#########################"+nom)
-    if (nom.trim() == "" || !nregx.test(nom)){
-        res.json({ err: "vous devez entrez un nom valide" });
-        createuser=false;}
-    else if (typeof prenom == "undefined" || prenom.trim() == "" || !pnregx.test(prenom))
-        {res.json({ err: "vous devez entrez un prenom valide" });
-        createuser=false;}
-    else if (typeof grade == "undefined" || grade.trim() == "" || !gregx.test(grade))
-        {res.json({ err: "vous n'êtes pas serieux" });
-        createuser=false;}
-    else if (!email || !eregx.test(email)) {
-      res.json({err:"email invalide !!"});
-      createuser=false;
+    /*
     }
 		if(createuser){
       //console.log('security_mask='+mask);
-      var user=new User({
-        login        :login,
-        nom          :nom,
-        prenom       :prenom,
-        tel          :tel,
-        email        :email,
-        grade        :grade,
-        security_mask: mask,
-        matieres     : [],
-        modules      : []
-      });
       //console.log(JSON.stringify(user));
       user.password=passwd;
-      User.findOne({login:login},function(err,doc){
-            if(typeof doc!='undefined' && doc!=null){
-              if(doc.login.trim().toUpperCase()==login.trim().toUpperCase())
-																	res.json({err:"ce nom d'user existe déja !"});
-            }
-            else {
-              user.save(function(err){
-                        if(err)res.json({err:"vos infos ne sont pas saisies , veuillez vérifier"});
-                        else {
-                          res.json({ok:"compte créé  correctement !"});
-                        /* mailOptions.to=email;
-                         transporter.sendMail(mailOptions,function(err,info){
-                            if(!err) res.json({ok:"compte créé ! -info:"+info.response});
-                            else res.json({err:"une erreur s'est produite"+JSON.stringify(err)});
-                         });*/
-                        }
-              });     
-            }
-      });
-				}
+				}*/
+
 });
 
  /*adminrouter.post('/affect',function(req,res){
@@ -102,9 +106,43 @@ var dbModel = require("../models/databaseModels");
       });
     }
  });*/
-// create university
+// create parametre
+
 adminrouter.post('/createuniv',function(req,res){
   console.log('req from univ received');
+  var nom=req.body.nom;
+  var abrev=req.body.abrev;
+  var etab=req.body.etablissements;
+  var dep=req.body.departements;
+  var univ=new universite({
+    nom:nom,
+    abrev:abrev,
+    departements:dep,
+    etablissements:etab
+  });
+
+        universite.findOne({nom:nom},function(err,doc){
+            if(typeof doc!='undefined' && doc!=null){
+              if(doc.nom.trim().toUpperCase()==nom.trim().toUpperCase())
+                                  res.json({err:"ce nom d'université existe déja !"});
+            }
+            else {
+              univ.save(function(err){
+                        if(err)res.json({err:"vos infos ne sont pas saisies , veuillez vérifier"});
+                        else {
+                          res.json({ok:"parametre créé  correctement !"});
+                        /* mailOptions.to=email;
+                         transporter.sendMail(mailOptions,function(err,info){
+                            if(!err) res.json({ok:"compte créé ! -info:"+info.response});
+                            else res.json({err:"une erreur s'est produite"+JSON.stringify(err)});
+                         });*/
+                        }
+              });     
+            }
+      });
+
+
+  
 });
 
 //---------get prof list-----------------------------------
@@ -129,6 +167,18 @@ adminrouter.get('/profs',/* conEnsure.ensureLoggedIn(2,"/login_"), */function(re
       else res.status(500).json({err:""});
    });
 });
+// recuperer la liste des paramètres
+
+adminrouter.get('/parametres',function(req,res){
+  var Psend={};
+  universite.find({}).exec(function(err,param){
+    if(!err){
+      Psend.data=param;
+      res.status(200).json(Psend);
+    }else res.statys(500).json({err:"erreur de recuperation des parametre"});
+  });
+});
+
 //-----------get-Subject-List------------------------------
 adminrouter.get('/matieres',/*conEnsure.ensureLoggedIn(2,"/login_"),*/function(req,res){
   var tsend={};
@@ -140,7 +190,6 @@ adminrouter.get('/matieres',/*conEnsure.ensureLoggedIn(2,"/login_"),*/function(r
   },],function(err,result){
 
   });*/
-  console.log("zzzz");
   AnneeScolaire.findOne({active:true},function(err,annee){
     if(err) res.json({"err":"erroor"});
     if(annee){
@@ -226,6 +275,15 @@ adminrouter.post("/admin_data",/* conEnsure.ensureLoggedIn(8,"/login"), */functi
    }catch(NumberFormatException){
       res.json({err:"vous ne pouvez pas modifier !"});
    }
+});
+
+//delete the parametres
+adminrouter.post("/delete_param",function(req,res){
+  universite.remove({_id:req.body._id},function(err,param){
+    if(!err){
+      res.json({ok:"le parametre est bien suprimer"});
+    }else res.json({err:"erreur lors de la supression"});
+  });
 });
 
 adminrouter.post("/delete_user",function(req,res){

@@ -21,7 +21,8 @@ var serverip = 'localhost:8010'
     'ngRoute',
     'ui.bootstrap.contextMenu',
     'ui.router',
-    'angularNotify'
+    'angularNotify',
+    'ngFileUpload'
 ]);
  
  app.run(function($rootScope){
@@ -186,7 +187,7 @@ app.controller('mainController',function($scope,$rootScope,$http,$window,profsLi
              $window.location.href = 'http://'+serverip+'/app/login';
           })
       }
-})
+});
 
 
 app.controller('homeCtrl', ['$scope',
