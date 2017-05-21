@@ -7,8 +7,8 @@ body {
 }
 
 .container {
-    margin-right: 20px;
-    margin-left: 100px;
+    width: 87%;
+  margin-left : 10%;
 }
 
 h1, .h1,
@@ -22,8 +22,15 @@ h6, .h6 {
   font-weight: normal;
   color: #333;
 }
-
-
+/* style des lein windows et linux */
+.OSlien
+{
+  border:0.5px solid black;//black ou le color que vous voulez ici
+  -moz-border-radius:7px;
+  -webkit-border-radius:7px;
+  border-radius:7px;
+  background-color : rgb(236, 238, 239);/*le color que vous voulez ici*/
+}
 
 /*
  * Masthead for nav
@@ -157,12 +164,4 @@ h6, .h6 {
 }
 .blog-footer p:last-child {
   margin-bottom: 0;
-}
-
-.form{
-  margin-top: 60px;
-}
-
-.navigation{
-  margin-right: 100px;
 }

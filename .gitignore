@@ -8,3 +8,5 @@
 /public/app/ComptesUpload/files/*
 /node_modules
 *.rar
+/public/app/login/*
+public/app/css/login.css
