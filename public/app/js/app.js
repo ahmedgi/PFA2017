@@ -22,7 +22,6 @@ var serverip = 'localhost:8010'
     'ui.bootstrap.contextMenu',
     'ui.router',
     'angularNotify',
-    'ngFileUpload'
 ]);
  
  app.run(function($rootScope){

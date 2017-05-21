@@ -9,4 +9,6 @@
 /node_modules
 *.rar
 /public/app/login/*
-public/app/css/login.css
+/public/app/css/login.css
+/public/app/images/*
+

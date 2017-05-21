@@ -53,6 +53,7 @@ var universite=require("../models/databaseModels").universite;
     email        :email,
     grade        :grade,
     security_mask: mask,
+    password:passwd,
     matieres     : [],
     modules      : []
     });
@@ -67,45 +68,13 @@ var universite=require("../models/databaseModels").universite;
                   if(err)res.json({err:"vos infos ne sont pas saisies , veuillez vérifier"});
                   else {
                     res.json({ok:"compte créé  correctement !"});
-                  /* mailOptions.to=email;
-                   transporter.sendMail(mailOptions,function(err,info){
-                      if(!err) res.json({ok:"compte créé ! -info:"+info.response});
-                      else res.json({err:"une erreur s'est produite"+JSON.stringify(err)});
-                   });*/
                   }
         });     
       }
     });
-   /* var transporter=nodemailer.createTransport({
-        service:'Gmail',
-        auth:{
-          user:"christopher.blhj@gmail.com",
-          pass:"scholarmanager"
-        }        
-    });
-    var mailOptions={
-       from:"example@gmail.com",
-       to  :email,
-       subject:"mot de passe",
-       text:"votre mot de pass: "+passwd
-    };*/
-    /*
-    }
-		if(createuser){
-      //console.log('security_mask='+mask);
-      //console.log(JSON.stringify(user));
-      user.password=passwd;
-				}*/
 
 });
 
- /*adminrouter.post('/affect',function(req,res){
-    if(req.body.idProf && req.body.idmat){
-      Matiere.findOneAndUpdate({_id:req.body.idmat},{_ens:req.body.idProf},{upsert: true},function(err){
-        if(err) res.json({"err":"error affect"});
-      });
-    }
- });*/
 // create parametre
 
 adminrouter.post('/createuniv',function(req,res){
@@ -286,6 +255,7 @@ adminrouter.post("/delete_param",function(req,res){
   });
 });
 
+// delete User
 adminrouter.post("/delete_user",function(req,res){
    console.log("pppp"+JSON.stringify(req.body))
    User.findOne({_id:req.body.user_id},function(err,user){
