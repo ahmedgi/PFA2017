@@ -5,7 +5,7 @@ var conEnsure =require('connect-ensure-login');
 var nodemailer=require('nodemailer');
 var multer = require('multer');
 var fs=require('fs');
-//adminrouter.use(multer({dest: './public/app/images/'}).any());
+adminrouter.use(multer({dest: './public/app/images/'}).any());
 //-----models---------------
 var User = require("../models/databaseModels").profs;
 var eModule = require("../models/databaseModels").eModule;
@@ -20,7 +20,7 @@ var universite=require("../models/databaseModels").universite;
 //==================================creer un compte=======================================
 
 
- adminrouter.post('/create'/* ,conEnsure.ensureLoggedIn(2,"/login") */,function(req,res){ 
+ adminrouter.post('/create' /* ,conEnsure.ensureLoggedIn(2,"/login") */,function(req,res){ 
   if(req.files[0]){
     fs.rename(req.files[0].path, './public/app/images/'+req.body.username+'.png', function(err) {
     if ( err ) console.log('ERROR: ' + err);
