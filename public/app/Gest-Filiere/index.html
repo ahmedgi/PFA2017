@@ -11,10 +11,10 @@
                             </a>
                         </li>
                         <li>
-                            <a ui-sref=".eModule" class="sideBarItem" data-toggle="offcanvas">Elément de module <span class="badge" title="Notification">{{eModuleNotifCount()}}</span></a>
+                            <a ui-sref=".eModule" class="sideBarItem" data-toggle="offcanvas">Elément de module <span class="badge" title="Notification">{{eModuleNotifCount()}}</span><span class="badge" title="Nombre d'elements du module">{{eModulesList().length}}<span></a>
                         </li>
                         <li>
-                            <a ui-sref=".module" class="sideBarItem" data-toggle="offcanvas">Module <span class="badge" title="Notification">{{moduleNotifCount()}}</span></a>
+                            <a ui-sref=".module" class="sideBarItem" data-toggle="offcanvas">Module <span class="badge" title="Notification">{{moduleNotifCount()}}</span></span><span class="badge" title="Nombre des modules">{{modulesList().length}}<span></a>
                         </li>
                         <li>
                             <a ui-sref=".filiere" class="sideBarItem" data-toggle="offcanvas" ng-if='user().security_mask>1'>Filiere</span></a>

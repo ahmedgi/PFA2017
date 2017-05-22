@@ -6,16 +6,17 @@
                     <th>Intitulée</th>
                     <th>Responsable</th>
                     <th>Dernière modification</th>
-                    <th>Option</th>
                  </tr>
            </thead>
            <tbody>
                  <tr ng-repeat="filiere in filiereTable.items() | filter : filiereTable.search" class="{{filiere.status =='complet'?'tr_complet':'tr_incomplet'}}"  ng-class="{'tr_active' : filiereTable.selectedIndex == $index}" ng-mousedown="filiereTable.clicked($index,filiere._id,filiere.intitulee)" context-menu="filiereTable.menuOptions"  ng-click="filiereTable.clicked($index,filiere._id,filiere.intitulee)">
                     <td>{{$index}}</td>
-                    <td>{{filiere.intitulee}}</td>
-                    <td>{{responsable(filiere.responsable).length==0?'vous' :responsable(filiere.responsable)[0].nom+' '+responsable(filiere.responsable)[0].prenom}}</td>
+                    <td>{{filiere.intitulee}}
+                      <button class="btn btn-primary inline" ng-click=""><span class="glyphicon glyphicon-plus" title="plus de details">
+                      </button></td>
+                    <td>{{responsable(filiere.responsable).length==0?'vous' :responsable(filiere.responsable)[0].nom+' '+responsable(filiere.responsable)[0].prenom}}
+                    </td>
                     <td>{{filiere.lastUpdate | date:'yyyy-MM-dd HH:mm:ss'}}</td>
-                    <td><button class="btn btn-primary" ng-click="moreinfo()">Plus d'info &raquo;</button></td>
                  </tr>
             </tbody>    
        </table>   
