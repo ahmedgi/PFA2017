@@ -2,9 +2,18 @@
   <div ng-controller="e_editeModalController" id="editeModal" class="modal fade">
     <div class="modal-dialog">
             <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+            <div class="modal-footer">
+                <button class="btn btn-default" ng-click="edite.submit(editeForm.$pristine)" ng-disabled="editeForm.$invalid">Valider</button>   
+                <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="edite.annuler()">Annuler</button>
+                <div class="col-xs-6 col-sm-3">
+                    <select class="form-control" ng-model="edite.req.status">
+                          <option>complet</option>
+                          <option>incomplet</option>
+                    </select>
+                </div>
             </div>
+            
             <div class="modal-body">
               <form name='editeForm' role="form" novalidate>
                 <div class="panel panel-primary">
@@ -78,16 +87,7 @@
                 </div>
               </form>
             </div>
-            <div class="modal-footer">
-                <button class="btn btn-default" ng-click="edite.submit(editeForm.$pristine)" ng-disabled="editeForm.$invalid">Valider</button>   
-                <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="edite.annuler()">Annuler</button>
-                <div class="col-xs-6 col-sm-3">
-                    <select class="form-control" ng-model="edite.req.status">
-                          <option>complet</option>
-                          <option>incomplet</option>
-                    </select>
-                </div>
-            </div>
+
     </div>
   </div>
  </div>

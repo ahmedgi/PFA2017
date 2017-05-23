@@ -85,3 +85,7 @@ fieldset {
 #ajouterparametre{
     margin-right: 20px;
 }
+
+.table p{
+  color: red !important;
+}

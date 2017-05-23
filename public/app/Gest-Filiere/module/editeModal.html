@@ -1,10 +1,19 @@
 <!-- modale edite elemnt de module-->
   <div ng-controller="m_editeModalController" id="editeModal" class="modal fade">
     <div class="modal-dialog">
-            <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <div class="modal-content">
+            <div class="modal-footer">
+                <button class="btn btn-default" ng-click="edite.submit(editeForm.$pristine)" ng-disabled="editeForm.$invalid">Valider</button>   
+                <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="edite.annuler()">Annuler</button>
+                <div class="col-xs-6 col-sm-3">
+                    <select class="form-control" ng-model="edite.req.status">
+                          <option>complet</option>
+                          <option>incomplet</option>
+                    </select>
+                </div>
             </div>
+
+
             <div class="modal-body">
               <form name='editeForm' role="form" novalidate>
                 <div class="panel panel-primary">
@@ -12,7 +21,9 @@
                         <h3 class="panel-title"><label for="universite">Université</label></h3>
                     </div>
                     <div class="panel-body">
-                        <input class="form-control" id="universite" name="universite" placeholder="Université" rows="4" ng-model="edite.req.universite"/>
+                        <select class="form-control" id="universite" rows="4" name="universite" ng-model="edite.req.universite">
+                            <option ng-repeat="param in listparametre">{{param.nom}}({{param.abrev}})</option>
+                        </select>
                     </div>
                 </div>
                 <div class="panel panel-primary">
@@ -20,7 +31,9 @@
                         <h3 class="panel-title"><label for="etablissement">Etablissement</label></h3>
                     </div>
                     <div class="panel-body">
-                        <input class="form-control" id="etablissement" name="etablissement" placeholder="Etablissement" rows="4" ng-model="edite.req.etablissement"/>
+                        <select class="form-control" id="etablissement" rows="4" name="etablissement" ng-model="edite.req.etablissement">
+                            <option ng-repeat="etab in etablissements()">{{etab.nom}}({{etab.abrev}})</option>
+                        </select>
                     </div>
                 </div>
                 <div class="panel panel-primary">
@@ -28,7 +41,9 @@
                         <h3 class="panel-title"><label for="departement">Département</label></h3>
                     </div>
                     <div class="panel-body">
-                        <input class="form-control" id="departement" name="departement" placeholder="departement" rows="4" ng-model="edite.req.departement"/>
+                        <select class="form-control" id="departement" rows="4" name="departement" ng-model="edite.req.departement">
+                            <option ng-repeat="dep in departements()">{{dep.nom}}({{dep.abrev}})</option>
+                        </select>
                     </div>
                 </div>
                 <div class="panel panel-primary">
@@ -110,16 +125,7 @@
                 </div>
               </form>
             </div>
-            <div class="modal-footer">
-                <button class="btn btn-default" ng-click="edite.submit(editeForm.$pristine)" ng-disabled="editeForm.$invalid">Valider</button>   
-                <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="edite.annuler()">Annuler</button>
-                <div class="col-xs-6 col-sm-3">
-                    <select class="form-control" ng-model="edite.req.status">
-                          <option>complet</option>
-                          <option>incomplet</option>
-                    </select>
-                </div>
-            </div>
+
     </div>
   </div>
  </div>

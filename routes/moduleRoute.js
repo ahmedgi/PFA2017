@@ -10,6 +10,16 @@ var router = express.Router();
 var errorMessage = function(code,message){
     return {code : code,message : message}
 }
+//get parametres
+router.get('/parametres',function(req,res){
+  var Psend={};
+  universite.find({}).exec(function(err,param){
+    if(!err){
+      Psend.data=param;
+      res.status(200).json(Psend);
+    }else res.statys(500).json({err:"erreur de recuperation des parametre"});
+  });
+});
 
 //{universite : String,etablissement : String,departement : String,intitulee : String,cordId : _id,eModules : []
 // userId : _id }

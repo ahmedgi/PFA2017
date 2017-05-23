@@ -24,6 +24,24 @@ app.filter('unique', function() {
           return output;
         };
     });
+// la liste des parametre
+app.factory('parametrelist', function($http){
+        this.getparametre=function(){
+        return $http({
+            method:"GET",
+            url:'/parametres',
+        }).then(function success(res){
+             if(res.data.info=="non_auto"){
+                  alert("vous n'avez pas le droit");
+                  return [];
+             }else
+                return res.data.data;
+        },function(err){
+            alert("erreur de recuperation des param");
+        });
+    }
+    return this;
+});
 //filiere Service
 app.service('filiereService',function($http){
     this.get = function(req){
@@ -936,8 +954,34 @@ app.controller('m_deleteModalController',function($scope,$rootScope,moduleServic
         }
 });
 
-app.controller('m_editeModalController',function($scope,$rootScope,moduleService,profService,modulesList,profsList,eModulesList){
+app.controller('m_editeModalController',function($scope,$rootScope,moduleService,profService,modulesList,profsList,eModulesList,parametrelist){
     $scope.eModules = eModulesList.getItems;
+    $scope.listparametre=[];
+    $scope.etablissement=[];
+    $scope.departement=[];
+
+    parametrelist.getparametre().then(function(arrItems){//fetch the informations of the subjects from the factory
+         $scope.listparametre= arrItems;
+    });
+    //la liste des etabliessements
+    $scope.etablissements=function(){
+        for(i=0;i<$scope.listparametre.length;i++){
+            for(j=0;j<$scope.listparametre[i].etablissements.length;j++){
+                $scope.etablissement.push($scope.listparametre[i].etablissements[j]);
+            }
+        };
+        return $scope.etablissement;
+    };
+   // la liste des departement
+    $scope.departements=function(){
+        for(i=0;i<$scope.listparametre.length;i++){
+            for(j=0;j<$scope.listparametre[i].departements.length;j++){
+                $scope.departement.push($scope.listparametre[i].departements[j]);
+            }
+        };
+        return $scope.departement;
+    };
+
     $scope.edite = {
             req : {
                 universite : '',
