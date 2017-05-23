@@ -5,7 +5,7 @@ var multer = require ('multer');
 
 
 //-----models---------------
-
+var User = require("../models/databaseModels").profs;
 //pour l'upload
 
 var storage =   multer.diskStorage({
@@ -41,7 +41,60 @@ router.post('/api/exemple/upload',function(req,res){
         if(err) {
             return res.end("Error uploading file or not Excel files are uploaded.");
         }
-        res.redirect('/app');
+		if(typeof require !== 'undefined') XLSX = require('xlsx');
+		var workbook = XLSX.readFile(req.file.path);
+
+		/* DO SOMETHING WITH workbook HERE */
+
+		var first_sheet_name = workbook.SheetNames[0];
+		/* Get worksheet */
+		var worksheet = workbook.Sheets[first_sheet_name];
+		var data_json = XLSX.utils.sheet_to_json(worksheet,{raw:true});
+		console.log("Longeur du tableau : "+ data_json[0]['nom']);
+		//var row = data_json[0].length;
+		var longeur = data_json.length;
+		/*for (var i = 0 ; i<longeur ;i++)
+		{
+			for (var j = 0; j < row ; j++)
+			{
+				console.log("valeur ["+i+"-"+j+"] du tableau : "+ data_json[i][j]);
+			}
+		} */
+		for (var i = 0 ; i<longeur ;i++)
+		{
+			var user=new User({
+				login        :data_json[i]['login'],
+				nom          :data_json[i]['nom'],
+				prenom       :data_json[i]['prenom'],
+				tel          :data_json[i]['tel'],
+				email        :data_json[i]['email'],
+				grade        :data_json[i]['grade'],
+				security_mask: data_json[i]['security_mask'],
+				password:data_json[i]['password'],
+				specialite : data_json[i]['specialite'],
+				matieres     : [],
+				modules      : []
+				});
+			user.save(function(err) {
+			if (err) throw err;
+			  console.log('compte admin created successfully!');
+			});
+			for (var item in data_json[i])
+			{
+				console.log("valeur ["+i+"-"+item+"] du tableau : "+ data_json[i][item]);
+			}
+		}
+        //2 methodes pour l'insert 
+		//methode 1 direct 
+		/* require all mongo
+		db.collection('profs').insert(data, function(error, record){
+			if (error) throw error;
+			console.log("data saved");
+		});
+		*/
+		//methode 2
+		
+		res.redirect('/app');
     });
 });
 
