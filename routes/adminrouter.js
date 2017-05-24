@@ -5,7 +5,7 @@ var conEnsure =require('connect-ensure-login');
 var nodemailer=require('nodemailer');
 var multer = require('multer');
 var fs=require('fs');
-adminrouter.use(multer({dest: './public/app/images/'}).any());
+//adminrouter.use(multer({dest: './public/app/images/'}).any());
 //-----models---------------
 var User = require("../models/databaseModels").profs;
 var eModule = require("../models/databaseModels").eModule;
