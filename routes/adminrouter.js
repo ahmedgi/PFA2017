@@ -20,7 +20,7 @@ var universite=require("../models/databaseModels").universite;
 //==================================creer un compte=======================================
 
 
- adminrouter.post('/create' /* ,conEnsure.ensureLoggedIn(2,"/login") */,function(req,res){ 
+ adminrouter.post('/create' /* ,conEnsure.ensureLoggedIn(2,"/login") */,function(req,res){
   if(req.files[0]){
     fs.rename(req.files[0].path, './public/app/images/'+req.body.username+'.png', function(err) {
     if ( err ) console.log('ERROR: ' + err);
@@ -71,7 +71,7 @@ var universite=require("../models/databaseModels").universite;
                   else {
                     res.json({ok:"compte créé  correctement !"});
                   }
-        });     
+        });
       }
     });
 
@@ -95,25 +95,25 @@ adminrouter.post('/createuniv',function(req,res){
         universite.findOne({nom:nom},function(err,doc){
             if(typeof doc!='undefined' && doc!=null){
               if(doc.nom.trim().toUpperCase()==nom.trim().toUpperCase())
-                                  res.json({err:"ce nom d'université existe déja !"});
+                                  res.json({err:"Ce nom d'université existe déja !"});
             }
             else {
               univ.save(function(err){
-                        if(err)res.json({err:"vos infos ne sont pas saisies , veuillez vérifier"});
+                        if(err)res.json({err:"Vos infos ne sont pas saisies, veuillez vérifier."});
                         else {
-                          res.json({ok:"parametre créé  correctement !"});
+                          res.json({ok:"Paramètre créé correctement !"});
                         /* mailOptions.to=email;
                          transporter.sendMail(mailOptions,function(err,info){
                             if(!err) res.json({ok:"compte créé ! -info:"+info.response});
                             else res.json({err:"une erreur s'est produite"+JSON.stringify(err)});
                          });*/
                         }
-              });     
+              });
             }
       });
 
 
-  
+
 });
 
 //---------get prof list-----------------------------------
@@ -176,7 +176,7 @@ adminrouter.get('/matieres',/*conEnsure.ensureLoggedIn(2,"/login_"),*/function(r
       {
        path  :"_ens",
        model : "prof",
-       select:"login"     
+       select:"login"
       })
      .populate(
       {
@@ -196,7 +196,7 @@ adminrouter.get('/matieres',/*conEnsure.ensureLoggedIn(2,"/login_"),*/function(r
       }
       )
       .exec(function(err,mats){
-        
+
        if(!err){
         async.each(mats,function(mat,done){
 
@@ -220,7 +220,7 @@ adminrouter.get('/matieres',/*conEnsure.ensureLoggedIn(2,"/login_"),*/function(r
        }else res.status(500).json({err:"can not get matieres !"});
       });
     }
-    
+
   })
 });
 
@@ -241,7 +241,7 @@ adminrouter.post("/admin_data",/* conEnsure.ensureLoggedIn(8,"/login"), */functi
             if(!err) res.json({ok:"mask successfully modified !"});
             else res.status(500).json({err:"internal server error"});
           });
-        
+
      }
    }catch(NumberFormatException){
       res.json({err:"vous ne pouvez pas modifier !"});
@@ -327,7 +327,7 @@ adminrouter.post("/update_user",function(req,res){
             }
         })
     }
-   
+
 });
 
 //---------------------Annee Scolaire----------------------------
@@ -347,12 +347,12 @@ adminrouter.get('/anneeScolaire',function(req,res){
 });
 
 function exportData(filliereIDs,callback){
-  
+
 
 }
 
 function ImportData(modules,callback){
-    
+
 }
 
 
@@ -367,25 +367,25 @@ adminrouter.post('/creeAnneeScolaire',function(req,res){
       //----recuperer tous data des filliere pour trouver les modules
       dbModel.filiere.find({_id:{$in : req.body.fillieres}})
       .populate([{
-        
+
           path:"annee1.s1",
-          model:"modules"        
+          model:"modules"
       },{
           path:"annee1.s2",
           model:"modules"
       },{
-        
+
           path:"annee2.s1",
           model:"modules"
-        
+
       },{
           path:"annee2.s2",
           model:"modules"
       },{
-        
+
           path:"annee3.s1",
           model:"modules"
-        
+
       },{
           path:"annee3.s2",
           model:"modules"
@@ -394,9 +394,9 @@ adminrouter.post('/creeAnneeScolaire',function(req,res){
         if(err){
           callback(err);
         }else{
-          callback(null,result);  
+          callback(null,result);
         }
-        
+
       });
     },function(data,callback){
       //remplire la collection modules
@@ -452,7 +452,7 @@ adminrouter.post('/creeAnneeScolaire',function(req,res){
 						  })
 					   }
                     }
-                  );    
+                  );
             },
             function(err){
                 if(err) return callback(err,null)
@@ -487,7 +487,7 @@ adminrouter.post('/creeAnneeScolaire',function(req,res){
                         _anneeScolaire:annee._id,
                         _filiere:filiere
                        });
-                       
+
                        matiere.save(function(err){
                         if(err) callback(err);
                         else{
@@ -504,7 +504,7 @@ adminrouter.post('/creeAnneeScolaire',function(req,res){
 						  })
 					   }
                     }
-                  );    
+                  );
             },
             function(err){
                 if(err) return callback(err,null)
@@ -556,7 +556,7 @@ adminrouter.post('/creeAnneeScolaire',function(req,res){
 						  })
 					   }
                     }
-                  );    
+                  );
             },
             function(err){
                 if(err) return callback(err,null)
@@ -608,7 +608,7 @@ adminrouter.post('/creeAnneeScolaire',function(req,res){
 						  })
 					   }
                     }
-                  );    
+                  );
             },
             function(err){
                 if(err) return callback(err,null)
@@ -660,7 +660,7 @@ adminrouter.post('/creeAnneeScolaire',function(req,res){
 						  })
 					   }
                     }
-                  );    
+                  );
             },
             function(err){
                 if(err) return callback(err,null)
@@ -712,7 +712,7 @@ adminrouter.post('/creeAnneeScolaire',function(req,res){
 						  })
 					   }
                     }
-                  );    
+                  );
             },
             function(err){
                 if(err) return callback(err,null)
@@ -783,4 +783,3 @@ adminrouter.post('/changeActiveTo',function(req,res){
 
 
 module.exports=adminrouter;
-
