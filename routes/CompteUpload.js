@@ -77,7 +77,7 @@ router.post('/api/exemple/upload',function(req,res){
 				});
 			user.save(function(err) {
 			if (err) throw err;
-			  console.log('compte admin created successfully!');
+			  console.log("le compte du prof : "+user.nom+" "+user.prenom+" a ete bien cree.");
 			});
 			for (var item in data_json[i])
 			{
