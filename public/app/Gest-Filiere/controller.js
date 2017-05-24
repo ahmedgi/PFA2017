@@ -973,7 +973,7 @@ app.controller('m_editeModalController',function($scope,$rootScope,moduleService
         return $scope.etablissement;
     };
    // la liste des departement
-    $scope.departements=function(){
+    $scope.departementss=function(){
         for(i=0;i<$scope.listparametre.length;i++){
             for(j=0;j<$scope.listparametre[i].departements.length;j++){
                 $scope.departement.push($scope.listparametre[i].departements[j]);
@@ -1007,7 +1007,7 @@ app.controller('m_editeModalController',function($scope,$rootScope,moduleService
                  WTaken : false
             },
             init : function(moduleId){
-              var tmpModule = modulesList.getItems()[modulesList.getSelectedItemIndex()];
+              var tmpModule=modulesList.getItems()[modulesList.getSelectedItemIndex()];
               if(moduleId)
                     for(var i=0 ; i<modulesList.getItems().length ; i++){
                         if(modulesList.getItems()[i]._id == moduleId){
@@ -1748,6 +1748,10 @@ app.controller('f_deleteModalController',function($scope,$rootScope,moduleServic
 app.controller('f_filiereTableController',function($scope,$rootScope,moduleService,profService,modulesList,filiereService,filiereList,profsList){
         $scope.selectedItemIndex = filiereList.getSelectedItemIndex;
         var prof=profsList.getItems;
+        $scope.infovisible=[];
+        for(i=0;i<filiereList.getItems.length;i++){
+          $scope.infovisible.push(false);
+        }
         $scope.moreinfo=function(){
              return function($itemScope){
                    $rootScope.$broadcast('init_editeModal',{});
@@ -1758,6 +1762,12 @@ app.controller('f_filiereTableController',function($scope,$rootScope,moduleServi
             return prof().filter(function(v){
                 return v._id===id;
             });
+        };
+        $scope.showinfo=function(index){
+          if($scope.infovisible[index]){
+            $scope.infovisible[index]=false;}
+          else{
+            $scope.infovisible[index]=true;}
         };
         $scope.filiereTable = {
             items : filiereList.getItems,

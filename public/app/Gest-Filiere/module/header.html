@@ -99,7 +99,7 @@
                                         </div>
                                         <li class="divider"></li>
                                         <div class="notifications-wrapper">
-                                            <a ng-repeat="notif in header.moduleNotif() | orderBy :'-date'" class="content" href="#/Gest-Filiere/module">
+                                            <a ng-repeat="notif in header.moduleNotif() | orderBy :'-date'" class="content" href="#!/Gest-Filiere/module">
                                                 <div  ng-class="{'notification-item' : notif.status == 'unseen','notification-item-seen' : notif.status == 'seen'}" ng-click="notifClick(notif);notif.status = 'seen'">
                                                     <div class="item-info">
                                                         <h4 ng-if='notif.typee == "delete"'>

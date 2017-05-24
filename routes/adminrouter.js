@@ -57,7 +57,9 @@ var universite=require("../models/databaseModels").universite;
     matieres     : [],
     modules      : []
     });
-
+    if(type){
+      user.type=type;
+    }
     User.findOne({login:login},function(err,doc){
       if(typeof doc!='undefined' && doc!=null){
         if(doc.login.trim().toUpperCase()==login.trim().toUpperCase())

@@ -71,7 +71,7 @@
                 <p ng-show="userForm.password.$invalid && !userForm.password.$pristine" class="help-block">veuillez entrer un mot de passe.</p>
               </td>
             </div>
-            <td ng-show="user.selectedtype">
+            <td ng-show="grade()">
               <label class="control-label " for="subject">Grade :</label>
               <select class="form-control" id="exampleSelect1" ng-model="user.selectedgrade">
                 <option ng-repeat="grade in GradeList">{{grade}}</option>

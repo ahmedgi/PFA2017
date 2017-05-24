@@ -83,9 +83,9 @@ passport.use('local',new LocalStrategy(/*passReqToCallback:true*/{
 	    User.findOne({login: username,password:password}, function(err, user){
       if (err) { return done(err);}
       else if (!user)
-							 return done(null, false, {message: 'Incorrect username.'});
+							 return done(null, false, {message: 'Incorrect username or password.'});
 						else if	(user.password!=password)
-							 return done(null, false, {message: 'Incorrect password.'});
+							 return done(null, false, {message: 'Incorrect password or password.'});
       else{
        return done(null, user);
       }
@@ -205,6 +205,10 @@ app.get('/logout',function(req,res){
 	 res.redirect('/login');
 }); 
 
+app.get('/',function(req,res){
+  req.logout();
+  res.redirect('/login');
+});
 
 //-------front-end routes
 

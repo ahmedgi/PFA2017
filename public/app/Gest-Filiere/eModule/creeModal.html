@@ -32,8 +32,8 @@
                                 <span class="glyphicon glyphicon-{{item.permision=='w'?'edit':'eye-open'}}"></span> {{item.permision=='w'?'Modifier':'Consulter'}} <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu">
-                                <li ng-click="item.permision = 'r';cree.validation.WTaken = false"><a href="#/Gest-Filiere/eModule"><span class="glyphicon glyphicon-eye-open"></span><label>Consulter</label></a></li>
-                                <li ng-click="item.permision = 'w';cree.validation.WTaken = true" ng-hide="cree.validation.WTaken"><a href="#/Gest-Filiere/eModule"><span class="glyphicon glyphicon-edit"></span><label>Modifier</label></a></li>
+                                <li ng-click="item.permision = 'r';cree.validation.WTaken = false"><a href="#!/Gest-Filiere/eModule"><span class="glyphicon glyphicon-eye-open"></span><label>Consulter</label></a></li>
+                                <li ng-click="item.permision = 'w';cree.validation.WTaken = true" ng-hide="cree.validation.WTaken"><a href="#!/Gest-Filiere/eModule"><span class="glyphicon glyphicon-edit"></span><label>Modifier</label></a></li>
                             </ul>
                        </div>
                 </div>

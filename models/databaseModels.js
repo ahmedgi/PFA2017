@@ -30,7 +30,8 @@ var eModuleSchema = mongoose.Schema(
                             type: mongoose.Schema.Types.ObjectId,
                             ref : 'prof'
                             },
-                            permision : { type : String,default : 'r'}
+                            permision : { type : String,default : 'r'},
+                            convention :String
                            }],
                    creationDate : { type: Date, default: Date.now },
                    lastUpdate : { type: Date, default: Date.now },

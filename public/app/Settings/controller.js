@@ -16,6 +16,17 @@ app
 	$scope.adddep=[];
 	$scope.ListPrametre=[];
 
+
+	$scope.grade=function(){
+		if(!$scope.user.selectedtype){
+			return false;
+		}else{
+			if($scope.user.selectedtype=='Professeur'){
+			return true;
+			}else return false;
+		}
+	};
+
 	// ajouter une université
 	$scope.hideAddUniv=function(){
 		$scope.adduniv=false;
@@ -42,7 +53,7 @@ app
         			alert("vous n'êtes pas autorisé !!");
      				 }
       			else {
-      				alert(JSON.stringify(res.data));
+      				alert(JSON.stringify(res.data.ok));
       			}
     		},function err(res){
       		alert(JSON.stringify(res.data.err));
@@ -93,7 +104,7 @@ app
 
 	$scope.valider=function(){//add a new prof to the list of profs (items)
 
-		var obj={nom:$scope.user.nom,prenom:$scope.user.prenom,login:$scope.user.username,tel:$scope.user.tel,email:$scope.user.email};
+		var obj={nom:$scope.user.nom,prenom:$scope.user.prenom,login:$scope.user.username,tel:$scope.user.tel,email:$scope.user.email,type:$scope.user.selectedtype,grade:$scope.user.selectedgrade};
 		$scope.items.push(obj);
 		multipartForm.post('/create', $scope.user);
 		$scope.isEditable.push(false);

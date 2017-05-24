@@ -42,7 +42,7 @@
                     </div>
                     <div class="panel-body">
                         <select class="form-control" id="departement" rows="4" name="departement" ng-model="edite.req.departement">
-                            <option ng-repeat="dep in departements()">{{dep.nom}}({{dep.abrev}})</option>
+                            <option ng-repeat="dep in departementss()">{{dep.nom}}({{dep.abrev}})</option>
                         </select>
                     </div>
                 </div>
@@ -111,7 +111,7 @@
                         <h3 class="panel-title"><label for="didactique">Liste des élements du module</label></h3>
                     </div>
                     <div class="panel-body">
-                        <select id="eModules" class="selectpicker show-tick" multiple  data-selected-text-format="count" title="..." data-live-search="true" ng-options="eModule.intitulee  for eModule in eModules()"  ng-model="edite.req.eModules">                 
+                        <select id="eModules" class="selectpicker show-tick" multiple  data-selected-text-format="count" title="..." data-live-search="true" ng-options="eModule.intitulee  for eModule in eModules()"  ng-model="edite.req.eModules">               
                         </select>
                         <h4 ng-repeat="currentEModule in edite.currentEModules">
                             <span  class="label label-info">
@@ -123,6 +123,8 @@
                         </h4> 
                     </div>
                 </div>
+
+
               </form>
             </div>
 
