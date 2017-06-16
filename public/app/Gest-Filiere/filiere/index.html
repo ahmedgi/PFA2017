@@ -1,55 +1,56 @@
 <style>
-        
-        
-        .tr_incomplet{
-            background: none repeat scroll 0 0 #EDB900!important;
-            color: black!important;
-        }
-        .tr_complet {
-            background: none repeat scroll 0 0 #27A904!important;
-            color: black!important;
-        }
-        .tr_active {
-            background: none repeat scroll 0 0 #3F7CC2!important;
-            color: whitesmoke!important;
-        }
-        
-        thead {
-            background : none repeat scroll 0 0  #eeeeee!important;
-            border-bottom: 1px solid rgba(0,0,0,.07)!important;
 
-        }
-        
-        table {
-             height: 100px !important;
-             overflow: scroll;
-        }
-       
-        #app_header {
-           margin: 0!important;
-           margin-bottom: 1px!important;
-            
-           background : none repeat scroll 0 0  #eeeeee!important;
-           
-          
-           -webkit-box-shadow: 0 2px 4px rgba(0,0,0,.2);
-           box-shadow: 0 2px 4px rgba(0,0,0,.2);
-            
-           border: solid transparent!important;
-           border-width: 1px 1px 1px 6px!important;
-           border-bottom: 1px solid transparent!important;
-        }
-   </style>
 
-<div class="">  
-    <!--Header-->
-    <div ng-include  src= "'./Gest-Filiere/filiere/header.html'"></div>  
-    <!-- EModules TAble-->
-    <div ng-include  src= "'./Gest-Filiere/filiere/filiereTable.html'"></div>
-    <!--CRUD Modals-->
-    <div ng-include  src= "'./Gest-Filiere/filiere/creeModal.html'"></div>
-    <div ng-include  src= "'./Gest-Filiere/filiere/deleteModal.html'"></div>
-    <div ng-include  src= "'./Gest-Filiere/filiere/editeModal.html'"></div>
-    <div ng-include  src= "'./Gest-Filiere/filiere/apercuModal.html'"></div>
-    <div ng-include  src= "'./Gest-Filiere/popUpNotif.html'"></div>
+  .tr_incomplet {
+    background: none repeat scroll 0 0 #EDB900 !important;
+    color: black !important;
+  }
+
+  .tr_complet {
+    background: none repeat scroll 0 0 #27A904 !important;
+    color: black !important;
+  }
+
+  .tr_active {
+    background: none repeat scroll 0 0 #3F7CC2 !important;
+    color: whitesmoke !important;
+  }
+
+  thead {
+    background: none repeat scroll 0 0 #eeeeee !important;
+    border-bottom: 1px solid rgba(0, 0, 0, .07) !important;
+
+  }
+
+  table {
+    height: 100px !important;
+    overflow: scroll;
+  }
+
+  #app_header {
+    margin: 0 !important;
+    margin-bottom: 1px !important;
+
+    background: none repeat scroll 0 0 #eeeeee !important;
+
+    -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
+
+    border: solid transparent !important;
+    border-width: 1px 1px 1px 6px !important;
+    border-bottom: 1px solid transparent !important;
+  }
+</style>
+
+<div class="">
+  <!--Header-->
+  <div ng-include src="'./Gest-Filiere/filiere/header.html'"></div>
+  <!-- EModules TAble-->
+  <div ng-include src="'./Gest-Filiere/filiere/filiereTable.html'"></div>
+  <!--CRUD Modals-->
+  <div ng-include src="'./Gest-Filiere/filiere/creeModal.html'"></div>
+  <div ng-include src="'./Gest-Filiere/filiere/deleteModal.html'"></div>
+  <div ng-include src="'./Gest-Filiere/filiere/editeModal.html'"></div>
+  <div ng-include src="'./Gest-Filiere/filiere/apercuModal.html'"></div>
+  <div ng-include src="'./Gest-Filiere/popUpNotif.html'"></div>
 </div>

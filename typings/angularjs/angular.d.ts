@@ -61,7 +61,7 @@ declare namespace angular {
          * @param config an object for defining configuration options for the application. The following keys are supported:
          *     - `strictDi`: disable automatic function annotation for the application. This is meant to assist in finding bugs which break minified code.
          */
-        bootstrap(element: string|Element|JQuery|Document, modules?: (string|Function|any[])[], config?: IAngularBootstrapConfig): auto.IInjectorService;
+        bootstrap(element: string | Element | JQuery | Document, modules?: (string | Function | any[])[], config?: IAngularBootstrapConfig): auto.IInjectorService;
 
         /**
          * Creates a deep copy of source, which should be an object or an array.
@@ -149,10 +149,9 @@ declare namespace angular {
          * @param requires The names of modules this module depends on. If specified then new module is being created. If unspecified then the module is being retrieved for further configuration.
          * @param configFn Optional configuration function for the module.
          */
-        module(
-            name: string,
-            requires?: string[],
-            configFn?: Function): IModule;
+        module(name: string,
+               requires?: string[],
+               configFn?: Function): IModule;
 
         noop(...args: any[]): void;
         reloadWithDebugInfo(): void;
@@ -289,7 +288,7 @@ declare namespace angular {
         /**
          * Register a value service with the $injector, such as a string, a number, an array, an object or a function. This is short for registering a service where its provider's $get property is a factory function that takes no arguments and returns the value service.
 
-           Value services are similar to constant services, except that they cannot be injected into a module configuration function (see config) but they can be overridden by an Angular decorator.
+         Value services are similar to constant services, except that they cannot be injected into a module configuration function (see config) but they can be overridden by an Angular decorator.
          *
          * @param name The name of the instance.
          * @param value The value.
@@ -302,8 +301,8 @@ declare namespace angular {
          * @param name The name of the service to decorate
          * @param decorator This function will be invoked when the service needs to be instantiated and should return the decorated service instance. The function is called using the injector.invoke method and is therefore fully injectable. Local injection arguments: $delegate - The original service instance, which can be monkey patched, configured, decorated or delegated to.
          */
-        decorator(name:string, decoratorConstructor: Function): IModule;
-        decorator(name:string, inlineAnnotatedConstructor: any[]): IModule;
+        decorator(name: string, decoratorConstructor: Function): IModule;
+        decorator(name: string, inlineAnnotatedConstructor: any[]): IModule;
 
         // Properties
         name: string;
@@ -556,7 +555,8 @@ declare namespace angular {
         $$phase: any;
     }
 
-    interface IScope extends IRootScopeService { }
+    interface IScope extends IRootScopeService {
+    }
 
     /**
      * $scope for ngRepeat directive.
@@ -677,7 +677,7 @@ declare namespace angular {
     }
 
     interface IFilterFilter {
-        <T>(array: T[], expression: string | IFilterFilterPatternObject | IFilterFilterPredicateFunc<T>, comparator?: IFilterFilterComparatorFunc<T>|boolean): T[];
+        <T>(array: T[], expression: string | IFilterFilterPatternObject | IFilterFilterPredicateFunc<T>, comparator?: IFilterFilterComparatorFunc<T> | boolean): T[];
     }
 
     interface IFilterFilterPatternObject {
@@ -710,7 +710,7 @@ declare namespace angular {
          * @param fractionSize Number of decimal places to round the number to. If this is not provided then the fraction size is computed from the current locale's number formatting pattern. In the case of the default locale, it will be 3.
          * @return Number rounded to decimalPlaces and places a “,” after each third digit.
          */
-        (value: number|string, fractionSize?: number|string): string;
+        (value: number | string, fractionSize?: number | string): string;
     }
 
     interface IFilterDate {
@@ -757,7 +757,7 @@ declare namespace angular {
          * @param begin Index at which to begin limitation. As a negative index, begin indicates an offset from the end of input. Defaults to 0.
          * @return A new sub-array of length limit or less if input array had less than limit elements.
          */
-        <T>(input: T[], limit: string|number, begin?: string|number): T[];
+        <T>(input: T[], limit: string | number, begin?: string | number): T[];
         /**
          * Creates a new string containing only a specified number of elements. The elements are taken from either the beginning or the end of the source string or number, as specified by the value and sign (positive or negative) of limit. If a number is used as input, it is converted to a string.
          * @param input Source string or number to be limited.
@@ -765,7 +765,7 @@ declare namespace angular {
          * @param begin Index at which to begin limitation. As a negative index, begin indicates an offset from the end of input. Defaults to 0.
          * @return A new substring of length limit or less if input had less than limit elements.
          */
-        (input: string|number, limit: string|number, begin?: string|number): string;
+        (input: string | number, limit: string | number, begin?: string | number): string;
     }
 
     interface IFilterOrderBy {
@@ -776,7 +776,7 @@ declare namespace angular {
          * @param reverse Reverse the order of the array.
          * @return Reverse the order of the array.
          */
-        <T>(array: T[], expression: string|((value: T) => any)|(((value: T) => any)|string)[], reverse?: boolean): T[];
+        <T>(array: T[], expression: string | ((value: T) => any) | (((value: T) => any) | string)[], reverse?: boolean): T[];
     }
 
     /**
@@ -900,7 +900,7 @@ declare namespace angular {
          * @param identifierContinue The function that will decide whether the given character is a valid identifier continue character.
          **/
         setIdentifierFns(identifierStart?: (character: string, codePoint: number) => boolean,
-            identifierContinue?: (character: string, codePoint: number) => boolean): void;
+                         identifierContinue?: (character: string, codePoint: number) => boolean): void;
     }
 
     interface ICompiledExpression {
@@ -962,7 +962,7 @@ declare namespace angular {
          * @param search New search params
          * @param paramValue If search is a string or a Number, then paramValue will override only a single search property. If paramValue is null, the property specified via the first argument will be deleted. If paramValue is an array, it will override the property of the search component of $location specified via the first argument. If paramValue is true, the property specified via the first argument will be added with no value nor trailing equal sign.
          */
-        search(search: string, paramValue: string|number|string[]|boolean): ILocationService;
+        search(search: string, paramValue: string | number | string[] | boolean): ILocationService;
 
         state(): any;
         state(state: any): ILocationService;
@@ -986,7 +986,8 @@ declare namespace angular {
     // DocumentService
     // see http://docs.angularjs.org/api/ng.$document
     ///////////////////////////////////////////////////////////////////////////
-    interface IDocumentService extends JQuery {}
+    interface IDocumentService extends JQuery {
+    }
 
     ///////////////////////////////////////////////////////////////////////////
     // ExceptionHandlerService
@@ -1000,7 +1001,8 @@ declare namespace angular {
     // RootElementService
     // see http://docs.angularjs.org/api/ng.$rootElement
     ///////////////////////////////////////////////////////////////////////////
-    interface IRootElementService extends JQuery {}
+    interface IRootElementService extends JQuery {
+    }
 
     interface IQResolveReject<T> {
         (): void;
@@ -1024,13 +1026,13 @@ declare namespace angular {
          *
          * @param promises An array of promises.
          */
-        all<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(values: [T1 | IPromise<T1>, T2 | IPromise<T2>, T3 | IPromise<T3>, T4 | IPromise <T4>, T5 | IPromise<T5>, T6 | IPromise<T6>, T7 | IPromise<T7>, T8 | IPromise<T8>, T9 | IPromise<T9>, T10 | IPromise<T10>]): IPromise<[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10]>;
-        all<T1, T2, T3, T4, T5, T6, T7, T8, T9>(values: [T1 | IPromise<T1>, T2 | IPromise<T2>, T3 | IPromise<T3>, T4 | IPromise <T4>, T5 | IPromise<T5>, T6 | IPromise<T6>, T7 | IPromise<T7>, T8 | IPromise<T8>, T9 | IPromise<T9>]): IPromise<[T1, T2, T3, T4, T5, T6, T7, T8, T9]>;
-        all<T1, T2, T3, T4, T5, T6, T7, T8>(values: [T1 | IPromise<T1>, T2 | IPromise<T2>, T3 | IPromise<T3>, T4 | IPromise <T4>, T5 | IPromise<T5>, T6 | IPromise<T6>, T7 | IPromise<T7>, T8 | IPromise<T8>]): IPromise<[T1, T2, T3, T4, T5, T6, T7, T8]>;
-        all<T1, T2, T3, T4, T5, T6, T7>(values: [T1 | IPromise<T1>, T2 | IPromise<T2>, T3 | IPromise<T3>, T4 | IPromise <T4>, T5 | IPromise<T5>, T6 | IPromise<T6>, T7 | IPromise<T7>]): IPromise<[T1, T2, T3, T4, T5, T6, T7]>;
-        all<T1, T2, T3, T4, T5, T6>(values: [T1 | IPromise<T1>, T2 | IPromise<T2>, T3 | IPromise<T3>, T4 | IPromise <T4>, T5 | IPromise<T5>, T6 | IPromise<T6>]): IPromise<[T1, T2, T3, T4, T5, T6]>;
-        all<T1, T2, T3, T4, T5>(values: [T1 | IPromise<T1>, T2 | IPromise<T2>, T3 | IPromise<T3>, T4 | IPromise <T4>, T5 | IPromise<T5>]): IPromise<[T1, T2, T3, T4, T5]>;
-        all<T1, T2, T3, T4>(values: [T1 | IPromise<T1>, T2 | IPromise<T2>, T3 | IPromise<T3>, T4 | IPromise <T4>]): IPromise<[T1, T2, T3, T4]>;
+        all<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>(values: [T1 | IPromise<T1>, T2 | IPromise<T2>, T3 | IPromise<T3>, T4 | IPromise<T4>, T5 | IPromise<T5>, T6 | IPromise<T6>, T7 | IPromise<T7>, T8 | IPromise<T8>, T9 | IPromise<T9>, T10 | IPromise<T10>]): IPromise<[T1, T2, T3, T4, T5, T6, T7, T8, T9, T10]>;
+        all<T1, T2, T3, T4, T5, T6, T7, T8, T9>(values: [T1 | IPromise<T1>, T2 | IPromise<T2>, T3 | IPromise<T3>, T4 | IPromise<T4>, T5 | IPromise<T5>, T6 | IPromise<T6>, T7 | IPromise<T7>, T8 | IPromise<T8>, T9 | IPromise<T9>]): IPromise<[T1, T2, T3, T4, T5, T6, T7, T8, T9]>;
+        all<T1, T2, T3, T4, T5, T6, T7, T8>(values: [T1 | IPromise<T1>, T2 | IPromise<T2>, T3 | IPromise<T3>, T4 | IPromise<T4>, T5 | IPromise<T5>, T6 | IPromise<T6>, T7 | IPromise<T7>, T8 | IPromise<T8>]): IPromise<[T1, T2, T3, T4, T5, T6, T7, T8]>;
+        all<T1, T2, T3, T4, T5, T6, T7>(values: [T1 | IPromise<T1>, T2 | IPromise<T2>, T3 | IPromise<T3>, T4 | IPromise<T4>, T5 | IPromise<T5>, T6 | IPromise<T6>, T7 | IPromise<T7>]): IPromise<[T1, T2, T3, T4, T5, T6, T7]>;
+        all<T1, T2, T3, T4, T5, T6>(values: [T1 | IPromise<T1>, T2 | IPromise<T2>, T3 | IPromise<T3>, T4 | IPromise<T4>, T5 | IPromise<T5>, T6 | IPromise<T6>]): IPromise<[T1, T2, T3, T4, T5, T6]>;
+        all<T1, T2, T3, T4, T5>(values: [T1 | IPromise<T1>, T2 | IPromise<T2>, T3 | IPromise<T3>, T4 | IPromise<T4>, T5 | IPromise<T5>]): IPromise<[T1, T2, T3, T4, T5]>;
+        all<T1, T2, T3, T4>(values: [T1 | IPromise<T1>, T2 | IPromise<T2>, T3 | IPromise<T3>, T4 | IPromise<T4>]): IPromise<[T1, T2, T3, T4]>;
         all<T1, T2, T3>(values: [T1 | IPromise<T1>, T2 | IPromise<T2>, T3 | IPromise<T3>]): IPromise<[T1, T2, T3]>;
         all<T1, T2>(values: [T1 | IPromise<T1>, T2 | IPromise<T2>]): IPromise<[T1, T2]>;
         all<TAll>(promises: IPromise<TAll>[]): IPromise<TAll[]>;
@@ -1060,7 +1062,7 @@ declare namespace angular {
          *
          * @param value Value or a promise
          */
-        resolve<T>(value: IPromise<T>|T): IPromise<T>;
+        resolve<T>(value: IPromise<T> | T): IPromise<T>;
         /**
          * Wraps an object that might be a value or a (3rd party) then-able promise into a $q promise. This is useful when you are dealing with an object that might or might not be a promise, or if the promise comes from a source that can't be trusted.
          */
@@ -1070,7 +1072,7 @@ declare namespace angular {
          *
          * @param value Value or a promise
          */
-        when<T>(value: IPromise<T>|T): IPromise<T>;
+        when<T>(value: IPromise<T> | T): IPromise<T>;
         /**
          * Wraps an object that might be a value or a (3rd party) then-able promise into a $q promise. This is useful when you are dealing with an object that might or might not be a promise, or if the promise comes from a source that can't be trusted.
          */
@@ -1083,12 +1085,12 @@ declare namespace angular {
          * The successCallBack may return IPromise<void> for when a $q.reject() needs to be returned
          * This method returns a new promise which is resolved or rejected via the return value of the successCallback, errorCallback. It also notifies via the return value of the notifyCallback method. The promise can not be resolved or rejected from the notifyCallback method.
          */
-        then<TResult>(successCallback: (promiseValue: T) => IPromise<TResult>|TResult, errorCallback?: (reason: any) => any, notifyCallback?: (state: any) => any): IPromise<TResult>;
+        then<TResult>(successCallback: (promiseValue: T) => IPromise<TResult> | TResult, errorCallback?: (reason: any) => any, notifyCallback?: (state: any) => any): IPromise<TResult>;
 
         /**
          * Shorthand for promise.then(null, errorCallback)
          */
-        catch<TResult>(onRejected: (reason: any) => IPromise<TResult>|TResult): IPromise<TResult>;
+        catch<TResult>(onRejected: (reason: any) => IPromise<TResult> | TResult): IPromise<TResult>;
 
         /**
          * Allows you to observe either the fulfillment or rejection of a promise, but to do so without modifying the final value. This is useful to release resources or do some clean-up that needs to be done whether the promise was rejected or resolved. See the full specification for more information.
@@ -1099,7 +1101,7 @@ declare namespace angular {
     }
 
     interface IDeferred<T> {
-        resolve(value?: T|IPromise<T>): void;
+        resolve(value?: T | IPromise<T>): void;
         reject(reason?: any): void;
         notify(state?: any): void;
         promise: IPromise<T>;
@@ -1387,7 +1389,7 @@ declare namespace angular {
         /**
          * Timeout in milliseconds, or promise that should abort the request when resolved.
          */
-        timeout?: number|IPromise<any>;
+        timeout?: number | IPromise<any>;
 
         /**
          * See [XMLHttpRequest.responseType]https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest#xmlhttprequest-responsetype
@@ -1452,7 +1454,7 @@ declare namespace angular {
         (data: any, headersGetter: IHttpHeadersGetter, status: number): any;
     }
 
-    type HttpHeaderType = {[requestType: string]:string|((config:IRequestConfig) => string)};
+    type HttpHeaderType = { [requestType: string]: string | ((config: IRequestConfig) => string) };
 
     interface IHttpRequestConfigHeaders {
         [requestType: string]: any;
@@ -1464,12 +1466,12 @@ declare namespace angular {
     }
 
     /**
-    * Object that controls the defaults for $http provider. Not all fields of IRequestShortcutConfig can be configured
-    * via defaults and the docs do not say which. The following is based on the inspection of the source code.
-    * https://docs.angularjs.org/api/ng/service/$http#defaults
-    * https://docs.angularjs.org/api/ng/service/$http#usage
-    * https://docs.angularjs.org/api/ng/provider/$httpProvider The properties section
-    */
+     * Object that controls the defaults for $http provider. Not all fields of IRequestShortcutConfig can be configured
+     * via defaults and the docs do not say which. The following is based on the inspection of the source code.
+     * https://docs.angularjs.org/api/ng/service/$http#defaults
+     * https://docs.angularjs.org/api/ng/service/$http#usage
+     * https://docs.angularjs.org/api/ng/provider/$httpProvider The properties section
+     */
     interface IHttpProviderDefaults {
         /**
          * {boolean|Cache}
@@ -1482,7 +1484,7 @@ declare namespace angular {
          * headers and returns its transformed (typically serialized) version.
          * @see {@link https://docs.angularjs.org/api/ng/service/$http#transforming-requests-and-responses}
          */
-        transformRequest?: IHttpRequestTransformer |IHttpRequestTransformer[];
+        transformRequest?: IHttpRequestTransformer | IHttpRequestTransformer[];
 
         /**
          * Transform function or an array of such functions. The transform function takes the http response body and
@@ -1510,17 +1512,17 @@ declare namespace angular {
         withCredentials?: boolean;
 
         /**
-        * A function used to the prepare string representation of request parameters (specified as an object). If
-        * specified as string, it is interpreted as a function registered with the $injector. Defaults to
-        * $httpParamSerializer.
-        */
+         * A function used to the prepare string representation of request parameters (specified as an object). If
+         * specified as string, it is interpreted as a function registered with the $injector. Defaults to
+         * $httpParamSerializer.
+         */
         paramSerializer?: string | ((obj: any) => string);
     }
 
     interface IHttpInterceptor {
-        request?: (config: IRequestConfig) => IRequestConfig|IPromise<IRequestConfig>;
+        request?: (config: IRequestConfig) => IRequestConfig | IPromise<IRequestConfig>;
         requestError?: (rejection: any) => any;
-        response?: <T>(response: IHttpPromiseCallbackArg<T>) => IPromise<IHttpPromiseCallbackArg<T>>|IHttpPromiseCallbackArg<T>;
+        response?: <T>(response: IHttpPromiseCallbackArg<T>) => IPromise<IHttpPromiseCallbackArg<T>> | IHttpPromiseCallbackArg<T>;
         responseError?: (rejection: any) => any;
     }
 
@@ -1535,7 +1537,7 @@ declare namespace angular {
          * Register service factories (names or implementations) for interceptors which are called before and after
          * each request.
          */
-        interceptors: (string|IHttpInterceptorFactory|(string|IHttpInterceptorFactory)[])[];
+        interceptors: (string | IHttpInterceptorFactory | (string | IHttpInterceptorFactory)[])[];
         useApplyAsync(): boolean;
         useApplyAsync(value: boolean): IHttpProvider;
 
@@ -1545,7 +1547,7 @@ declare namespace angular {
          * @returns {boolean|Object} If a value is specified, returns the $httpProvider for chaining.
          *    otherwise, returns the current configured value.
          */
-        useLegacyPromiseExtensions(value:boolean) : boolean | IHttpProvider;
+        useLegacyPromiseExtensions(value: boolean): boolean | IHttpProvider;
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -1584,7 +1586,8 @@ declare namespace angular {
     // TemplateCacheService
     // see http://docs.angularjs.org/api/ng.$templateCache
     ///////////////////////////////////////////////////////////////////////////
-    interface ITemplateCacheService extends ICacheObject {}
+    interface ITemplateCacheService extends ICacheObject {
+    }
 
     ///////////////////////////////////////////////////////////////////////////
     // SCEService
@@ -1711,18 +1714,18 @@ declare namespace angular {
          * Define DOM attribute binding to component properties. Component properties are always bound to the component
          * controller and not to the scope.
          */
-        bindings?: {[binding: string]: string};
+        bindings?: { [binding: string]: string };
         /**
          * Whether transclusion is enabled. Enabled by default.
          */
-        transclude?: boolean | string | {[slot: string]: string};
-        require?: {[controller: string]: string};
+        transclude?: boolean | string | { [slot: string]: string };
+        require?: { [controller: string]: string };
     }
 
     interface IComponentTemplateFn {
-        ( $element?: JQuery, $attrs?: IAttributes ): string;
+        ($element?: JQuery, $attrs?: IAttributes): string;
     }
-    
+
     /**
      * Components have a well-defined lifecycle Each component can implement "lifecycle hooks". These are methods that
      * will be called at certain points in the life of the component.
@@ -1741,7 +1744,7 @@ declare namespace angular {
          * { currentValue, previousValue, isFirstChange() }. Use this hook to trigger updates within a component such as
          * cloning the bound value to prevent accidental mutation of the outer value.
          */
-        $onChanges?(changesObj: {[property:string]: IChangesObject}): void;
+        $onChanges?(changesObj: { [property: string]: IChangesObject }): void;
         /**
          * Called on a controller when its containing scope is destroyed. Use this hook for releasing external resources,
          * watches and event handlers.
@@ -1775,13 +1778,11 @@ declare namespace angular {
     }
 
     interface IDirectiveLinkFn {
-        (
-            scope: IScope,
-            instanceElement: JQuery,
-            instanceAttributes: IAttributes,
-            controller: {},
-            transclude: ITranscludeFunction
-        ): void;
+        (scope: IScope,
+         instanceElement: JQuery,
+         instanceAttributes: IAttributes,
+         controller: {},
+         transclude: ITranscludeFunction): void;
     }
 
     interface IDirectivePrePost {
@@ -1790,17 +1791,15 @@ declare namespace angular {
     }
 
     interface IDirectiveCompileFn {
-        (
-            templateElement: JQuery,
-            templateAttributes: IAttributes,
-            /**
-             * @deprecated
-             * Note: The transclude function that is passed to the compile function is deprecated,
-             * as it e.g. does not know about the right outer scope. Please use the transclude function
-             * that is passed to the link function instead.
-             */
-            transclude: ITranscludeFunction
-        ): void | IDirectivePrePost;
+        (templateElement: JQuery,
+         templateAttributes: IAttributes,
+         /**
+          * @deprecated
+          * Note: The transclude function that is passed to the compile function is deprecated,
+          * as it e.g. does not know about the right outer scope. Please use the transclude function
+          * that is passed to the link function instead.
+          */
+         transclude: ITranscludeFunction): void | IDirectivePrePost;
     }
 
     interface IDirective {
@@ -1822,14 +1821,14 @@ declare namespace angular {
          * @deprecated
          */
         replace?: boolean;
-        require?: string | string[] | {[controller: string]: string};
+        require?: string | string[] | { [controller: string]: string };
         restrict?: string;
         scope?: boolean | Object;
         template?: string | Function;
         templateNamespace?: string;
         templateUrl?: string | Function;
         terminal?: boolean;
-        transclude?: boolean | string | {[slot: string]: string};
+        transclude?: boolean | string | { [slot: string]: string };
     }
 
     /**
@@ -1839,8 +1838,10 @@ declare namespace angular {
      * only those returned from angular.element.
      * See: http://docs.angularjs.org/api/angular.element
      */
-    interface IAugmentedJQueryStatic extends JQueryStatic {}
-    interface IAugmentedJQuery extends JQuery {}
+    interface IAugmentedJQueryStatic extends JQueryStatic {
+    }
+    interface IAugmentedJQuery extends JQuery {
+    }
 
     ///////////////////////////////////////////////////////////////////////////
     // AUTO module (angular.js)

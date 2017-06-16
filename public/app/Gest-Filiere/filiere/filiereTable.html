@@ -1,82 +1,88 @@
 <div ng-controller="f_filiereTableController" class="table-responsive" ng-init="filiereTable.init()">
-       <table class="table table-hover" style="margin-top:50px;">
-           <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Intitulée</th>
-                    <th>Responsable</th>
-                    <th>Dernière modification</th>
-                 </tr>
-           </thead>
-           <tbody ng-repeat="filiere in filiereTable.items() | filter : filiereTable.search">
-                 <tr  class="{{filiere.status =='complet'?'tr_complet':'tr_incomplet'}}"  ng-class="{'tr_active' : filiereTable.selectedIndex == $index}" ng-mousedown="filiereTable.clicked($index,filiere._id,filiere.intitulee)" context-menu="filiereTable.menuOptions"  ng-click="filiereTable.clicked($index,filiere._id,filiere.intitulee)">
-                    <td>{{$index}}</td>
-                    <td>{{filiere.intitulee}}
-                      <button ng-show="infovisible[$index]" class="btn btn-primary inline" ng-click="showinfo($index)"><span class="glyphicon glyphicon-minus" title="plus de details">
-                      </button>
-                      <button ng-hide="infovisible[$index]" class="btn btn-primary inline" ng-click="showinfo($index)"><span class="glyphicon glyphicon-plus" title="plus de details">
-                      </button></td>
-                    <td>{{responsable(filiere.responsable).length==0?'vous' :responsable(filiere.responsable)[0].nom+' '+responsable(filiere.responsable)[0].prenom}}
-                    </td>
-                    <td>{{filiere.lastUpdate | date:'yyyy-MM-dd HH:mm:ss'}}</td>
-                 </tr>
-                 <tr  ng-show="infovisible[$index]" class="encadrer">
-                  <td></td>
-                  <td>Année</td>
-                  <td>Semestre</td>
-                  <td>Modules</td>
-                </tr>
-                <tr ng-show="infovisible[$index]" class="encadrer">
-                  <td></td>
-                  <td>Année 1</td>
-                  <td>S1</td>
-                  <td>
-                    <ul>
-                      <li ng-repeat="module in filiere.annee1.s1">{{module.intitulee}}</li>
-                  </ul>
-                  </td>
-                </tr>
-                <tr ng-show="infovisible[$index]" class="encadrer">
-                  <td></td>
-                  <td>Année 1</td>
-                  <td>S2</td>
-                  <td>
-                    <ul>
-                      <li ng-repeat="module in filiere.annee1.s2">{{module.intitulee}}</li>
-                  </ul>
-                  </td>
-                </tr>
-                <tr ng-show="infovisible[$index]" class="encadrer">
-                  <td></td>
-                  <td>Année 2</td>
-                  <td>S1</td>
-                  <td>
-                    <ul>
-                      <li ng-repeat="module in filiere.annee2.s1">{{module.intitulee}}</li>
-                  </ul>
-                  </td>
-                </tr>
-                <tr ng-show="infovisible[$index]" class="encadrer">
-                  <td></td>
-                  <td>Année 2</td>
-                  <td>S2</td>
-                  <td>
-                    <ul>
-                      <li ng-repeat="module in filiere.annee2.s2">{{module.intitulee}}</li>
-                  </ul>
-                  </td>
-                </tr>
-                <tr ng-show="infovisible[$index]" class="encadrer">
-                  <td></td>
-                  <td>Année 3</td>
-                  <td>S1</td>
-                  <td>
-                    <ul>
-                      <li ng-repeat="module in filiere.annee3.s1">{{module.intitulee}}</li>
-                  </ul>
-                  </td>
-                </tr>
-            </tbody>    
-       </table>   
+  <table class="table table-hover" style="margin-top:50px;">
+    <thead>
+    <tr>
+      <th>#</th>
+      <th>Intitulée</th>
+      <th>Responsable</th>
+      <th>Dernière modification</th>
+    </tr>
+    </thead>
+    <tbody ng-repeat="filiere in filiereTable.items() | filter : filiereTable.search">
+    <tr class="{{filiere.status =='complet'?'tr_complet':'tr_incomplet'}}"
+        ng-class="{'tr_active' : filiereTable.selectedIndex == $index}"
+        ng-mousedown="filiereTable.clicked($index,filiere._id,filiere.intitulee)"
+        context-menu="filiereTable.menuOptions" ng-click="filiereTable.clicked($index,filiere._id,filiere.intitulee)">
+      <td>{{$index}}</td>
+      <td>{{filiere.intitulee}}
+        <button ng-show="infovisible[$index]" class="btn btn-primary inline" ng-click="showinfo($index)"><span
+          class="glyphicon glyphicon-minus" title="plus de details">
+        </button>
+        <button ng-hide="infovisible[$index]" class="btn btn-primary inline" ng-click="showinfo($index)"><span
+          class="glyphicon glyphicon-plus" title="plus de details">
+        </button>
+      </td>
+      <td>{{responsable(filiere.responsable).length==0?'vous' :responsable(filiere.responsable)[0].nom+'
+        '+responsable(filiere.responsable)[0].prenom}}
+      </td>
+      <td>{{filiere.lastUpdate | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+    </tr>
+    <tr ng-show="infovisible[$index]" class="encadrer">
+      <td></td>
+      <td>Année</td>
+      <td>Semestre</td>
+      <td>Modules</td>
+    </tr>
+    <tr ng-show="infovisible[$index]" class="encadrer">
+      <td></td>
+      <td>Année 1</td>
+      <td>S1</td>
+      <td>
+        <ul>
+          <li ng-repeat="module in filiere.annee1.s1">{{module.intitulee}}</li>
+        </ul>
+      </td>
+    </tr>
+    <tr ng-show="infovisible[$index]" class="encadrer">
+      <td></td>
+      <td>Année 1</td>
+      <td>S2</td>
+      <td>
+        <ul>
+          <li ng-repeat="module in filiere.annee1.s2">{{module.intitulee}}</li>
+        </ul>
+      </td>
+    </tr>
+    <tr ng-show="infovisible[$index]" class="encadrer">
+      <td></td>
+      <td>Année 2</td>
+      <td>S1</td>
+      <td>
+        <ul>
+          <li ng-repeat="module in filiere.annee2.s1">{{module.intitulee}}</li>
+        </ul>
+      </td>
+    </tr>
+    <tr ng-show="infovisible[$index]" class="encadrer">
+      <td></td>
+      <td>Année 2</td>
+      <td>S2</td>
+      <td>
+        <ul>
+          <li ng-repeat="module in filiere.annee2.s2">{{module.intitulee}}</li>
+        </ul>
+      </td>
+    </tr>
+    <tr ng-show="infovisible[$index]" class="encadrer">
+      <td></td>
+      <td>Année 3</td>
+      <td>S1</td>
+      <td>
+        <ul>
+          <li ng-repeat="module in filiere.annee3.s1">{{module.intitulee}}</li>
+        </ul>
+      </td>
+    </tr>
+    </tbody>
+  </table>
 </div>
-    

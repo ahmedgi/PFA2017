@@ -1,103 +1,103 @@
-  <!-- modale delete elemnt de module-->
-  <div ng-controller="m_apercuModalController" id="apercuModal" class="modal fade">
-    <div class="modal-dialog">
-            <div class="modal-content">
-            <div class="modal-header">
-                <button class="btn btn-primary" ng-click="generatePDF()">Télécharger</button>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+<!-- modale delete elemnt de module-->
+<div ng-controller="m_apercuModalController" id="apercuModal" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="btn btn-primary" ng-click="generatePDF()">Télécharger</button>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title"><label for="Université">Universite</label></h3>
+          </div>
+          <div class="panel-body">
+            <pre>{{module.universite}}</pre>
+          </div>
+        </div>
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title"><label for="prerequis">Etablissement</label></h3>
+          </div>
+          <div class="panel-body">
+            <pre>{{module.etablissement}}</pre>
+          </div>
+        </div>
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title"><label for="objectifs">Département</label></h3>
+          </div>
+          <div class="panel-body">
+            <pre>{{module.departement}}</pre>
+          </div>
+        </div>
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title"><label for="objectifs">Intitulé du module</label></h3>
+          </div>
+          <div class="panel-body">
+            <pre>{{module.intitulee}}</pre>
+          </div>
+        </div>
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title"><label>Coordonnateur </label></h3>
+          </div>
+          <div class="panel-body">
+            <pre>{{module.coordonnateur.nom}} {{module.coordonnateur.prenom}}</pre>
+          </div>
+        </div>
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title"><label>Pre-requis pedagogiques</label></h3>
+          </div>
+          <div class="panel-body">
+            <pre>{{module.prerequis}}</pre>
+          </div>
+        </div>
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title"><label>Objectifs</label></h3>
+          </div>
+          <div class="panel-body">
+            <pre>{{module.objectif}}</pre>
+          </div>
+        </div>
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title"><label>Didactique du module</label></h3>
+          </div>
+          <div class="panel-body">
+            <pre>{{module.didactique}}</pre>
+          </div>
+        </div>
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title"><label for="objectifs">Evaluation</label></h3>
+          </div>
+          <div class="panel-body">
+            <div class="form-group">
+              <label class="col-sm-12">Modalités d’évaluation</label>
+              <pre>{{module.modalitee_evaluation}}</pre>
             </div>
-            <div class="modal-body">
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h3 class="panel-title"><label for="Université">Universite</label></h3>
-                    </div>
-                    <div class="panel-body">
-                        <pre>{{module.universite}}</pre>
-                    </div>
-                </div>
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h3 class="panel-title"><label for="prerequis">Etablissement</label></h3>
-                    </div>
-                    <div class="panel-body">
-                        <pre>{{module.etablissement}}</pre>
-                    </div>
-                </div>
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h3 class="panel-title"><label for="objectifs">Département</label></h3>
-                    </div>
-                    <div class="panel-body">
-                        <pre>{{module.departement}}</pre>
-                    </div>
-                </div>
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h3 class="panel-title"><label for="objectifs">Intitulé du module</label></h3>
-                    </div>
-                    <div class="panel-body">
-                        <pre>{{module.intitulee}}</pre>
-                    </div>
-                </div>
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h3 class="panel-title"><label>Coordonnateur </label></h3>
-                    </div>
-                    <div class="panel-body">
-                        <pre>{{module.coordonnateur.nom}} {{module.coordonnateur.prenom}}</pre>
-                    </div>
-                </div>
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h3 class="panel-title"><label>Pre-requis pedagogiques</label></h3>
-                    </div>
-                    <div class="panel-body">
-                        <pre>{{module.prerequis}}</pre>
-                    </div>
-                </div>
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h3 class="panel-title"><label>Objectifs</label></h3>
-                    </div>
-                    <div class="panel-body">
-                        <pre>{{module.objectif}}</pre>
-                    </div>
-                </div>
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h3 class="panel-title"><label>Didactique du module</label></h3>
-                    </div>
-                    <div class="panel-body">
-                        <pre>{{module.didactique}}</pre>
-                    </div>
-                </div>
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h3 class="panel-title"><label for="objectifs">Evaluation</label></h3>
-                    </div>
-                    <div class="panel-body">
-                        <div class="form-group">
-                               <label class="col-sm-12">Modalités d’évaluation</label>
-                               <pre>{{module.modalitee_evaluation}}</pre>
-                        </div>
-                        <div class="form-group">
-                                <label class="col-sm-12">Note du module</label>
-                                <pre>{{module.note}}</pre>
-                        </div>
-                    </div>
-                </div>
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h3 class="panel-title"><label>Note minimale</label></h3>
-                    </div>
-                    <div class="panel-body">
-                        <pre>{{module.note_minimal}}</pre>
-                    </div>
-                </div>
+            <div class="form-group">
+              <label class="col-sm-12">Note du module</label>
+              <pre>{{module.note}}</pre>
             </div>
-            <div class="modal-footer">
-                
-            </div>
+          </div>
+        </div>
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title"><label>Note minimale</label></h3>
+          </div>
+          <div class="panel-body">
+            <pre>{{module.note_minimal}}</pre>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+
+      </div>
     </div>
   </div>
-  </div>
+</div>

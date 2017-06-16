@@ -1,33 +1,38 @@
 <!-- Modal Creation Element de Module-->
- <div ng-controller="m_creeModalController" class="modal fade" id="creeModal" role="dialog">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Creé un module</h4>
-        </div>
-        <div class="modal-body">
-          <form name='creeModuleForm' role="form" novalidate>
-                <div class="form-group" ng-class="{ 'has-error' : cree.validation.taken || (creeModuleForm.intitulee.$invalid &&  creeModuleForm.intitulee.$touched)}">
-                    <label for="intitulee" >Libelée:</label>
-                    <input id="intitulee" name="intitulee" type="text" class="form-control" placeholder="intitulée" ng-model="cree.req.intitulee" ng-focus="cree.validation.taken = false" ng-minlength="3" required>
-                    <p ng-show="cree.validation.taken" class="help-block">intitulee existe deja !!.</p>
-                    <p ng-show="creeModuleForm.intitulee.$error.minlength && creeModuleForm.intitulee.$touched" class="help-block">intitulee trop court !!.</p>
-                    <p ng-show="creeModuleForm.intitulee.$invalid &&  creeModuleForm.intitulee.$touched" class="help-block">intitulee obligatoire !!.</p>                
-                </div>
-                <div class="form-group">
-                    <label for="coordonnateur">Coordinateur :</label>
-                    <div class="form-inline">
-                        <select id="sendToList" class="form-control"  title="..." data-live-search="true" ng-options="prof.nom+' '+prof.prenom  for prof in profs()"  ng-model="cree.req.cordId">                 
-                        </select>
-                    </div>
-                </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-default" ng-click="cree.submit()" ng-disabled="creeModuleForm.$invalid">Valider</button>   
-          <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="cree.annuler()">Annuler</button>
-        </div>
+<div ng-controller="m_creeModalController" class="modal fade" id="creeModal" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Creé un module</h4>
+      </div>
+      <div class="modal-body">
+        <form name='creeModuleForm' role="form" novalidate>
+          <div class="form-group"
+               ng-class="{ 'has-error' : cree.validation.taken || (creeModuleForm.intitulee.$invalid &&  creeModuleForm.intitulee.$touched)}">
+            <label for="intitulee">Libelée:</label>
+            <input id="intitulee" name="intitulee" type="text" class="form-control" placeholder="intitulée"
+                   ng-model="cree.req.intitulee" ng-focus="cree.validation.taken = false" ng-minlength="3" required>
+            <p ng-show="cree.validation.taken" class="help-block">intitulee existe deja !!.</p>
+            <p ng-show="creeModuleForm.intitulee.$error.minlength && creeModuleForm.intitulee.$touched"
+               class="help-block">intitulee trop court !!.</p>
+            <p ng-show="creeModuleForm.intitulee.$invalid &&  creeModuleForm.intitulee.$touched" class="help-block">
+              intitulee obligatoire !!.</p>
+          </div>
+          <div class="form-group">
+            <label for="coordonnateur">Coordinateur :</label>
+            <div class="form-inline">
+              <select id="sendToList" class="form-control" title="..." data-live-search="true"
+                      ng-options="prof.nom+' '+prof.prenom  for prof in profs()" ng-model="cree.req.cordId">
+              </select>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-default" ng-click="cree.submit()" ng-disabled="creeModuleForm.$invalid">Valider</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="cree.annuler()">Annuler</button>
       </div>
     </div>
   </div>
+</div>

@@ -3,7 +3,7 @@
 // Generated on 2016-04-20 using
 // generator-karma 1.0.1
 
-module.exports = function(config) {
+module.exports = function (config) {
   'use strict';
 
   config.set({
@@ -39,8 +39,7 @@ module.exports = function(config) {
     ],
 
     // list of files / patterns to exclude
-    exclude: [
-    ],
+    exclude: [],
 
     // web server port
     port: 8080,

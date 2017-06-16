@@ -1,59 +1,62 @@
-<button class="btn btn-info"  data-target="#myModal" data-toggle="modal" ng-click="fetchFillieres()" style="float: right;margin: 10px;">create</button>
+<button class="btn btn-info" data-target="#myModal" data-toggle="modal" ng-click="fetchFillieres()"
+        style="float: right;margin: 10px;">create
+</button>
 
-<div class="panel panel-default" >
-       <table class="table ">
-           <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Description</th>
-                    <th>Année</th>
-                    <th>Activer</th>
-                 </tr>
-           </thead>
-           <tbody>
-                 <tr ng-repeat="a in data.annees track by $index" class="" ng-class="" ng-mousedown="" context-menu=""  ng-click="">
-                    <td>{{$index}}</td>
-                    <td>{{a.description}}</td>
-                    <td>{{a.annee}}</td>
-                    <td><input type="radio" name="annee" ng-value="a._id" ng-click="changeActiveTo(a._id)" ng-model="activeId" ng-init="activeId=a.active?a._id:0"/></td>
-                 </tr>
-            </tbody>
-       </table>
-    
+<div class="panel panel-default">
+  <table class="table ">
+    <thead>
+    <tr>
+      <th>#</th>
+      <th>Description</th>
+      <th>Année</th>
+      <th>Activer</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="a in data.annees track by $index" class="" ng-class="" ng-mousedown="" context-menu="" ng-click="">
+      <td>{{$index}}</td>
+      <td>{{a.description}}</td>
+      <td>{{a.annee}}</td>
+      <td><input type="radio" name="annee" ng-value="a._id" ng-click="changeActiveTo(a._id)" ng-model="activeId"
+                 ng-init="activeId=a.active?a._id:0"/></td>
+    </tr>
+    </tbody>
+  </table>
+
 </div>
-    <!-- Modal -->
+<!-- Modal -->
 <div id="myModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
 
     <!-- Modal content-->
     <div class="modal-content">
-                <div class="modal-header">
-                  <h1 class="text-center">Ajouter Année Scolaire</h1>
-                </div>
-                <div class="modal-body">
+      <div class="modal-header">
+        <h1 class="text-center">Ajouter Année Scolaire</h1>
+      </div>
+      <div class="modal-body">
 
-                  <label >Année</label><br/>
-                  <input type="text" class="form-control"  ng-model="data.annee"/>
+        <label>Année</label><br/>
+        <input type="text" class="form-control" ng-model="data.annee"/>
 
-                  <label >Description</label><br/>
-                  <textarea class="form-control" ng-model="data.description">
+        <label>Description</label><br/>
+        <textarea class="form-control" ng-model="data.description">
                   </textarea>
-                  
-                  <label >Choix de filliére</label><br/>
-                  
-                  <!--select id="mmm" class="selectpicker show-tick" multiple title="..." data-live-search="true" ng-options="filliere.intitulee for filliere in data.fillieres" ng-model="sss">                 
-                  </select-->
 
-                  <select multiple="" class="form-control" ng-model="multipleSelect">
-                    <option ng-repeat="a in data.fillieres" ng-value="a._id">{{a.intitulee}}</option>
-                  </select>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-info text-center"  data-dismiss="modal" ng-click="createAnnnee()" >Valider</button>
-                    <button class="btn btn-warning text-center" data-dismiss="modal">Annuler</button>
-                </div>
-            
-       </div>
+        <label>Choix de filliére</label><br/>
+
+        <!--select id="mmm" class="selectpicker show-tick" multiple title="..." data-live-search="true" ng-options="filliere.intitulee for filliere in data.fillieres" ng-model="sss">
+        </select-->
+
+        <select multiple="" class="form-control" ng-model="multipleSelect">
+          <option ng-repeat="a in data.fillieres" ng-value="a._id">{{a.intitulee}}</option>
+        </select>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-info text-center" data-dismiss="modal" ng-click="createAnnnee()">Valider</button>
+        <button class="btn btn-warning text-center" data-dismiss="modal">Annuler</button>
+      </div>
+
     </div>
-
   </div>
+
+</div>
