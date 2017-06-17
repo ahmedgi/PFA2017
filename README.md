@@ -1,9 +1,9 @@
-### Prérequis
+### Prérequis :
 - [Git](https://git-scm.com/downloads)
 - [Node.js](https://nodejs.org/en/download/)
 - [MongoDB](https://www.mongodb.com/download-center#community)
 
-### Étapes
+### Étapes :
 
 Cloner l'application :
 ```
