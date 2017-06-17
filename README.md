@@ -1,6 +1,6 @@
 ### Prérequis
-- [Git](https://git-scm.com/book/fr/v2/D%C3%A9marrage-rapide-Installation-de-Git))
-- [MongoDB](https://docs.mongodb.com/manual/administration/install-community/))
+- [Git](https://git-scm.com/book/fr/v2/D%C3%A9marrage-rapide-Installation-de-Git)
+- [MongoDB](https://docs.mongodb.com/manual/administration/install-community/)
 - [Node.js](https://nodejs.org/en/download/)
 
 ### Étapes
