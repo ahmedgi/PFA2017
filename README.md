@@ -1,7 +1,7 @@
 ### Prérequis
-- [Git](https://git-scm.com/downloads) ([Guide](https://git-scm.com/book/fr/v2/D%C3%A9marrage-rapide-Installation-de-Git))
+- [Git](https://git-scm.com/downloads) ([guide d'installation](https://git-scm.com/book/fr/v2/D%C3%A9marrage-rapide-Installation-de-Git))
+- [MongoDB](https://www.mongodb.com/download-center#community) ([Guide d'installation](https://docs.mongodb.com/manual/administration/install-community/))
 - [Node.js](https://nodejs.org/en/download/)
-- [MongoDB](https://www.mongodb.com/download-center#community) ([Guide](https://docs.mongodb.com/manual/administration/install-community/))
 
 ### Étapes
 
