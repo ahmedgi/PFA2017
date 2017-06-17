@@ -27,3 +27,4 @@ Démarrer l'application :
 ```
 $ npm start
 ```
+Puis naviguer vers http://localhost:8010.
