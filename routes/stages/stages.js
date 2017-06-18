@@ -31,10 +31,10 @@ router.get("/etudiants/importer", function (req, res, next) {
 router.post("/etudiants/importer", function (req, res, next) {
     assert(req.files.fichier_etudiants !== null);
 
-    var workbook = XLSX.read(req.files['fichier_etudiants'].data);
+    var workbook = xlsx.read(req.files['fichier_etudiants'].data);
     var first_sheet_name = workbook.SheetNames[0];
     var worksheet = workbook.Sheets[first_sheet_name];
-    var etudiants_raw = XLSX.utils.sheet_to_json(worksheet);
+    var etudiants_raw = xlsx.utils.sheet_to_json(worksheet);
 
     console.log(first_sheet_name);
 

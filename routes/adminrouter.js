@@ -5,6 +5,7 @@ var conEnsure = require('connect-ensure-login');
 var nodemailer = require('nodemailer');
 var multer = require('multer');
 var fs = require('fs');
+var xlsx = require("xlsx");
 //adminrouter.use(multer({dest: './public/app/images/'}).any());
 //-----models---------------
 var User = require("../models/databaseModels").profs;
@@ -75,6 +76,72 @@ adminrouter.post('/create' /* ,conEnsure.ensureLoggedIn(2,"/login") */, function
             });
         }
     });
+
+});
+
+// upload compte
+adminrouter.post('/upload',function(req,res){
+    console.log('file uploaded');
+    console.log(req.files.myfile.name);
+
+    var workbook = xlsx.read(req.files.myfile.data);
+    var first_sheet_name = workbook.SheetNames[0];
+    var worksheet = workbook.Sheets[first_sheet_name];
+    var profs_raw = xlsx.utils.sheet_to_json(worksheet);
+    console.log(profs_raw);
+
+    if(profs_raw.length==0){
+        res.json({err: "veuillez vérifier la structure de fichier excel"});
+        console.log("veuillez vérifier la structure de fichier excel");
+    }else{
+        if(!profs_raw[0]["Username"] && !profs_raw[0]["Nom"] && !profs_raw[0]["Prénom"] && !profs_raw[0]["Email"]){
+             console.log("veuillez vérifier la structure de fichier excel");
+             res.json({err: "veuillez vérifier la structure de fichier excel"});
+        }else{
+            profs_raw.forEach(function (prof_raw) {
+                var mask=0;
+                if(prof_raw["Role"].includes("prof")){
+                    mask++;
+                };
+                if(prof_raw["Role"].includes("fili")){
+                    mask=mask+2;
+                };
+                if(prof_raw["Role"].includes("depart")){
+                    mask=mask+4;
+                };
+                if(prof_raw["Role"].includes("admin")){
+                    mask=mask+8;
+                };
+                var user = new User({
+                login: prof_raw["Username"],
+                nom: prof_raw["Nom"],
+                prenom: prof_raw["Prénom"],
+                email: prof_raw["Email"],
+                security_mask:mask,
+                type:prof_raw["Type"],
+                password:"passwd"
+                });
+                User.findOne({login: user.login}, function (err, doc) {
+                    if (typeof doc != 'undefined' && doc != null) {
+                        if (doc.login.trim().toUpperCase() == user.login.trim().toUpperCase())
+                           console.log("ce nom d'user existe déja !");
+                    }
+                    else {
+                        user.save(function (err) {
+                            if (err) console.log("vos infos ne sont pas saisies , veuillez vérifier");
+                            else {
+                                console.log("compte créé  correctement !");
+                            }
+                        });
+                    }
+                });
+
+            });
+            res.json({ok: "les comptes créé  correctements !"});
+            }
+        }
+
+
 
 });
 

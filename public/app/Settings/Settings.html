@@ -1,15 +1,32 @@
-<div class="navbar navbar-default" role="navigation">
-  <button type="button" class="btn btn-info" ng-click="add()" ng-disabled="addVisible"><span
-    class="glyphicon glyphicon-plus" aria-hidden="true" title="Ajouter Comptes"></span></button>
-  <a class="btn btn-primary" href="/ComptesUpload">Importer les comptes</a>
-  <input type="text" ng-model="q" class="search-input" placeholder="Chercher par Nom .."/>
-  <button type="button" id="ajouterparametre" class="btn btn-info pull-right" ng-click="Adduniv()"
-          ng-disabled="adduniv"> Ajouter Paramètres
-  </button>
-
+<div class="navbar navbar-default" role="navigation" >
+            <button type="button" class="btn btn-info" ng-click="add()" ng-disabled="addVisible"><span class="glyphicon glyphicon-plus" aria-hidden="true" title="Ajouter Comptes"></span></button>
+            <input type="text" ng-model="q" class="search-input" placeholder="Chercher par Nom .."/>
+            <a class="btn btn-primary" ng-click="importcompte()">Importer les comptes</a>
+            <button type="button" id="ajouterparametre" class="btn btn-info pull-right" ng-click="Adduniv()" ng-disabled="adduniv"> Ajouter Paramètres</button>
+          
 </div>
-
+ 
 <div class="panel panel-default">
+
+  <div class="adduser">
+      <form ng-show="importuser" name='uploadForm' encType="multipart/form-data">
+        <fieldset>
+          <legend>Importer les Comptes</legend>
+          <table class="table parametre">
+            <tr>
+              <div class="form-group" ng-class="{ 'has-error' : uploadForm.sampleFile.$invalid && !uploadForm.sampleFile.$pristine }">
+                <td><input type="file" class="form-control" name="myfile"  ngf-max-size="20MB" accept=".xlsx,.xls,.ods" file-model="file.upload" required/>
+                </td>
+              </div>
+              <td><button class="btn btn-success" ng-click='upload()' ng-disabled="uploadForm.$invalid">Ajouter</button>
+                <button class="btn btn-warning" ng-click="annulerupload()">Annuler</button>
+              </td>
+              <td></td>
+            </tr>
+          </table>
+        </fieldset>
+    </form>
+  </div>
 
   <div class="adduser">
     <form ng-show="addVisible" enctype="multipart/form-data" name="userForm">
@@ -18,9 +35,8 @@
         <table class="table border">
           <tr>
             <td class="image">
-              <img src="./images/imageupload.png" id="upfile1" style="cursor:pointer"/>
-              <input type="file" id="file1" name="file" style="display:none" ngf-pattern="'image/*'" ngf-max-size="20MB"
-                     accept="image/*" file-model="user.file"/>
+              <img src="./images/imageupload.png" id="upfile1" style="cursor:pointer" />
+              <input type="file" id="file1"  name="file" style="display:none" ngf-pattern="'image/*'" ngf-max-size="20MB" accept="image/*" file-model="user.file"/>
             </td>
           </tr>
           <tr>
@@ -28,58 +44,51 @@
               <td>
                 <label class="control-label " for="nom">Nom :</label>
                 <input type="text" class="form-control" ng-model="user.nom" name="name" required/>
-                <p ng-show="userForm.name.$invalid && !userForm.name.$pristine" class="help-block">veuillez saisir votre
-                  nom.</p>
+                <p ng-show="userForm.name.$invalid && !userForm.name.$pristine" class="help-block">veuillez saisir votre nom.</p>
               </td>
             </div>
             <div class="form-group" ng-class="{ 'has-error' : userForm.prenom.$invalid && !userForm.prenom.$pristine }">
               <td>
                 <label class="control-label " for="prenom">Prenom :</label>
                 <input type="text" class="form-control" ng-model="user.prenom" name="prenom" required/>
-                <p ng-show="userForm.prenom.$invalid && !userForm.prenom.$pristine" class="help-block">veuillez saisir
-                  votre prenom.</p>
+                <p ng-show="userForm.prenom.$invalid && !userForm.prenom.$pristine" class="help-block">veuillez saisir votre prenom.</p>
               </td>
             </div>
           </tr>
           <tr>
-            <div class="form-group"
-                 ng-class="{ 'has-error' : userForm.username.$invalid && !userForm.username.$pristine }">
+            <div class="form-group" ng-class="{ 'has-error' : userForm.username.$invalid && !userForm.username.$pristine }">
               <td>
                 <label class="control-label " for="username">Username :</label>
-                <input type="text" class="form-control" ng-model="user.username" name="username" ng-minlength="4"
-                       required/>
+                <input type="text" class="form-control" ng-model="user.username" name="username" ng-minlength="4" required/>
                 <p ng-show="userForm.username.$error.minlength" class="help-block">Username est trop court.</p>
               </td>
             </div>
             <div class="form-group" ng-class="{ 'has-error' : userForm.email.$invalid && !userForm.email.$pristine }">
               <td>
                 <label class="control-label requiredField" for="email">Email :</label>
-                <input type="email" class="form-control" ng-model="user.email" name="email"/>
-                <p ng-show="userForm.email.$invalid && !userForm.email.$pristine" class="help-block">veuillez entrer Un
-                  email valide.</p>
-              <td>
+                <input type="email" class="form-control" ng-model="user.email" name="email" />
+                <p ng-show="userForm.email.$invalid && !userForm.email.$pristine" class="help-block">veuillez entrer Un email valide.</p>
+                <td>
             </div>
           </tr>
           <tr>
             <td>
               <label class="control-label " for="tel">Tel :</label>
-              <input type="text" class="form-control" ng-model="user.tel"/>
+            <input type="text" class="form-control" ng-model="user.tel"/>
             </td>
             <td>
               <label class="control-label " for="type">Type :</label>
               <select class="form-control" id="exampleSelect1" ng-model="user.selectedtype">
                 <option ng-repeat="type in TypeList">{{type}}</option>
               </select>
-            </td>
+            </td>  
           </tr>
           <tr>
-            <div class="form-group"
-                 ng-class="{ 'has-error' : userForm.password.$invalid && !userForm.password.$pristine }">
+            <div class="form-group" ng-class="{ 'has-error' : userForm.password.$invalid && !userForm.password.$pristine }">
               <td>
                 <label class="control-label " for="password">Password :</label>
                 <input type="text" class="form-control" ng-model="user.password" name="password" required/>
-                <p ng-show="userForm.password.$invalid && !userForm.password.$pristine" class="help-block">veuillez
-                  entrer un mot de passe.</p>
+                <p ng-show="userForm.password.$invalid && !userForm.password.$pristine" class="help-block">veuillez entrer un mot de passe.</p>
               </td>
             </div>
             <td ng-show="grade()">
@@ -92,23 +101,23 @@
           <tr>
             <div class="form-group" ng-class="{ 'has-error' : userForm.mask.$invalid && !userForm.mask.$pristine }">
               <td>
-                <label class="control-label col-sm-2">Role :</label>
-                <label class="checkbox-inline">
-                  <input ng-model="user.maskprof" type="checkbox" id="professeur"/>
-                  Professeur
-                </label>
-                <label class="checkbox-inline">
-                  <input ng-model="user.maskchefDepart" type="checkbox" id="chefDepartement"/>
-                  Chef de departement
-                </label><br/>
-                <label class="checkbox-inline">
-                  <input ng-model="user.maskchefFil" type="checkbox" id="chefFilliere"/>
-                  Chef de filliere
-                </label>
-                <label class="checkbox-inline">
-                  <input ng-model="user.maskadmin" type="checkbox" id="chefDepartement"/>
-                  Administrateur
-                </label>
+                    <label class="control-label col-sm-2">Role :</label>
+                    <label class="checkbox-inline">
+                      <input ng-model="user.maskprof" type="checkbox" id="professeur"/>
+                      Professeur
+                    </label>
+                    <label class="checkbox-inline">
+                       <input ng-model="user.maskchefDepart" type="checkbox" id="chefDepartement"/>
+                      Chef de departement
+                    </label><br/>
+                    <label class="checkbox-inline">
+                      <input ng-model="user.maskchefFil" type="checkbox" id="chefFilliere"/>
+                      Chef de filliere
+                    </label>
+                    <label class="checkbox-inline">
+                       <input ng-model="user.maskadmin" type="checkbox" id="chefDepartement"/>
+                      Administrateur
+                    </label>
               </td>
             </div>
           </tr>
@@ -120,197 +129,176 @@
           </tr>
         </table>
       </fieldset>
-    </form>
+    </form> 
   </div>
 
-  <div ng-class="expression"
-  ="adduser">
-  <form ng-show="adduniv" name="univForm">
-    <fieldset>
-      <legend>Ajouter Universités</legend>
-      <table class="table parametre">
+  <div ng-class="expression"="adduser">
+        <form ng-show="adduniv" name="univForm">
+          <fieldset>
+            <legend>Ajouter Universités</legend>
+            <table class="table parametre">
+              <tr>
+                <div class="form-group" ng-class="{ 'has-error' : univForm.name.$invalid && !univForm.name.$pristine }">
+                  <td>
+                    <label class="control-label " for="nom">Université :</label>
+                    <input type="text" class="form-control" ng-model="univ.nom" name="name" required/>
+                    <p ng-show="univForm.name.$invalid && !univForm.name.$pristine" class="help-block">veuillez entrer le nom de l'université.</p>
+                  </td>
+                </div>
+                <div class="form-group" ng-class="{ 'has-error' : univForm.abv.$invalid && !univForm.abv.$pristine }">
+                  <td>
+                    <label class="control-label " for="abrev">Abreviation :</label>
+                    <input type="text" class="form-control" ng-model="univ.abrev" name="abv" maxlength="8"/>
+                  </td>
+                </div>
+              </tr>
+              <tr>
+                <div class="form-group" ng-class="{ 'has-error' : univForm.etab.$invalid && !univForm.etab.$pristine }">
+                  <td>
+                    <label class="control-label " for="nom">Etablissement :</label>
+                    <input type="text" class="form-control" ng-model="etab.nom" name="etab" required/>
+                    <p ng-show="univForm.etab.$invalid && !univForm.etab.$pristine" class="help-block">veuillez entrer le nom de l'etablissements.</p>
+                  </td>
+                </div>
+                <div class="form-group" ng-class="{ 'has-error' : univForm.etababrev.$invalid && !univForm.etababrev.$pristine }">
+                  <td>
+                    <label class="control-label " for="etababrev">Abreviation :</label>
+                    <input type="text" class="form-control" ng-model="etab.abrev" name="etababrev" maxlength="8"/>
+                  </td>
+                </div>
+                  <td><br>
+                  <button class="btn btn-success inline" ng-click="Addetab()"><span class="glyphicon glyphicon-plus" title="Ajouter une autre Etablissement"></button>
+                </td>
+              </tr>
+              <tr ng-repeat="etab in addetab track by $index">
+                <td>
+                  <label class="control-label " for="etab">Autre Etablissement :</label>
+                  <input type="text" class="form-control" ng-model="addetab[$index].nom"/>
+                </td>
+                <td>
+                  <label class="control-label requiredField" for="etababv">Abreviation :</label>
+                  <input type="text" class="form-control" ng-model="addetab[$index].abrev"  maxlength="8"/>
+                </td>
+                  <td><br>
+                  <button class="btn btn-success inline" ng-click="deletab($index)"><span class="glyphicon glyphicon-minus" title="supprimer Etablissement"></button>
+                </td>
+              </tr>
+              <tr>
+                <div class="form-group" ng-class="{ 'has-error' : univForm.dep.$invalid && !univForm.dep.$pristine }">
+                  <td>
+                    <label class="control-label " for="nom">Departements :</label>
+                    <input type="text" class="form-control" ng-model="dep.nom" name="dep" required/>
+                    <p ng-show="univForm.dep.$invalid && !univForm.dep.$pristine" class="help-block">veuillez entrer le nom de departement.</p>
+                  </td>
+                </div>
+                <div class="form-group" ng-class="{ 'has-error' : univForm.depabrev.$invalid && !univForm.depabrev.$pristine }">
+                  <td>
+                    <label class="control-label " for="etababrev">Abreviation :</label>
+                    <input type="text" class="form-control" ng-model="dep.abrev" name="depabrev" maxlength="8"/>
+                  </td>
+                </div>
+               <td><br>
+                  <button class="btn btn-success inline" ng-click="Addep()"><span class="glyphicon glyphicon-plus" title="Ajouter une autre departement"></button>
+                </td>
+              </tr>
+              <tr ng-repeat="dep in adddep track by $index">
+                <td>
+                  <label class="control-label " for="etab">Autre Departement :</label>
+                  <input type="text" class="form-control" ng-model="adddep[$index].nom"/>
+                </td>
+                <td>
+                  <label class="control-label requiredField" for="depabv">Abreviation :</label>
+                  <input type="text" class="form-control" ng-model="adddep[$index].abrev" maxlength="8" />
+                </td>
+                <td><br>
+                  <button class="btn btn-success inline" ng-click="deldep($index)"><span class="glyphicon glyphicon-minus" title="supprimer departement"></button>
+                </td>
+              </tr>
+                <tr>
+                <td>
+                  <button class="btn btn-success" ng-click="ajouteruniv()" ng-disabled="univForm.$invalid">Ajouter</button>
+                  <button class="btn btn-warning" ng-click="hideAddUniv()">Annuler</button>
+                </td>
+                </tr>
+              </tr>
+            </table>
+          </fieldset>
+    </form> 
+  </div>
+
+
+  <!-- Table -->
+  <fieldset class="list">
+    <legend> La listes de Comptes</legend>
+    <table class="table">
         <tr>
-          <div class="form-group" ng-class="{ 'has-error' : univForm.name.$invalid && !univForm.name.$pristine }">
-            <td>
-              <label class="control-label " for="nom">Université :</label>
-              <input type="text" class="form-control" ng-model="univ.nom" name="name" required/>
-              <p ng-show="univForm.name.$invalid && !univForm.name.$pristine" class="help-block">veuillez entrer le nom
-                de l'université.</p>
-            </td>
-          </div>
-          <div class="form-group" ng-class="{ 'has-error' : univForm.abv.$invalid && !univForm.abv.$pristine }">
-            <td>
-              <label class="control-label " for="abrev">Abreviation :</label>
-              <input type="text" class="form-control" ng-model="univ.abrev" name="abv" maxlength="8"/>
-            </td>
-          </div>
+          <th >Nom</th>
+          <th >Prenom</th>
+          <th>Username</th>
+          <th >Tel</th>
+          <th >Email</th>
+          <th >Options</th>
         </tr>
+        <tr ng-repeat="a in items | filter:{nom:q} | orderBy:'nom' track by $index">
+          <td class='input' ng-show="isEditable[$index]"><input class="form-control" type="text" ng-model="tmpEdit[$index].nom" /></td>
+          <td class='input' ng-show="isEditable[$index]"><input class="form-control" type="text" ng-model="tmpEdit[$index].prenom" /></td>
+          <td class='input' ng-show="isEditable[$index]"><input class="form-control" type="text" ng-model="tmpEdit[$index].login" /></td>
+          <td class='input' ng-show="isEditable[$index]"><input class="form-control" type="text" ng-model="tmpEdit[$index].tel" /></td>
+          <td class='input' ng-show="isEditable[$index]"><input class="form-control" type="text" ng-model="tmpEdit[$index].email" /></td>
+          <td class='input' ng-show="isEditable[$index]">
+              <button class="btn btn-success" ng-click="confirm($index,a)">Confirmer</button>
+              <button class="btn btn-info" ng-click="annuler($index)">Annuler</button>
+          </td>
+
+          <td ng-hide="isEditable[$index]" >{{a.nom}}</td>
+          <td ng-hide="isEditable[$index]" >{{a.prenom}}</td>
+          <td ng-hide="isEditable[$index]" >{{a.login}}</td>
+          <td ng-hide="isEditable[$index]" >{{a.tel}}</td>
+          <td ng-hide="isEditable[$index]" >{{a.email}}</td>
+          <td ng-hide="isEditable[$index]" >
+            <button class="btn btn-warning" ng-click="editer(a,$index)">editer</button>
+            <button class="btn btn-danger"  ng-click="delete(a)" data-toggle="modal" data-target="#myModal">Suprimer</button>
+            <div class="dropdown">
+              <button class="btn btn-info dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" ><span class="glyphicon glyphicon-cog" /></button>
+              
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                  <li ng-click="privilege(a)" data-toggle="modal" data-target="#myModal"><a>Roles</a></li>
+                 <!-- <li ng-click="matiere(a)" data-toggle="modal" data-target="#myModal"><a>Matiere</a></li>-->
+                </ul>
+          </div>
+          </td>
+        </tr>
+    </table>
+  </fieldset>
+
+  <!-- afichage de la listes des parametres-->
+  <fieldset class="list">
+    <legend> La listes des Paramètres</legend>
+    <table class="table">
         <tr>
-          <div class="form-group" ng-class="{ 'has-error' : univForm.etab.$invalid && !univForm.etab.$pristine }">
-            <td>
-              <label class="control-label " for="nom">Etablissement :</label>
-              <input type="text" class="form-control" ng-model="etab.nom" name="etab" required/>
-              <p ng-show="univForm.etab.$invalid && !univForm.etab.$pristine" class="help-block">veuillez entrer le nom
-                de l'etablissements.</p>
-            </td>
-          </div>
-          <div class="form-group"
-               ng-class="{ 'has-error' : univForm.etababrev.$invalid && !univForm.etababrev.$pristine }">
-            <td>
-              <label class="control-label " for="etababrev">Abreviation :</label>
-              <input type="text" class="form-control" ng-model="etab.abrev" name="etababrev" maxlength="8"/>
-            </td>
-          </div>
-          <td><br>
-            <button class="btn btn-success inline" ng-click="Addetab()"><span class="glyphicon glyphicon-plus"
-                                                                              title="Ajouter une autre Etablissement">
-            </button>
-          </td>
+          <th >Université</th>
+          <th>Etablissements</th>
+          <th>Departements</th>
+          <th>Option</th>
         </tr>
-        <tr ng-repeat="etab in addetab track by $index">
+        <tr ng-repeat="a in ListPrametre | orderBy:'nom' track by $index">
+          <td>{{a.abrev}}</td>
           <td>
-            <label class="control-label " for="etab">Autre Etablissement :</label>
-            <input type="text" class="form-control" ng-model="addetab[$index].nom"/>
+            <ul>
+              <li ng-repeat="b in a.etablissements">{{b.abrev}}</li>
+            </ul>
           </td>
           <td>
-            <label class="control-label requiredField" for="etababv">Abreviation :</label>
-            <input type="text" class="form-control" ng-model="addetab[$index].abrev" maxlength="8"/>
-          </td>
-          <td><br>
-            <button class="btn btn-success inline" ng-click="deletab($index)"><span class="glyphicon glyphicon-minus"
-                                                                                    title="supprimer Etablissement">
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <div class="form-group" ng-class="{ 'has-error' : univForm.dep.$invalid && !univForm.dep.$pristine }">
-            <td>
-              <label class="control-label " for="nom">Departements :</label>
-              <input type="text" class="form-control" ng-model="dep.nom" name="dep" required/>
-              <p ng-show="univForm.dep.$invalid && !univForm.dep.$pristine" class="help-block">veuillez entrer le nom de
-                departement.</p>
-            </td>
-          </div>
-          <div class="form-group"
-               ng-class="{ 'has-error' : univForm.depabrev.$invalid && !univForm.depabrev.$pristine }">
-            <td>
-              <label class="control-label " for="etababrev">Abreviation :</label>
-              <input type="text" class="form-control" ng-model="dep.abrev" name="depabrev" maxlength="8"/>
-            </td>
-          </div>
-          <td><br>
-            <button class="btn btn-success inline" ng-click="Addep()"><span class="glyphicon glyphicon-plus"
-                                                                            title="Ajouter une autre departement">
-            </button>
-          </td>
-        </tr>
-        <tr ng-repeat="dep in adddep track by $index">
-          <td>
-            <label class="control-label " for="etab">Autre Departement :</label>
-            <input type="text" class="form-control" ng-model="adddep[$index].nom"/>
+            <ul>
+              <li ng-repeat="b in a.departements">{{b.abrev}}</li>
+            </ul>
           </td>
           <td>
-            <label class="control-label requiredField" for="depabv">Abreviation :</label>
-            <input type="text" class="form-control" ng-model="adddep[$index].abrev" maxlength="8"/>
-          </td>
-          <td><br>
-            <button class="btn btn-success inline" ng-click="deldep($index)"><span class="glyphicon glyphicon-minus"
-                                                                                   title="supprimer departement">
-            </button>
+             <button class="btn btn-danger"  ng-click="deleteP(a)" data-toggle="modal" data-target="#myModal">Suprimer</button>
           </td>
         </tr>
-        <tr>
-          <td>
-            <button class="btn btn-success" ng-click="ajouteruniv()" ng-disabled="univForm.$invalid">Valider</button>
-            <button class="btn btn-warning" ng-click="hideAddUniv()">Annuler</button>
-          </td>
-        </tr>
-        </tr>
-      </table>
-    </fieldset>
-  </form>
-</div>
-
-
-<!-- Table -->
-<fieldset class="list">
-  <legend> La listes de Comptes</legend>
-  <table class="table">
-    <tr>
-      <th>Nom</th>
-      <th>Prenom</th>
-      <th>Username</th>
-      <th>Tel</th>
-      <th>Email</th>
-      <th>Options</th>
-    </tr>
-    <tr ng-repeat="a in items | filter:{nom:q} | orderBy:'nom' track by $index">
-      <td class='input' ng-show="isEditable[$index]"><input class="form-control" type="text"
-                                                            ng-model="tmpEdit[$index].nom"/></td>
-      <td class='input' ng-show="isEditable[$index]"><input class="form-control" type="text"
-                                                            ng-model="tmpEdit[$index].prenom"/></td>
-      <td class='input' ng-show="isEditable[$index]"><input class="form-control" type="text"
-                                                            ng-model="tmpEdit[$index].login"/></td>
-      <td class='input' ng-show="isEditable[$index]"><input class="form-control" type="text"
-                                                            ng-model="tmpEdit[$index].tel"/></td>
-      <td class='input' ng-show="isEditable[$index]"><input class="form-control" type="text"
-                                                            ng-model="tmpEdit[$index].email"/></td>
-      <td class='input' ng-show="isEditable[$index]">
-        <button class="btn btn-success" ng-click="confirm($index,a)">Confirmer</button>
-        <button class="btn btn-info" ng-click="annuler($index)">Annuler</button>
-      </td>
-
-      <td ng-hide="isEditable[$index]">{{a.nom}}</td>
-      <td ng-hide="isEditable[$index]">{{a.prenom}}</td>
-      <td ng-hide="isEditable[$index]">{{a.login}}</td>
-      <td ng-hide="isEditable[$index]">{{a.tel}}</td>
-      <td ng-hide="isEditable[$index]">{{a.email}}</td>
-      <td ng-hide="isEditable[$index]">
-        <button class="btn btn-warning" ng-click="editer(a,$index)">editer</button>
-        <button class="btn btn-danger" ng-click="delete(a)" data-toggle="modal" data-target="#myModal">Suprimer</button>
-        <div class="dropdown">
-          <button class="btn btn-info dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
-                  aria-expanded="true"><span class="glyphicon glyphicon-cog"/></button>
-
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-            <li ng-click="privilege(a)" data-toggle="modal" data-target="#myModal"><a>Roles</a></li>
-            <!-- <li ng-click="matiere(a)" data-toggle="modal" data-target="#myModal"><a>Matiere</a></li>-->
-          </ul>
-        </div>
-      </td>
-    </tr>
-  </table>
-</fieldset>
-
-<!-- afichage de la listes des parametres-->
-<fieldset class="list">
-  <legend> La listes des Paramètre</legend>
-  <table class="table">
-    <tr>
-      <th>Université</th>
-      <th>Etablissements</th>
-      <th>Departements</th>
-      <th>Option</th>
-    </tr>
-    <tr ng-repeat="a in ListPrametre | orderBy:'nom' track by $index">
-      <td>{{a.abrev}}</td>
-      <td>
-        <ul>
-          <li ng-repeat="b in a.etablissements">{{b.abrev}}</li>
-        </ul>
-      </td>
-      <td>
-        <ul>
-          <li ng-repeat="b in a.departements">{{b.abrev}}</li>
-        </ul>
-      </td>
-      <td>
-        <button class="btn btn-danger" ng-click="deleteP(a)" data-toggle="modal" data-target="#myModal">Suprimer
-        </button>
-      </td>
-    </tr>
-  </table>
-</fieldset>
+    </table>
+  </fieldset>
 </div>
 
 
@@ -322,64 +310,64 @@
     <div class="modal-content">
 
       <div ng-switch="lightboxContentSwitch">
+    
+            <div ng-switch-when="delete" id="switchDelete" class="alert alert-danger center-block text-center">
+                <div class="modal-header">
+                  <h1>Attention!</h1>
+                </div>
+                <div class="modal-body">
+                  <h3>Voulez vous vraiment supprimer {{activeObj.nom}} {{activeObj.prenom}}</h3>
+                </div>
+                <div class="modal-footer">
+                  <button class="btn btn-danger" ng-click="confirmDelete(activeObj)" data-dismiss="modal">Confirmer</button>
+                  <button class="btn btn-info" data-dismiss="modal">Annuler</button>
+                </div>
+            </div>
 
-        <div ng-switch-when="delete" id="switchDelete" class="alert alert-danger center-block text-center">
-          <div class="modal-header">
-            <h1>Attention!</h1>
-          </div>
-          <div class="modal-body">
-            <h3>Voulez vous vraiment supprimer {{activeObj.nom}} {{activeObj.prenom}}</h3>
-          </div>
-          <div class="modal-footer">
-            <button class="btn btn-danger" ng-click="confirmDelete(activeObj)" data-dismiss="modal">Confirmer</button>
-            <button class="btn btn-info" data-dismiss="modal">Annuler</button>
-          </div>
-        </div>
+            <div ng-switch-when="settings" id="switchSettings" class="alert alert-info center-block text-center">
+                <div class="modal-header">
+                  <h1 class="text-center">{{activeObj.nom}} {{activeObj.prenom}}</h1>
+                </div>
+                <div class="modal-body">
+                  <input type="checkbox" class="form-controller" id="professeur" ng-model="masks.prof"/>
+                  <label for="professeur">Professeur</label><br/>
 
-        <div ng-switch-when="settings" id="switchSettings" class="alert alert-info center-block text-center">
-          <div class="modal-header">
-            <h1 class="text-center">{{activeObj.nom}} {{activeObj.prenom}}</h1>
-          </div>
-          <div class="modal-body">
-            <input type="checkbox" class="form-controller" id="professeur" ng-model="masks.prof"/>
-            <label for="professeur">Professeur</label><br/>
+                  <input type="checkbox" class="form-controller" id="chefFillier" ng-model="masks.filliere"/>
+                  <label for="chefFillier">chef de Filliere</label><br/>
+                  
+                  <input type="checkbox" class="form-controller" id="chefDepartement" ng-model="masks.departement"/>
+                  <label for="chefDepartement">chef de departement</label><br/>
 
-            <input type="checkbox" class="form-controller" id="chefFillier" ng-model="masks.filliere"/>
-            <label for="chefFillier">chef de Filliere</label><br/>
+                  <input type="checkbox" class="form-controller" id="admin" ng-model="masks.admin"/>
+                  <label for="admin">Administrateur</label><br/>
+                  <br/>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-info text-center" ng-click="confirmPrivilege()" data-dismiss="modal">Valider</button>
+                    <button class="btn btn-warning text-center" data-dismiss="modal">Annuler</button>
+                </div>
+            </div>
 
-            <input type="checkbox" class="form-controller" id="chefDepartement" ng-model="masks.departement"/>
-            <label for="chefDepartement">chef de departement</label><br/>
-
-            <input type="checkbox" class="form-controller" id="admin" ng-model="masks.admin"/>
-            <label for="admin">Administrateur</label><br/>
-            <br/>
-          </div>
-          <div class="modal-footer">
-            <button class="btn btn-info text-center" ng-click="confirmPrivilege()" data-dismiss="modal">Valider</button>
-            <button class="btn btn-warning text-center" data-dismiss="modal">Annuler</button>
-          </div>
-        </div>
-
-        <div ng-switch-when="matiere" id="switchDelete" class="alert alert-info center-block text-center">
-          <div class="modal-header">
-            <h1>Matieres de {{activeObj.nom}} {{activeObj.prenom}}</h1>
-          </div>
-          <div class="modal-body">
-            <h3 ng-repeat="a in test">{{a.nom}}</h3>
-          </div>
-          <div class="modal-footer">
-            <button class="btn btn-danger" ng-click="" data-dismiss="modal">Confirmer</button>
-            <button class="btn btn-info" data-dismiss="modal">Annuler</button>
-          </div>
-        </div>
-      </div>
+            <div ng-switch-when="matiere" id="switchDelete" class="alert alert-info center-block text-center">
+                <div class="modal-header">
+                  <h1>Matieres de {{activeObj.nom}} {{activeObj.prenom}}</h1>
+                </div>
+                <div class="modal-body">
+                  <h3 ng-repeat="a in test">{{a.nom}}</h3>
+                </div>
+                <div class="modal-footer">
+                  <button class="btn btn-danger" ng-click="" data-dismiss="modal">Confirmer</button>
+                  <button class="btn btn-info" data-dismiss="modal">Annuler</button>
+                </div>
+            </div>
+       </div>
     </div>
 
   </div>
 </div>
 
 <script type="text/javascript">
-  $("#upfile1").click(function () {
+$("#upfile1").click(function () {
     $("#file1").trigger('click');
-  });
+});
 </script>

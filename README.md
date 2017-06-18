@@ -16,7 +16,8 @@ $ cd PFA2017
 Installer les dépendances de l'application :
 ```
 $ npm install
-$ npm run bower-install
+$ cd public
+$ bower install
 ```
 Démarrer MongoDB quelque part :
 ```
@@ -25,6 +26,6 @@ $ mongod --dbpath db
 ```
 Démarrer l'application :
 ```
-$ npm start
+$ node app.js
 ```
 Puis naviguer vers http://localhost:8010.

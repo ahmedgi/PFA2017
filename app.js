@@ -31,7 +31,6 @@ var eModuleRouteHandler = require('./routes/eModuleRoute');
 var moduleRouteHandler = require('./routes/moduleRoute');
 var profRouteHandler = require('./routes/profRoute');
 var filiereRouteHandler = require('./routes/filiereRoute');
-var uploadComptes = require("./routes/CompteUpload.js");
 var stages = require("./routes/stages/stages.js");
 //-----models---------------
 //var User=require("./models/User");
@@ -139,7 +138,6 @@ app.use('/', prouter);
 app.use('/', cfrouter);
 app.use('/', adminrouter);
 app.use('/', resetpasswd);
-app.use('/', uploadComptes);
 app.use('/stages', stages);
 
 app.use('/gestionfiliere/eModules', eModuleRouteHandler);
