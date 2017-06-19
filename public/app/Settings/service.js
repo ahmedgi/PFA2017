@@ -60,6 +60,7 @@ app.service('multipartForm', ['$http', function($http){
     		},function err(res){
       		    alert(JSON.stringify(res.data.err));
     });
+		console.log(fd);
 	}
 }])
 

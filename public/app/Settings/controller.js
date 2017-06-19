@@ -23,7 +23,7 @@ app
 	};
 	$scope.annulerupload=function(){
 		$scope.importuser=false;
-	}
+	};
 
 
 	$scope.grade=function(){

@@ -22,12 +22,14 @@ var universite = require("../models/databaseModels").universite;
 
 
 adminrouter.post('/create' /* ,conEnsure.ensureLoggedIn(2,"/login") */, function (req, res) {
-    if (req.files[0]) {
-        fs.rename(req.files[0].path, './public/app/images/' + req.body.username + '.png', function (err) {
-            if (err) console.log('ERROR: ' + err);
+    if(req.files){
+        console.log(req.files.file.name);
+        req.files.file.mv("./public/app/images/"+req.body.username+".png",function(err){
+            if(err)
+                console.log("erreur saving");
+            console.log("file saved succefully");
         });
     }
-    ;
     var mask = 0;
     if (req.body.maskprof)
         mask = mask + 1;
@@ -38,7 +40,7 @@ adminrouter.post('/create' /* ,conEnsure.ensureLoggedIn(2,"/login") */, function
     if (req.body.maskadmin)
         mask = mask + 8;
 
-    nom = req.body.nom,
+    var nom = req.body.nom,
         login = req.body.username,
         email = req.body.email,
         tel = req.body.tel,
@@ -54,14 +56,16 @@ adminrouter.post('/create' /* ,conEnsure.ensureLoggedIn(2,"/login") */, function
         tel: tel,
         email: email,
         grade: grade,
+        type:type,
         security_mask: mask,
         password: passwd,
         matieres: [],
         modules: []
     });
-    if (type) {
-        user.type = type;
+    if(req.body.responsablestage){
+        user.responsablestage=1;
     }
+
     User.findOne({login: login}, function (err, doc) {
         if (typeof doc != 'undefined' && doc != null) {
             if (doc.login.trim().toUpperCase() == login.trim().toUpperCase())

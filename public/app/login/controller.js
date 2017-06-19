@@ -1,7 +1,7 @@
 var app = angular.module('loginApp', [])
 
-app.controller("loginController", ["$scope", "$http", "$window", function ($scope, $http, $window) {
-  $scope.sendLoginCreditentials = function () {
+app.controller("loginController", ["$scope", "$http", "$window", function($scope, $http, $window) {
+  $scope.sendLoginCreditentials = function(){
     var loginData = {
       login: $scope.login,
       password: $scope.password
@@ -12,8 +12,11 @@ app.controller("loginController", ["$scope", "$http", "$window", function ($scop
         url: "/login"
       }
     ).then(function success(res) {
-      if (res.data.ok == "firstlogin") {
+      if (res.data.ok == "firstlogin"){
         $window.location.href = "/ChangPassword/" + loginData.login;
+      }
+      if(res.data.ok =="responsablestage"){
+        $window.location.href = "/stages";
       }
       if (res.data.ok == "success") {
         $window.location.href = "/app/";

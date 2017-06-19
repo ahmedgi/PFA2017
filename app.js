@@ -162,8 +162,10 @@ app.post('/login', function (req, res) {
                 if (err) next(err);
                 else if (!user.firstlogin) {
                     res.status(200).json({ok: "firstlogin"});
-                } else {
-                    res.status(200).json({ok: "success"});
+                }else{
+                    if(user.responsablestage){
+                        res.status(200).json({ok: "responsablestage"});
+                    }else res.status(200).json({ok: "success"});
                 }
             });
 
