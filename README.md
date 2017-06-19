@@ -16,6 +16,7 @@ $ cd PFA2017
 Installer les dépendances de l'application :
 ```
 $ npm install
+$ npm install bower -g
 $ cd public
 $ bower install
 ```
