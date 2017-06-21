@@ -135,6 +135,7 @@ app
 		multipartForm.post('/create', $scope.user);
 		$scope.isEditable.push(false);
 		$scope.reset();
+		$scope.addVisible=false;
 	};
 	//upload compte
 
