@@ -7,7 +7,7 @@
 
 Cloner l'application :
 ```
-$ git clone https://github.com/yassinei/PFA2017
+$ git clone https://github.com/ahmedgi/PFA2017.git
 ```
 Se mettre dans le dossier de l'application :
 ```
