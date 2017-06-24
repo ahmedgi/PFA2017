@@ -82,7 +82,7 @@ app
       			}
     		},function err(res){
       		alert(JSON.stringify(res.data.err));
-    });
+    	});
 	};
 	// add departement
 	$scope.Addep=function(){

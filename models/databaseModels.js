@@ -251,6 +251,7 @@ var filiereSchema = mongoose.Schema(
         annee3: {
             s1: [
                 {
+
                     type: mongoose.Schema.Types.ObjectId,
                     ref: 'modules'
                 }

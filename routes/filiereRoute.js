@@ -2,7 +2,7 @@ var express = require('express');
 var async = require('async')
 var conEnsure = require('connect-ensure-login');
 var filiere = require('../models/databaseModels').filiere;
-
+var filiereArchive = require('../models/filierearchive.js');
 var errorMessage = function (code, message) {
     return {code: code, message: message}
 }
@@ -103,15 +103,37 @@ router.post("/deleteFiliere", conEnsure.ensureLoggedIn(0, "/login_", true), func
     res.setHeader('Content-Type', 'application/json');
 
     console.log("response is : ");
-
-    filiere.remove({_id: req.body.filiereId}, function (err) {
-        if (err) {
-            res.send(JSON.stringify({code: "001", message: "database Prob", data: ''}, null, '\t'));
-            console.log(JSON.stringify({code: "001", message: "database Prob", data: ''}, null, '\t'));
-        }
-        else {
-            res.send(JSON.stringify({code: "200", message: "", data: ''}, null, '\t'));
-            console.log(JSON.stringify({code: "200", message: "", data: ''}, null, '\t'));
+    filiere.find({_id:req.body.filiereId},function(err,doc){
+        if(err)
+            console.log("aucun filiere trouver");
+        else{
+            var filiereArchiv=new filiereArchive({
+                intitulee: doc[0].intitulee+doc[0].creationDate.getFullYear(),
+                annee1: doc[0].annee1,
+                annee2: doc[0].annee2,
+                annee3: doc[0].annee3,
+                createdBy:doc[0].createdBy ,
+                responsable: doc[0].responsable,
+                creationDate:doc[0].creationDate,
+            });
+            console.log(filiereArchiv);
+            filiereArchiv.save(function(err){
+                if(err){
+                    console.log("erreur d'archivage de la filiere");}
+                    else{
+                        console.log("la filiere est bien archivé");
+                              filiere.remove({_id : req.body.filiereId},function(err){
+                                  if (err){
+                                     res.send(JSON.stringify({code : "001",message:"database Prob",data :'' },null,'\t'));
+                                     console.log(JSON.stringify({code : "001",message:"database Prob",data :'' },null,'\t'));
+                                  }
+                                  else{
+                                     res.send(JSON.stringify({code : "200",message:"",data :'' },null,'\t'));
+                                     console.log(JSON.stringify({code : "200",message:"",data :'' },null,'\t'));
+                                  }
+                              });
+                        }
+            });
         }
     });
 

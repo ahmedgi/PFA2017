@@ -314,3 +314,7 @@
   background-color: rgba(250, 250, 250, .8);
   z-index: 1;
 }
+
+.button-center{
+  text-align: center;
+}

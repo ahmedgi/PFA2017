@@ -1,8 +1,6 @@
 var serverip = 'localhost:8010'
 
 
-var app = angular.module('pfaApp');
-
 //filterres
 
 app.filter('unique', function () {
@@ -23,6 +21,7 @@ app.filter('unique', function () {
     return output;
   };
 });
+
 // la liste des parametre
 app.factory('parametrelist', function ($http) {
   this.getparametre = function () {
@@ -40,6 +39,24 @@ app.factory('parametrelist', function ($http) {
     });
   }
   return this;
+});
+//la listes des archive
+app.factory('filierearchivelist',function($http){
+    this.getarchive = function(){
+    return $http({
+      method: "GET",
+      url: '/archivelist',
+    }).then(function success(res) {
+      if (res.data.info == "non_auto") {
+        alert("vous n'avez pas le droit");
+        return [];
+      } else
+        return res.data.data;
+    }, function (err) {
+      alert("erreur de recuperation des archive");
+    });
+  }
+  return this
 });
 //filiere Service
 app.service('filiereService', function ($http) {
@@ -710,7 +727,7 @@ app.controller('m_creeModalController', function ($scope, $rootScope, moduleServ
     }
     ,
     submit: function () {
-      //if($scope.cree.req.cordId._id)
+      
       $scope.cree.req.cordId = $scope.cree.req.cordId._id;
       moduleService.cree($scope.cree.req)
         .then(function successCallback(response) {
@@ -1860,9 +1877,57 @@ app.controller('f_headerController', function ($scope, $rootScope, filiereServic
     $rootScope.$broadcast('init_editeModal', {});
   }
 })
-app.controller('f_creeController', function ($scope, $rootScope, filiereService, profService, filiereList, profsList) {
+app.controller('f_creeController', function ($http,filierearchivelist,$scope, $rootScope, filiereService, profService, filiereList, profsList) {
   $scope.filieres = filiereList.getItems;
   $scope.profs = profsList.getItems;
+  $scope.listarchive=[];
+  $scope.nouvelle=false;
+  $scope.archives=false;
+
+  $scope.nouvel=function(){
+    $scope.nouvelle=true;
+    $scope.archives=false;
+  };
+  $scope.archive=function(){
+    filierearchivelist.getarchive().then(function(array){
+      $scope.listarchive=array;
+    });
+    $scope.nouvelle=false;
+    $scope.archives=true;
+  };
+  $scope.reactiver=function(){
+    console.log($scope.newfilierearchive);
+      $http({
+      method:'POST',
+      data:$scope.newfilierearchive,
+      url:'/reactiverfiliere'
+      }).then(
+          function success(res){
+              if(res.data.info=="non_auto"){
+                alert("vous n'êtes pas autorisé !!");
+               }
+              else {
+                    filiereList.load();
+                    $('#creeModal').modal('hide');
+                    var notify = {
+                      type: 'success',
+                      title: "Filiere " + $scope.cree.req.intitulee + " cree avec succes ",
+                      content: ''
+                    };
+                    $scope.$emit('notify', notify);
+                    }
+                },function err(res){
+                    $('#creeModal').modal('hide');
+                    var notify = {
+                      type: 'error',
+                      title: "une erreur est survenue !!",
+                      content: ''
+                    };
+                    $scope.$emit('notify', notify);
+        });
+  };
+
+
   $scope.cree = {
     req: {
       userId: '',

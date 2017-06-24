@@ -41,7 +41,7 @@ router.post("/creeModule", conEnsure.ensureLoggedIn(0, "/login_", true), functio
             },
             function (callback) {
                 var cordid = req.body.cordId;
-                if (!cordid) {
+                if (cordid==null) {
                     cordid = req.body.userId;
                 }
                 ;

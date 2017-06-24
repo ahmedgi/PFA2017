@@ -4,11 +4,18 @@
       <div class="row">
         <p>
         <div class="col-md-6 col-sm-6 col-xs-12">
-          <a ui-sref="Gest-Filiere.filiere" class="btn btn-squared-default btn-success">
+          <a ui-sref="Gest-Filiere.filiere" ng-if='user().security_mask>=3' class="btn btn-squared-default btn-success">
             <i class="glyphicon glyphicon-menu-hamburger" style="font-size: 60px;"></i>
             <div>
 	            	<span>Acréditation de filières<span>
 								<span class="badge" title="Notification">{{eModuleNotifCount()+moduleNotifCount()}}</span>
+            </div>
+          </a>
+          <a ui-sref="Gest-Filiere.module" ng-if='user().security_mask<3' class="btn btn-squared-default btn-success">
+            <i class="glyphicon glyphicon-menu-hamburger" style="font-size: 60px;"></i>
+            <div>
+                <span>Acréditation de filières<span>
+                <span class="badge" title="Notification">{{eModuleNotifCount()+moduleNotifCount()}}</span>
             </div>
           </a>
         </div>

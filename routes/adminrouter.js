@@ -10,6 +10,7 @@ var xlsx = require("xlsx");
 //-----models---------------
 var User = require("../models/databaseModels").profs;
 var eModule = require("../models/databaseModels").eModule;
+var filiereArchive = require('../models/filierearchive.js');
 var Rat = require("../models/rattrappage");
 var Matiere = require("../models/Matiere");
 var Notes = require("../models/Notes");
@@ -141,7 +142,7 @@ adminrouter.post('/upload',function(req,res){
                 });
 
             });
-            res.json({ok: "les comptes créé  correctements !"});
+            res.json({ok: "les comptes sont créés  correctements !"});
             }
         }
 
@@ -221,7 +222,39 @@ adminrouter.get('/parametres', function (req, res) {
         } else res.statys(500).json({err: "erreur de recuperation des parametre"});
     });
 });
-
+//get le listes des filieres archivées
+adminrouter.get('/archivelist', function (req, res) {
+    var Psend = {};
+    console.log("request from archive received");
+    filiereArchive.find({}).exec(function (err, param) {
+        if (!err) {
+            Psend.data = param;
+            res.status(200).json(Psend);
+        } else res.statys(500).json({err: "erreur de recuperation des archive"});
+    });
+});
+adminrouter.post('/reactiverfiliere',function(req,res){
+    console.log("posted by reactivat");
+    console.log(req.body);
+    var filiere=new dbModel.filiere({
+                intitulee: req.body.intitulee,
+                annee1: req.body.annee1,
+                annee2: req.body.annee2,
+                annee3: req.body.annee3,
+                createdBy:req.body.createdBy ,
+                responsable: req.body.responsable,
+                creationDate:req.body.creationDate,
+            });
+    filiere.save(function(err){
+        if(err){
+            res.json({err:"erreur de l'activation de la filiere"});
+            console.log("erreru lors d'ctivation");}
+        else{
+            res.json({ok:"la filiere est bien activer"});
+            console.log("la filiere est bien activer");
+        }
+    });
+});
 //-----------get-Subject-List------------------------------
 adminrouter.get('/matieres', /*conEnsure.ensureLoggedIn(2,"/login_"),*/function (req, res) {
     var tsend = {};

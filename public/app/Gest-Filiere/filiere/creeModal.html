@@ -7,12 +7,32 @@
         <h4 class="modal-title">Creé une filiere</h4>
       </div>
       <div class="modal-body">
-        <form name='creeFiliereForm' role="form" novalidate>
+        <div class="button-center">
+          <button class="btn btn-warning" ng-click="nouvel()">créer une nouvelle filière</button>
+          <button class="btn btn-warning" ng-click="archive()">Acréditer une filière archivé</button>
+        </div>
+        <hr/>
+        <form name="form" ng-show="archives" role="form" novalidate>
+                <div class="form-group" ng-class="{ 'has-error': form.distributor.$invalid && form.distributor.$touched }">
+                  <label for="coordonnateur">Choisir Une Filière :</label>
+                  <div class="form-inline">
+                    <select  class="form-control" title="..." data-live-search="true"
+                            ng-options="filiere.intitulee for filiere in listarchive" ng-model="newfilierearchive" required>
+                    </select>
+                  </div>
+                  <span ng-show="form.distributor.$error.required" class="help-inline">Please select a distributor</span>
+                </div>
+                <div class="modal-footer">
+                <button class="btn " ng-click="reactiver()" ng-disabled="form.$invalid">Valider</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="cree.annuler()">Annuler</button>
+                </div>
+        </form>
+        <form name='creeFiliereForm' role="form" novalidate ng-show="nouvelle">
           <div class="form-group"
                ng-class="{ 'has-error' : cree.validation.taken || (creeFiliereForm.intitulee.$invalid &&  creeFiliereForm.intitulee.$touched)}">
             <label for="intitulee">Intitulée:</label>
             <input id="intitulee" name="intitulee" type="text" class="form-control" placeholder="intitulée"
-                   ng-model="cree.req.intitulee" ng-focus="cree.validation.taken = false" ng-minlength="3" required>
+                   ng-model="cree.req.intitulee" ng-focus="cree.validation.taken = false" ng-minlength="3" required />
             <p ng-show="cree.validation.taken" class="help-block">intitulee existe deja !!.</p>
             <p ng-show="creeFiliereForm.intitulee.$error.minlength && creeFiliereForm.intitulee.$touched"
                class="help-block">intitulee trop court !!.</p>
@@ -28,11 +48,12 @@
               </select>
             </div>
           </div>
+            <div class="modal-footer">
+              <button class="btn btn-default" ng-click="cree.submit()" ng-disabled="creeFiliereForm.$invalid">Valider</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="cree.annuler()">Annuler</button>
+            </div>
         </form>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-default" ng-click="cree.submit()" ng-disabled="creeFiliereForm.$invalid">Valider</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="cree.annuler()">Annuler</button>
+
       </div>
     </div>
   </div>
