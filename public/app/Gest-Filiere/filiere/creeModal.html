@@ -20,11 +20,11 @@
                             ng-options="filiere.intitulee for filiere in listarchive" ng-model="newfilierearchive" required>
                     </select>
                   </div>
-                  <span ng-show="form.distributor.$error.required" class="help-inline">Please select a distributor</span>
+                  <span ng-show="form.distributor.$error.required" class="help-inline">veuiller selectionner une filière</span>
                 </div>
                 <div class="modal-footer">
-                <button class="btn " ng-click="reactiver()" ng-disabled="form.$invalid">Valider</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="cree.annuler()">Annuler</button>
+                <button class="btn btn-default" ng-click="reactiver()" ng-disabled="form.$invalid">Valider</button>
+                <button class="btn btn-default" data-dismiss="modal" ng-click="cree.annuler()">Annuler</button>
                 </div>
         </form>
         <form name='creeFiliereForm' role="form" novalidate ng-show="nouvelle">

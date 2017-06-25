@@ -94,6 +94,19 @@ app.service('filiereService', function ($http) {
     })
     return promise;
   }
+  this.generateDOC = function (req) {
+    var promise = $http({
+      method: 'POST',
+      url: 'http://' + serverip + '/gestionfiliere/filiere/generateDOC',
+      data: req
+    })
+    promise.then(function (response) {
+      if (response.data.info == 'non_auto') {
+        $window.location.href = 'http://' + serverip + '/app/login';
+      }
+    })
+    return promise;
+  }
 });
 
 app.service('filiereList', function (filiereService, $rootScope, profsList) {
@@ -709,6 +722,7 @@ app.controller('m_creeModalController', function ($scope, $rootScope, moduleServ
       userId: '',
       intitulee: '',
       cordId: '',
+      codee:'',
     },
     validation: {
       taken: false,
@@ -722,6 +736,7 @@ app.controller('m_creeModalController', function ($scope, $rootScope, moduleServ
       $scope.cree.validation.WTaken = false;
       $scope.cree.validation.taken = false;
       $scope.cree.req.intitulee = '';
+      $scope.cree.req.codee = '';
       $scope.creeModuleForm.intitulee.$setUntouched();
       $scope.cree.req.cordId = '';
     }
@@ -1050,6 +1065,7 @@ app.controller('m_editeModalController', function ($scope, $rootScope, moduleSer
       etablissement: '',
       departement: '',
       intitulee: '',
+      code:'',
       prerequis: '',
       objectif: '',
       didactique: '',
@@ -1084,6 +1100,7 @@ app.controller('m_editeModalController', function ($scope, $rootScope, moduleSer
       $scope.edite.req.etablissement = tmpModule.etablissement;
       $scope.edite.req.departement = tmpModule.departement;
       $scope.edite.req.intitulee = tmpModule.intitulee;
+      $scope.edite.req.code = tmpModule.code;
       $scope.edite.req.prerequis = tmpModule.prerequis;
       $scope.edite.req.objectif = tmpModule.objectif;
       $scope.edite.req.didactique = tmpModule.didactique;
@@ -1620,10 +1637,27 @@ app.controller('e_headerController', function ($scope, $rootScope, eModuleNotifL
 
 //filiere Controllers
 
-app.controller('f_editeModalController', function ($scope, $rootScope, moduleService, profService, modulesList, profsList, filiereService, filiereList) {
+app.controller('f_editeModalController', function ($scope, $rootScope,parametrelist, moduleService, profService, modulesList, profsList, filiereService, filiereList) {
   $scope.modules = modulesList.getItems;
+  $scope.listparametre=[];
+  parametrelist.getparametre().then(function (arrItems) {//fetch the informations of the subjects from the factory
+    $scope.listparametre = arrItems;
+  });
+  $scope.etablissements = function () {
+    $scope.etablissement = [];
+    for (i = 0; i < $scope.listparametre.length; i++) {
+      for (j = 0; j < $scope.listparametre[i].etablissements.length; j++) {
+        $scope.etablissement.push($scope.listparametre[i].etablissements[j]);
+      }
+    }
+    ;
+    return $scope.etablissement;
+  };
+
   $scope.edite = {
     req: {
+      universite:'',
+      etablissement:'',
       userId: '',
       filiereId: '',
       intitulee: '',
@@ -1675,6 +1709,8 @@ app.controller('f_editeModalController', function ($scope, $rootScope, moduleSer
 
       $scope.edite.req.filiereId = tmpFiliere._id;
       $scope.edite.req.intitulee = tmpFiliere.intitulee;
+      $scope.edite.req.universite = tmpFiliere.universite;
+      $scope.edite.req.etablissement = tmpFiliere.etablissement;
       $scope.edite.req.status = tmpFiliere.status;
       $scope.edite.req.userId = profsList.getUser()._id;
       $scope.edite.currentModules.annee1 = tmpFiliere.annee1;
@@ -1852,7 +1888,34 @@ app.controller('f_filiereTableController', function ($scope, $rootScope, moduleS
       ['Supprimer', function ($itemScope) {
         $scope.filiereTable.selectedId = $itemScope.filiere._id;
         $('#deleteModal').modal('show');
-      }]
+      }],
+      null,
+      ['Télécharger', function ($itemScope) {
+        filiereService.generateDOC({
+          userId: $scope.user()._id,
+          filiereid: $itemScope.filiere._id
+        })
+          .then(function (response) {
+            if (response.data.code = '200') {
+              $window.location.href = 'http://' + serverip + response.data.data.url;
+            }
+            else {
+              var notify = {
+                type: 'error',
+                title: "une erreur est survenue !!",
+                content: ''
+              };
+              $scope.$emit('notify', notify);
+            }
+          }, function (response) {
+            var notify = {
+              type: 'error',
+              title: "une erreur est survenue !!",
+              content: ''
+            };
+            $scope.$emit('notify', notify);
+          });
+      }],
     ],
     clicked: function (index, id, _intitulee) {
       $scope.filiereTable.selectedIndex = index;

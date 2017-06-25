@@ -70,6 +70,23 @@
           </div>
           <div class="panel panel-primary">
             <div class="panel-heading">
+              <h3 class="panel-title"><label for="intitulee">Code</label></h3>
+            </div>
+            <div class="panel-body">
+              <div class="form-group"
+                   ng-class="{ 'has-error' : editeForm.intitulee.$invalid &&  editeForm.intitulee.$touched}">
+                <input id="code" class="form-control" type="text" name="code" placeholder="code de module"
+                       ng-model="edite.req.code" ng-maxlength="8"
+                       required>
+                <p ng-show="editeForm.code.$error.maxlength && editeForm.code.$touched" class="help-block">
+                  code trés long !!.</p>
+                <p ng-show="editeForm.code.$invalid &&  editeForm.code.$touched" class="help-block">intitulee
+                  obligatoire !!.</p>
+              </div>
+            </div>
+          </div>
+          <div class="panel panel-primary">
+            <div class="panel-heading">
               <h3 class="panel-title"><label for="prerequis">PRE-REQUIS PEDAGOGIQUES</label></h3>
             </div>
             <div class="panel-body">

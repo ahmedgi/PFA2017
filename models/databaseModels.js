@@ -73,6 +73,7 @@ var moduleSchema = mongoose.Schema(
         etablissement: {type: String, default: ''},
         departement: {type: String, default: ''},
         intitulee: {type: String, default: ''},
+        code: {type: String, default: ''},
         coordonnateur: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'prof'
@@ -220,6 +221,8 @@ profSchema.methods.setAtt = function (att, value) {
 var filiereSchema = mongoose.Schema(
     {
         intitulee: {type: String, default: ''},
+        universite: {type: String, default: ''},
+        etablissement: {type: String, default: ''},
         annee1: {
             s1: [
                 {

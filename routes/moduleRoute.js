@@ -4,6 +4,7 @@ var conEnsure = require('connect-ensure-login');
 var databaseModels = require('../models/databaseModels');
 var fs = require("fs");
 var Docxtemplater = require('docxtemplater');
+var jszip = require("jszip");
 var socket = require('../socketHandler');
 var router = express.Router();
 
@@ -47,6 +48,7 @@ router.post("/creeModule", conEnsure.ensureLoggedIn(0, "/login_", true), functio
                 ;
                 var module = new databaseModels.modules({
                     intitulee: req.body.intitulee,
+                    code:req.body.codee,
                     universite: req.body.universite,
                     etablissement: req.body.etablissement,
                     departement: req.body.departement,
@@ -425,6 +427,7 @@ router.post('/remplireModule', conEnsure.ensureLoggedIn(0, "/login_", true), fun
                 }
 
                 module.setAtt('intitulee', req.body.intitulee);
+                module.setAtt('code', req.body.code);
                 module.setAtt('universite', req.body.universite);
                 module.setAtt('etablissement', req.body.etablissement);
                 module.setAtt('departement', req.body.departement);
@@ -663,7 +666,8 @@ router.post('/generatePDF', conEnsure.ensureLoggedIn(0, "/login_", true), functi
                         callback(err);
                     }
                     else {
-                        var doc = new Docxtemplater(content);
+                        var zip = new jszip(content);
+                        var doc=new Docxtemplater().loadZip(zip);
                         //set the templateVariables
                         doc.setData(data);
                         //apply them (replace all occurences of {first_name} by Hipp, ...)

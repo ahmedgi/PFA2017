@@ -20,6 +20,27 @@
         <form name='editeForm' role="form" novalidate>
           <div class="panel panel-primary">
             <div class="panel-heading">
+              <h3 class="panel-title"><label for="universite">Université</label></h3>
+            </div>
+            <div class="panel-body">
+              <select class="form-control" id="universite" rows="4" name="universite" ng-model="edite.req.universite">
+                <option ng-repeat="param in listparametre">{{param.nom}}({{param.abrev}})</option>
+              </select>
+            </div>
+          </div>
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h3 class="panel-title"><label for="etablissement">Etablissement</label></h3>
+            </div>
+            <div class="panel-body">
+              <select class="form-control" id="etablissement" rows="4" name="etablissement"
+                      ng-model="edite.req.etablissement">
+                <option ng-repeat="etab in etablissements()">{{etab.nom}}({{etab.abrev}})</option>
+              </select>
+            </div>
+          </div>
+          <div class="panel panel-primary">
+            <div class="panel-heading">
               <h3 class="panel-title"><label for="intitulee">Intitulée</label></h3>
             </div>
             <div class="panel-body">

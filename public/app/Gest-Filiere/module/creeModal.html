@@ -10,7 +10,7 @@
         <form name='creeModuleForm' role="form" novalidate>
           <div class="form-group"
                ng-class="{ 'has-error' : cree.validation.taken || (creeModuleForm.intitulee.$invalid &&  creeModuleForm.intitulee.$touched)}">
-            <label for="intitulee">Libelée:</label>
+            <label for="intitulee">intitulée:</label>
             <input id="intitulee" name="intitulee" type="text" class="form-control" placeholder="intitulée"
                    ng-model="cree.req.intitulee" ng-focus="cree.validation.taken = false" ng-minlength="3" required>
             <p ng-show="cree.validation.taken" class="help-block">intitulee existe deja !!.</p>
@@ -18,6 +18,16 @@
                class="help-block">intitulee trop court !!.</p>
             <p ng-show="creeModuleForm.intitulee.$invalid &&  creeModuleForm.intitulee.$touched" class="help-block">
               intitulee obligatoire !!.</p>
+          </div>
+          <div class="form-group"
+               ng-class="{ 'has-error' : cree.validation.taken || (creeModuleForm.code.$invalid &&  creeModuleForm.code.$touched)}">
+            <label for="code">Code de Model:</label>
+            <input id="code" name="code" type="text" class="form-control" placeholder="code de model"
+                   ng-model="cree.req.codee"  ng-maxlength="10" required>
+            <p ng-show="creeModuleForm.intitulee.$error.maxlength && creeModuleForm.intitulee.$touched"
+               class="help-block">code trés long !!.</p>
+            <p ng-show="creeModuleForm.code.$invalid &&  creeModuleForm.code.$touched" class="help-block">
+              code obligatoire !!.</p>
           </div>
           <div class="form-group">
             <label for="coordonnateur">Coordinateur :</label>

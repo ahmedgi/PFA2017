@@ -2,7 +2,10 @@ var express = require('express');
 var async = require('async')
 var conEnsure = require('connect-ensure-login');
 var filiere = require('../models/databaseModels').filiere;
+var Docxtemplater = require('docxtemplater');
 var filiereArchive = require('../models/filierearchive.js');
+var jszip = require("jszip");
+var fs = require("fs");
 var errorMessage = function (code, message) {
     return {code: code, message: message}
 }
@@ -200,6 +203,8 @@ router.post('/editeFiliere', conEnsure.ensureLoggedIn(0, "/login_", true), funct
 
 
                 filiere.setAtt('intitulee', req.body.intitulee);
+                filiere.setAtt('universite', req.body.universite);
+                filiere.setAtt('etablissement', req.body.etablissement);
                 filiere.setAtt('annee1', annee1);
                 filiere.setAtt('annee2', annee2);
                 filiere.setAtt('annee3', annee3);
@@ -224,6 +229,118 @@ router.post('/editeFiliere', conEnsure.ensureLoggedIn(0, "/login_", true), funct
         }
     )
 
+});
+// genration de la filiere
+router.post('/generateDOC',function(req,res){
+
+    console.log("request received from generate filiere");
+    async.waterfall([
+            function (callback) {
+                var query = filiere.findById(req.body.filiereid);
+                query.populate('responsable');
+                query.populate('annee1.s1');
+                query.populate('annee1.s2');
+                query.populate('annee2.s1');
+                query.populate('annee2.s2');
+                query.populate('annee3.s1');
+                query.exec(
+                    function (err, filiere) {
+                        if (err) return callback({code: '002', message: "database problem!!"});
+                        console.log(filiere.annee1.s1);
+                        callback(null, filiere);
+                    });
+            },
+            function (filiere, callback) {
+                var data = {
+                    univnom:filiere.universite,
+                    etablissement:filiere.etablissement,
+                    filiereintitulle:filiere.intitulee,
+
+                }
+                filiere.annee1.s1.forEach(function(module){
+                    for(i=1;i<=6;i++){
+                        if(module.code.includes('M'+i)){
+                            data['A1M'+i+'CODE']=module.code;
+                            data['A1M'+i+'INITITULEE']=module.intitulee;
+                            data['A1M1INITITULEEresp']=module.coordonnateur.nom+" "+module.coordonnateur.prenom;
+                            module.eModules.forEach(function(emodule){
+                                data['A3M6INITITULEEel'+i]=emodule.intitulee;
+                            });
+                        }
+                    }
+                });
+                filiere.annee1.s2.forEach(function(module){
+                    for(i=7;i<=12;i++){
+                        if(module.code.includes('M'+i)){
+                            data['A1M'+i+'CODE']=module.code;
+                            data['A1M'+i+'INITITULEE']=module.intitulee;
+                        }
+                    }
+                });
+                filiere.annee2.s1.forEach(function(module){
+                    for(i=1;i<=6;i++){
+                        if(module.code.includes('M'+i)){
+                            data['A2M'+i+'CODE']=module.code;
+                            data['A2M'+i+'INITITULEE']=module.intitulee;
+                        }
+                    }
+                });
+                filiere.annee2.s2.forEach(function(module){
+                    for(i=7;i<=12;i++){
+                        if(module.code.includes('M'+i)){
+                            console.log()
+                            data['A2M'+i+'CODE']=module.code;
+                            data['A2M'+i+'INITITULEE']=module.intitulee;
+                        }
+                    }
+                });
+                filiere.annee3.s1.forEach(function(module){
+                    for(i=1;i<=6;i++){
+                        if(module.code.includes('M'+i)){
+                            data['A3M'+i+'CODE']=module.code;
+                            data['A3M'+i+'INITITULEE']=module.intitulee;
+                        }
+                    }
+                });
+                fs.readFile("./pdfTemplates/Descriptif_filiere.docx", function (err, content) {
+                    if (err) {
+                        console.log('errour template')
+                        callback(err);
+                    }
+                    else {
+                        var zip = new jszip(content);
+                        var doc=new Docxtemplater().loadZip(zip);
+                        //set the templateVariables
+                        doc.setData(data);
+                        //apply them (replace all occurences of {first_name} by Hipp, ...)
+                        doc.render();
+                        var buf = doc.getZip().generate({type: "nodebuffer"});
+                        fs.writeFile("./public/app/Gest-Filiere/files/" + filiere.intitulee + ".docx", buf, function (err) {
+                            if (err) return callback(err);
+                            callback(null, filiere.intitulee)
+                        });
+                    }
+                });
+            }
+        ],
+        function (err, intitulee) {
+            if (err) {
+                res.send(JSON.stringify(err, null, '\t'));
+                console.log(JSON.stringify(err, null, '\t'))
+            }
+            else {
+                res.send(JSON.stringify({
+                    code: "200",
+                    message: '',
+                    data: {url: '/app/Gest-Filiere/files/' + intitulee + '.docx'}
+                }, null, '\t'));
+                console.log(JSON.stringify({
+                    code: "200",
+                    message: '',
+                    data: {url: '/app/Gest-Filiere/files/' + intitulee + '.docx'}
+                }, null, '\t'))
+            }
+        });
 });
 
 
