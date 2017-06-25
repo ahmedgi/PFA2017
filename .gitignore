@@ -11,4 +11,4 @@
 /public/app/login/*
 /public/app/css/login.css
 /public/app/images/*
-
+.DS_Store
