@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  h1= title
+
+  table.table
+    thead
+      tr
+        th CNE
+        th Nom
+        th Prénom
+    tbody  
+      each pfe in pfes
+        tr
+          td= pfe["cne"]
+          td= pfe["nom"]
+          td= pfe["prenom"]
