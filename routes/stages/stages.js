@@ -32,8 +32,6 @@ router.post("/eleves", function(req, res, next) {
   var worksheet = workbook.Sheets[first_sheet_name];
   var eleves_raw = xlsx.utils.sheet_to_json(worksheet);
 
-  console.log(first_sheet_name);
-
   req.app.db.collection("eleves").deleteMany({
     annee_universitaire: req.body.annee_universitaire,
     filiere: req.body.filiere,
@@ -47,14 +45,16 @@ router.post("/eleves", function(req, res, next) {
       eleves.push({
         nom: eleve_raw["Nom"],
         prenom: eleve_raw["Prénom"],
-        "_id.cne": eleve_raw["CNE"],
+        cne: eleve_raw["CNE"],
         annee_universitaire: req.body.annee_universitaire,
         filiere: req.body.filiere,
         niveau: req.body.niveau
       });
     });
 
-    req.app.db.collection("eleves").insertMany(eleves);
+    req.app.db.collection("eleves").insertMany(eleves, function(err, data) {
+      console.log(err);
+    });
 
     res.redirect("/stages/eleves/" + req.body.annee_universitaire + "/" + req.body.filiere + "/" + req.body.niveau);
   });
@@ -106,7 +106,7 @@ router.get("/eleves/:cne/fiche", function(req, res, next) {
 
 router.post("/eleves/:cne/fiche", function(req, res, next) {
   req.app.db.collection("fiches").updateOne({
-    cne: req.params['cne']
+    cne: req.params.cne
   }, {
     $set: req.body
   }, {
@@ -120,7 +120,7 @@ router.post("/eleves/:cne/fiche", function(req, res, next) {
 
 router.get("/eleves/:cne/demande", function(req, res, next) {
 
-  var content = fs.readFileSync(path.join(__dirname, 'modele_demande.docx'), 'binary');
+  var content = fs.readFileSync(path.join(__dirname, "..", "..", "pdfTemplates", "stages", "demande.docx"), 'binary');
 
   var zip = new jszip(content);
   var doc = new docxtemplater().loadZip(zip);
@@ -196,13 +196,13 @@ router.get("/eleves/:cne/demande", function(req, res, next) {
 
 router.get("/eleves/:cne/convention", function(req, res, next) {
 
-  var content = fs.readFileSync(path.join(__dirname, '..', '..', 'pdfTemplates', 'stages', 'convention.docx'), 'binary'); // je n'ai pas trouvé mieux
+  var content = fs.readFileSync(path.join(__dirname, "..", "..", "pdfTemplates", "stages", "convention.docx"), "binary"); // je n'ai pas trouvé mieux
 
   var zip = new jszip(content);
   var doc = new docxtemplater().loadZip(zip);
 
   req.app.db.collection("eleves").findOne({
-    "_id.cne": req.params.cne
+    cne: req.params.cne
   }, function(err, eleve) {
 
     doc.setData({
