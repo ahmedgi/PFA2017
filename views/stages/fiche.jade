@@ -1,7 +1,7 @@
 extends layout
 
 block content
-  form.form-horizontal(action="/stages/etudiants/" + fiche.cne + "/fiche", method="post")
+  form.form-horizontal(action="/stages/eleves/" + fiche.cne + "/fiche", method="post")
     .panel.panel-default
       .panel-heading: h3.panel-title Élève
       .panel-body
@@ -46,21 +46,21 @@ block content
               value=fiche.niveau,
             )
         .form-group
-          label.control-label.col-sm-2(for="telephone_etudiant") Téléphone
+          label.control-label.col-sm-2(for="telephone_eleve") Téléphone
           .col-sm-10
-            input#telephone_etudiant.form-control(
+            input#telephone_eleve.form-control(
               type="text",
-              name="telephone_etudiant",
-              value=fiche.telephone_etudiant,
+              name="telephone_eleve",
+              value=fiche.telephone_eleve,
               placeholder="Téléphone",
             )
         .form-group
-          label.control-label.col-sm-2(for="email_etudiant") Email
+          label.control-label.col-sm-2(for="email_eleve") Email
           .col-sm-10
-            input#email_etudiant.form-control(
+            input#email_eleve.form-control(
               type="email",
-              name="email_etudiant",
-              value=fiche.email_etudiant,
+              name="email_eleve",
+              value=fiche.email_eleve,
               placeholder="Email",
             )
     .panel.panel-default

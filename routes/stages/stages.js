@@ -47,7 +47,7 @@ router.post("/eleves/importer", function(req, res, next) {
       eleves.push({
         nom: eleve_raw["Nom"],
         prenom: eleve_raw["Prénom"],
-        id.cne: eleve_raw["CNE"],
+        "_id.cne": eleve_raw["CNE"],
         annee_universitaire: req.body.annee_universitaire,
         filiere: req.body.filiere,
         niveau: req.body.niveau
@@ -202,7 +202,7 @@ router.get("/eleves/:cne/convention", function(req, res, next) {
   var doc = new docxtemplater().loadZip(zip);
 
   req.app.db.collection("eleves").findOne({
-    _id.cne: req.params.cne
+    "_id.cne": req.params.cne
   }, function(err, eleve) {
 
     doc.setData({

@@ -1,11 +1,11 @@
 extends layout
   
 block content
-  form.form-horizontal#fichier_etudiant_form(action="/stages/etudiants/importer", method="post", enctype="multipart/form-data")
+  form.form-horizontal#fichier_eleve_form(action="/stages/eleves/importer", method="post", enctype="multipart/form-data")
     .form-group
-      label.col-sm-2(for="fichier_etudiants") Fichier Excel
+      label.col-sm-2(for="fichier_eleves") Fichier Excel
       .col-sm-10
-        input#fichier_etudiants(name="fichier_etudiants", type="file")
+        input#fichier_eleves(name="fichier_eleves", type="file")
     .form-group
       label.col-sm-2(for="annee_universitaire") Année universitaire
       .col-sm-10
