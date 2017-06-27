@@ -86,11 +86,11 @@ router.get("/eleves/:cne/fiche", function(req, res, next) {
   req.app.db.collection("fiches").findOne({
     cne: req.params.cne
   }, function(err, fiche_document) {
-    assert.equal(err, null);
+    console.log(err);
     req.app.db.collection("eleves").findOne({
       cne: req.params.cne
     }, function(err, eleve_document) {
-      assert.equal(err, null);
+      console.log(err);
 
       if (fiche_document === null) {
         fiche_document = Object.assign({}, eleve_document);
@@ -105,10 +105,10 @@ router.get("/eleves/:cne/fiche", function(req, res, next) {
 });
 
 router.post("/eleves/:cne/fiche", function(req, res, next) {
-  req.app.db.collection("fiches").updateOne({
+  req.app.db.collection("eleves").updateOne({
     cne: req.params.cne
   }, {
-    $set: req.body
+    $set: { stage: req.body }
   }, {
     upsert: true
   }, function(err, data) {
@@ -196,7 +196,7 @@ router.get("/eleves/:cne/demande", function(req, res, next) {
 
 router.get("/eleves/:cne/convention", function(req, res, next) {
 
-  var content = fs.readFileSync(path.join(__dirname, "..", "..", "pdfTemplates", "stages", "convention.docx"), "binary"); // je n'ai pas trouvé mieux
+  var content = fs.readFileSync(path.join(__dirname, "..", "..", "pdfTemplates", "stages", "convention.docx"), "binary");
 
   var zip = new jszip(content);
   var doc = new docxtemplater().loadZip(zip);
@@ -242,9 +242,9 @@ router.get("/eleves/:cne/convention", function(req, res, next) {
 
     // buf is a nodejs buffer, you can either write it to a file or do anything else with it.
     var nom_fichier = "convention" +
-      "_" + eleve_document.nom +
-      "_" + eleve_document.prenom +
-      "_" + eleve_document.cne +
+      "_" + eleve.nom +
+      "_" + eleve.prenom +
+      "_" + eleve.cne +
       ".docx";
 
     res.setHeader("Content-disposition", "attachment; filename=" + nom_fichier);

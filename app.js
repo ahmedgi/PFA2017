@@ -123,7 +123,7 @@ passport.deserializeUser(function (id, done) {
     });
 
 });
-app.use(bodyParser.urlencoded({limit: 128/*limiter la taille du body par securité*/, extended: true}));
+app.use(bodyParser.urlencoded({limit: 10000/*limiter la taille du body par securité*/, extended: true})); // augmenté par yassine de 128 vers 10000 pour faire marcher un truc
 app.use(bodyParser.json());
 
 //=======login_===========
