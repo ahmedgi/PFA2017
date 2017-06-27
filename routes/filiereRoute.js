@@ -2,6 +2,8 @@ var express = require('express');
 var async = require('async')
 var conEnsure = require('connect-ensure-login');
 var filiere = require('../models/databaseModels').filiere;
+var eModules = require('../models/databaseModels').eModules;
+var User = require('../models/databaseModels').profs;
 var Docxtemplater = require('docxtemplater');
 var filiereArchive = require('../models/filierearchive.js');
 var jszip = require("jszip");
@@ -255,16 +257,46 @@ router.post('/generateDOC',function(req,res){
                     univnom:filiere.universite,
                     etablissement:filiere.etablissement,
                     filiereintitulle:filiere.intitulee,
+                    datefiliere:filiere.creationDate.getFullYear(),
 
-                }
+                };
                 filiere.annee1.s1.forEach(function(module){
                     for(i=1;i<=6;i++){
                         if(module.code.includes('M'+i)){
                             data['A1M'+i+'CODE']=module.code;
                             data['A1M'+i+'INITITULEE']=module.intitulee;
-                            data['A1M1INITITULEEresp']=module.coordonnateur.nom+" "+module.coordonnateur.prenom;
+                            if(module.coordonnateur){
+                                var j=i;
+                                User.findById(module.coordonnateur.toString(),function(err,doc){
+                                    if(!err){
+                                        data['A1M'+j+'INITITULEEresp']=doc.nom+' '+doc.prenom;
+                                        data['A1M'+j+'INITITULEcoordspec']=doc.specialite;
+                                        data['A1M'+j+'INITITULEcoordtype']=doc.grade;
+                                    }
+                                });
+                            }
+                            if(module.etablissement){
+                                var etab=module.etablissement.split("(",2);
+                                var etabb=etab[1].slice(0,-1);
+                                data['A1M'+i+'INITITULEEbrev']=etabb;
+                                console.log(etabb);
+                            }
+                            if(module.departement){
+                                var dep=module.departement.split("(",2);
+                                var depp=dep[1].slice(0,-1);
+                                data['A1M'+i+'INITITULEdepbrev']=depp;
+                                console.log(depp);
+                            }
+
+                            var h=1;
+                            var j=i;
                             module.eModules.forEach(function(emodule){
-                                data['A3M6INITITULEEel'+i]=emodule.intitulee;
+                                eModules.findById(emodule.toString(),function(err,doc){
+                                    if(!err){
+                                        data['A1M'+j+'INITITULEEel'+h]=doc.intitulee;
+                                        h++;
+                                    }
+                                });
                             });
                         }
                     }
@@ -274,6 +306,38 @@ router.post('/generateDOC',function(req,res){
                         if(module.code.includes('M'+i)){
                             data['A1M'+i+'CODE']=module.code;
                             data['A1M'+i+'INITITULEE']=module.intitulee;
+                            if(module.coordonnateur){
+                                var j=i;
+                                User.findById(module.coordonnateur.toString(),function(err,doc){
+                                    if(!err){
+                                        data['A1M'+j+'INITITULEEresp']=doc.nom+' '+doc.prenom;
+                                        data['A1M'+j+'INITITULEcoordspec']=doc.specialite;
+                                        data['A1M'+j+'INITITULEcoordtype']=doc.grade;
+                                    }
+                                });
+                            }
+                            if(module.etablissement){
+                                var etab=module.etablissement.split("(",2);
+                                var etabb=etab[1].slice(0,-1);
+                                data['A1M'+i+'INITITULEEbrev']=etabb;
+                                console.log(etabb);
+                            }
+                            if(module.departement){
+                                var dep=module.departement.split("(",2);
+                                var depp=dep[1].slice(0,-1);
+                                data['A1M'+i+'INITITULEdepbrev']=depp;
+                                console.log(depp);
+                            }
+                            var h=1;
+                            var j=i;
+                            module.eModules.forEach(function(emodule){
+                                eModules.findById(emodule.toString(),function(err,doc){
+                                    if(!err){
+                                        data['A1M'+j+'INITITULEEel'+h]=doc.intitulee;
+                                        h++;
+                                    }
+                                });
+                            });
                         }
                     }
                 });
@@ -282,6 +346,39 @@ router.post('/generateDOC',function(req,res){
                         if(module.code.includes('M'+i)){
                             data['A2M'+i+'CODE']=module.code;
                             data['A2M'+i+'INITITULEE']=module.intitulee;
+                            if(module.coordonnateur){
+                                var j=i;
+                                User.findById(module.coordonnateur.toString(),function(err,doc){
+                                if(!err){
+                                    data['A2M'+j+'INITITULEEresp']=doc.nom+' '+doc.prenom;
+                                    data['A2M'+j+'INITITULEcoordspec']=doc.specialite;
+                                    data['A2M'+j+'INITITULEcoordtype']=doc.grade;
+                                }
+                            });
+                            }
+                            if(module.etablissement){
+                                var etab=module.etablissement.split("(",2);
+                                var etabb=etab[1].slice(0,-1);
+                                data['A2M'+i+'INITITULEEbrev']=etabb;
+                                console.log(etabb);
+                            }
+                            if(module.departement){
+                                var dep=module.departement.split("(",2);
+                                var depp=dep[1].slice(0,-1);
+                                data['A2M'+i+'INITITULEdepbrev']=depp;
+                                console.log(depp);
+                            }
+
+                            var h=1;
+                            var j=i;
+                            module.eModules.forEach(function(emodule){
+                                eModules.findById(emodule.toString(),function(err,doc){
+                                    if(!err){
+                                        data['A2M'+j+'INITITULEEel'+h]=doc.intitulee;
+                                        h++;
+                                    }
+                                });
+                            });
                         }
                     }
                 });
@@ -291,6 +388,39 @@ router.post('/generateDOC',function(req,res){
                             console.log()
                             data['A2M'+i+'CODE']=module.code;
                             data['A2M'+i+'INITITULEE']=module.intitulee;
+                            if(module.coordonnateur){
+                                var j=i;
+                                User.findById(module.coordonnateur.toString(),function(err,doc){
+                                    if(!err){
+                                        data['A2M'+j+'INITITULEEresp']=doc.nom+' '+doc.prenom;
+                                        data['A2M'+j+'INITITULEcoordspec']=doc.specialite;
+                                        data['A2M'+j+'INITITULEcoordtype']=doc.grade;
+                                    }
+                                });
+                            }
+                            if(module.etablissement){
+                                var etab=module.etablissement.split("(",2);
+                                var etabb=etab[1].slice(0,-1);
+                                data['A2M'+i+'INITITULEEbrev']=etabb;
+                                console.log(etabb);
+                            }
+                            if(module.departement){
+                                var dep=module.departement.split("(",2);
+                                var depp=dep[1].slice(0,-1);
+                                data['A2M'+i+'INITITULEdepbrev']=depp;
+                                console.log(depp);
+                            }
+
+                            var h=1;
+                            var j=i;
+                            module.eModules.forEach(function(emodule){
+                                eModules.findById(emodule.toString(),function(err,doc){
+                                    if(!err){
+                                        data['A2M'+j+'INITITULEEel'+h]=doc.intitulee;
+                                        h++;
+                                    }
+                                });
+                            });
                         }
                     }
                 });
@@ -299,6 +429,39 @@ router.post('/generateDOC',function(req,res){
                         if(module.code.includes('M'+i)){
                             data['A3M'+i+'CODE']=module.code;
                             data['A3M'+i+'INITITULEE']=module.intitulee;
+                            if(module.coordonnateur){
+                                var j=i;
+                                User.findById(module.coordonnateur.toString(),function(err,doc){
+                                    if(!err){
+                                        data['A3M'+j+'INITITULEEresp']=doc.nom+' '+doc.prenom;
+                                        data['A3M'+j+'INITITULEcoordspec']=doc.specialite;
+                                        data['A3M'+j+'INITITULEcoordtype']=doc.grade;
+                                    }
+                            });
+                            }
+                            if(module.etablissement){
+                                var etab=module.etablissement.split("(",2);
+                                var etabb=etab[1].slice(0,-1);
+                                data['A3M'+i+'INITITULEEbrev']=etabb;
+                                console.log(etabb);
+                            }
+                            if(module.departement){
+                                var dep=module.departement.split("(",2);
+                                var depp=dep[1].slice(0,-1);
+                                data['A3M'+i+'INITITULEdepbrev']=depp;
+                                console.log(depp);
+                            }
+
+                            var h=1;
+                            var j=i;
+                            module.eModules.forEach(function(emodule){
+                                eModules.findById(emodule.toString(),function(err,doc){
+                                    if(!err){
+                                        data['A3M'+j+'INITITULEEel'+h]=doc.intitulee;
+                                        h++;
+                                    }
+                                });
+                            });
                         }
                     }
                 });
@@ -311,6 +474,7 @@ router.post('/generateDOC',function(req,res){
                         var zip = new jszip(content);
                         var doc=new Docxtemplater().loadZip(zip);
                         //set the templateVariables
+                        console.log(data);
                         doc.setData(data);
                         //apply them (replace all occurences of {first_name} by Hipp, ...)
                         doc.render();
@@ -345,3 +509,4 @@ router.post('/generateDOC',function(req,res){
 
 
 module.exports = router;
+

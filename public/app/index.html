@@ -34,7 +34,7 @@
       <div id="navbar" class="navbar-collapse collapse">
         <ul class="nav navbar-nav">
           <li><a class="active" href="#/home"> <span class="glyphicon glyphicon-home"></span> Accueil</a></li>
-          <li><a ui-sref="Gest-Charges"><span class="glyphicon glyphicon-calendar"></span> Gestion de charge</a></li>
+          <li><a ui-ref="Gest-Charges"><span class="glyphicon glyphicon-calendar"></span> Gestion de charge</a></li>
           <li><a ui-sref="Gest-Filiere.filiere" ng-if='user().security_mask >= 3'><span class="glyphicon glyphicon-file"></span> Acréditation de filières
             <span class="badge" title="Notification">{{eModuleNotifCount()+moduleNotifCount()}}</span></a>
             <a ui-sref="Gest-Filiere.module" ng-if='user().security_mask<=1'><span class="glyphicon glyphicon-file"></span> Acréditation de filières

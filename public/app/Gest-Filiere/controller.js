@@ -59,7 +59,7 @@ app.factory('filierearchivelist',function($http){
   return this
 });
 //filiere Service
-app.service('filiereService', function ($http) {
+app.service('filiereService', function ($http,$window) {
   this.get = function (req) {
     var promise = $http({
       method: 'POST',
@@ -1844,7 +1844,7 @@ app.controller('f_deleteModalController', function ($scope, $rootScope, moduleSe
   }
 });
 
-app.controller('f_filiereTableController', function ($scope, $rootScope, moduleService, profService, modulesList, filiereService, filiereList, profsList) {
+app.controller('f_filiereTableController', function ($scope,$window, $rootScope, moduleService, profService, modulesList, filiereService, filiereList, profsList) {
   $scope.selectedItemIndex = filiereList.getSelectedItemIndex;
   var prof = profsList.getItems;
   $scope.infovisible = [];
