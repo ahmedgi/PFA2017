@@ -19,12 +19,12 @@ router.get("/eleves/trouver", function(req, res, next) {
 });
 
 router.get("/eleves/importer", function(req, res, next) {
-  res.render("stages/importer", {
+  res.render("stages/importer_eleves.jade", {
     title: "Importer des élèves",
   });
 });
 
-router.post("/eleves/importer", function(req, res, next) {
+router.post("/eleves", function(req, res, next) {
   assert(req.files.fichier_eleves !== null);
 
   var workbook = xlsx.read(req.files['fichier_eleves'].data);
