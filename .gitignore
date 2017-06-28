@@ -1,14 +1,11 @@
 /dist
 /.tmp
 /.sass-cache
-/bower_components
+bower_components
 *.bat
 /data
 /public/app/Gest-Filiere/files/*
 /public/app/ComptesUpload/files/*
 *.rar
 /node_modules
-/public/app/login/*
-/public/app/css/login.css
-/public/app/images/*
 .DS_Store
