@@ -123,7 +123,8 @@ passport.deserializeUser(function (id, done) {
     });
 
 });
-app.use(bodyParser.urlencoded({limit: 10000/*limiter la taille du body par securité*/, extended: true})); // augmenté par yassine de 128 vers 10000 pour faire marcher un truc
+
+app.use(bodyParser.urlencoded({limit: 10000/*limiter la taille du body par securité*/, extended: true})); // augmenté par yassine de 128 vers 10000 pour faire marcher le post vers /stages/eleves/:cne/fiche
 app.use(bodyParser.json());
 
 //=======login_===========
@@ -131,7 +132,6 @@ app.get('/login_', function (req, res) {
 //  my code
     res.status(200).json({info: "non_auto"});
 });
-
 
 //=======installing routes===========
 app.use('/', prouter);
@@ -241,7 +241,6 @@ app.get("*", function (req, res) {
     res.sendFile("/public/app/index.html", {root: __dirname});
 });
 
-
 // check the database if its empty
 
 User.find({}, function (err, users) {
@@ -261,7 +260,6 @@ User.find({}, function (err, users) {
             if (err) throw err;
             console.log('compte admin created successfully!');
         });
-
     }
     ;
 });
