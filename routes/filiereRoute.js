@@ -1,12 +1,14 @@
 var express = require('express');
-var async = require('async')
+var async = require('async');
 var conEnsure = require('connect-ensure-login');
 var filiere = require('../models/databaseModels').filiere;
 var eModules = require('../models/databaseModels').eModules;
 var User = require('../models/databaseModels').profs;
 var Docxtemplater = require('docxtemplater');
 var filiereArchive = require('../models/filierearchive.js');
+var modulefunction=require('./modulefunction');
 var jszip = require("jszip");
+var livedocx = require('node-livedocx');
 var fs = require("fs");
 var errorMessage = function (code, message) {
     return {code: code, message: message}
@@ -258,6 +260,7 @@ router.post('/generateDOC',function(req,res){
                     etablissement:filiere.etablissement,
                     filiereintitulle:filiere.intitulee,
                     datefiliere:filiere.creationDate.getFullYear(),
+                    modules:[],
 
                 };
                 filiere.annee1.s1.forEach(function(module){
@@ -265,6 +268,7 @@ router.post('/generateDOC',function(req,res){
                         if(module.code.includes('M'+i)){
                             data['A1M'+i+'CODE']=module.code;
                             data['A1M'+i+'INITITULEE']=module.intitulee;
+                            data.modules.push(modulefunction.generateModule(module,'s1'));
                             if(module.coordonnateur){
                                 var j=i;
                                 User.findById(module.coordonnateur.toString(),function(err,doc){
@@ -306,6 +310,8 @@ router.post('/generateDOC',function(req,res){
                         if(module.code.includes('M'+i)){
                             data['A1M'+i+'CODE']=module.code;
                             data['A1M'+i+'INITITULEE']=module.intitulee;
+                            data.modules.push(modulefunction.generateModule(module,'s2'));
+                            
                             if(module.coordonnateur){
                                 var j=i;
                                 User.findById(module.coordonnateur.toString(),function(err,doc){
@@ -346,6 +352,8 @@ router.post('/generateDOC',function(req,res){
                         if(module.code.includes('M'+i)){
                             data['A2M'+i+'CODE']=module.code;
                             data['A2M'+i+'INITITULEE']=module.intitulee;
+                            data.modules.push(modulefunction.generateModule(module,'s3'));
+                            
                             if(module.coordonnateur){
                                 var j=i;
                                 User.findById(module.coordonnateur.toString(),function(err,doc){
@@ -388,6 +396,8 @@ router.post('/generateDOC',function(req,res){
                             console.log()
                             data['A2M'+i+'CODE']=module.code;
                             data['A2M'+i+'INITITULEE']=module.intitulee;
+                            data.modules.push(modulefunction.generateModule(module,"s4"));
+                            
                             if(module.coordonnateur){
                                 var j=i;
                                 User.findById(module.coordonnateur.toString(),function(err,doc){
@@ -429,6 +439,8 @@ router.post('/generateDOC',function(req,res){
                         if(module.code.includes('M'+i)){
                             data['A3M'+i+'CODE']=module.code;
                             data['A3M'+i+'INITITULEE']=module.intitulee;
+                            data.modules.push(modulefunction.generateModule(module,'s5'));
+                            
                             if(module.coordonnateur){
                                 var j=i;
                                 User.findById(module.coordonnateur.toString(),function(err,doc){
@@ -481,7 +493,9 @@ router.post('/generateDOC',function(req,res){
                         var buf = doc.getZip().generate({type: "nodebuffer"});
                         fs.writeFile("./public/app/Gest-Filiere/files/" + filiere.intitulee + ".docx", buf, function (err) {
                             if (err) return callback(err);
-                            callback(null, filiere.intitulee)
+                            else{
+                                 callback(null, filiere.intitulee);
+                            }
                         });
                     }
                 });
