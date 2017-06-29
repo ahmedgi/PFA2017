@@ -1,0 +1,7 @@
+organization=yassinei-github
+projectKey=pfa2017
+serverUrl=https://sonarcloud.io
+serverVersion=6.5.0.26088
+dashboardUrl=https://sonarcloud.io/dashboard/index/pfa2017
+ceTaskId=AVz1dWnPgIkbjTX1x8rB
+ceTaskUrl=https://sonarcloud.io/api/ce/task?id=AVz1dWnPgIkbjTX1x8rB

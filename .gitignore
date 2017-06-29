@@ -1,3 +1,10 @@
+*.tmp
+
+# Word temporary
+~$*.doc*
+
+# Excel temporary
+~$*.xls*
 /dist
 /.tmp
 /.sass-cache
