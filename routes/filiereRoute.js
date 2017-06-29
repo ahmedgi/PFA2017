@@ -261,14 +261,13 @@ router.post('/generateDOC',function(req,res){
                     filiereintitulle:filiere.intitulee,
                     datefiliere:filiere.creationDate.getFullYear(),
                     modules:[],
-
-                };
+                    };
                 filiere.annee1.s1.forEach(function(module){
                     for(i=1;i<=6;i++){
                         if(module.code.includes('M'+i)){
                             data['A1M'+i+'CODE']=module.code;
                             data['A1M'+i+'INITITULEE']=module.intitulee;
-                            data.modules.push(modulefunction.generateModule(module,'s1'));
+                            data.modules.push(modulefunction(module,'s1'));
                             if(module.coordonnateur){
                                 var j=i;
                                 User.findById(module.coordonnateur.toString(),function(err,doc){
@@ -310,7 +309,7 @@ router.post('/generateDOC',function(req,res){
                         if(module.code.includes('M'+i)){
                             data['A1M'+i+'CODE']=module.code;
                             data['A1M'+i+'INITITULEE']=module.intitulee;
-                            data.modules.push(modulefunction.generateModule(module,'s2'));
+                            data.modules.push(modulefunction(module,'s2'));
                             
                             if(module.coordonnateur){
                                 var j=i;
@@ -352,7 +351,7 @@ router.post('/generateDOC',function(req,res){
                         if(module.code.includes('M'+i)){
                             data['A2M'+i+'CODE']=module.code;
                             data['A2M'+i+'INITITULEE']=module.intitulee;
-                            data.modules.push(modulefunction.generateModule(module,'s3'));
+                            data.modules.push(modulefunction(module,'s3'));
                             
                             if(module.coordonnateur){
                                 var j=i;
@@ -396,7 +395,7 @@ router.post('/generateDOC',function(req,res){
                             console.log()
                             data['A2M'+i+'CODE']=module.code;
                             data['A2M'+i+'INITITULEE']=module.intitulee;
-                            data.modules.push(modulefunction.generateModule(module,"s4"));
+                            data.modules.push(modulefunction(module,"s4"));
                             
                             if(module.coordonnateur){
                                 var j=i;
@@ -439,7 +438,7 @@ router.post('/generateDOC',function(req,res){
                         if(module.code.includes('M'+i)){
                             data['A3M'+i+'CODE']=module.code;
                             data['A3M'+i+'INITITULEE']=module.intitulee;
-                            data.modules.push(modulefunction.generateModule(module,'s5'));
+                            data.modules.push(modulefunction(module,'s5'));
                             
                             if(module.coordonnateur){
                                 var j=i;

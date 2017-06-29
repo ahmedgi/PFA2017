@@ -1,50 +1,6 @@
-var express = require('express');
 var async = require('async')
-var conEnsure = require('connect-ensure-login');
 var databaseModels = require('../models/databaseModels');
-var fs = require("fs");
-var Docxtemplater = require('docxtemplater');
-var livedocx = require('node-livedocx');
-var jszip = require("jszip");
 
-var concat=function(filiere,files) {
-    files.forEach(function(file){
-        options = {
-        template: fs.readFileSync(file).toString('base64'),
-        variables: {
-            foo: 'bar',
-            something: 'else'
-        }
-        }
-        livedocx(options, function (err,  resultBuffer) {
-            if (err) {
-                return console.log('Something went wrong!', err);
-            }
-            fs.appendFile("./public/app/Gest-Filiere/files/" + module.intitulee + ".docx", resultBuffer, function (err) {
-                if (err) return callback(err);
-                console.log("saved succesfully");
-            });
-        });
-
-
-    
-    });
-};
-
-var deleteFile=function(files, callback){
-  var i = files.length;
-  files.forEach(function(filepath){
-    fs.unlink(filepath, function(err) {
-      i--;
-      if (err) {
-        callback(err);
-        return;
-      } else if (i <= 0) {
-        callback(null);
-      }
-    });
-  });
-}
 
 var generateModule=function(modulee,semester){
         var data = {
@@ -172,8 +128,4 @@ query.exec(function(err,module){
 return data;
 }
 
-module.exports={
-    generateModule:generateModule,
-    deleteFile:deleteFile,
-    concat:concat
-};
+module.exports=generateModule;
