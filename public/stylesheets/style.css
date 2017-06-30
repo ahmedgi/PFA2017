@@ -33,6 +33,12 @@ h1.filiere-annee {
   margin-bottom: 3rem;
 }
 
+.titre_et_boutons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 /* code copié depuis le site de bootstrap, ne pas toucher sinon moi taper */
 
 .nav-justified {

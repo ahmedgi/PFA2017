@@ -1,17 +1,32 @@
 extends layout
 
 block content
-  h1= title
+  .titre_et_boutons
+    h1.title_pfes= title
+    .boutons
+      a.btn.btn-success(href="/stages/pfes/new")
+        i.glyphicon.glyphicon-plus
+        |  Nouveau PFE
+      | 
+      a.btn.btn-primary(href="/stages/pfes/export")
+        i.glyphicon.glyphicon-list-alt
+        |  Export vers Excel
 
   table.table
     thead
       tr
-        th CNE
-        th Nom
-        th Prénom
+        th Nom + prénom
+        th Société + ville
+        th Sujet
+        th Technologies utilisées
+        th Email de l'encadrant
+        th Email du stagiaire
     tbody  
       each pfe in pfes
         tr
-          td= pfe["cne"]
-          td= pfe["nom"]
-          td= pfe["prenom"]
+          td= pfe.nom_prenom
+          td= pfe.societe_ville
+          td= pfe.sujet
+          td= pfe.technologies
+          td= pfe.email_encadrant
+          td= pfe.email

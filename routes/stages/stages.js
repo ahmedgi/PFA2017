@@ -6,6 +6,7 @@ var jszip = require("jszip");
 var fs = require('fs');
 var path = require('path');
 var router = express.Router();
+var excel = require("node-excel-export");
 
 /* GET home page. */
 router.get("/", function(req, res, next) {
@@ -206,7 +207,7 @@ router.get("/eleves/:cne/convention", function(req, res, next) {
   }, function(err, eleve) {
 
     doc.setData({
-      nom_societe: eleve.nom,
+      nom_societe: eleve.stage.nom_societe,
       adresse_societe: eleve.stage.adresse_societe,
       telephone_societe: eleve.stage.telephone_societe,
       fax_societe: eleve.stage.fax_societe,
@@ -254,5 +255,98 @@ router.get("/eleves/:cne/convention", function(req, res, next) {
   });
 });
 
+router.get("/pfes", function(req, res, next) {
+  req.app.db.collection("pfes").find().toArray(function(err, pfes) {
+    res.render("stages/liste_pfes", {
+      title: "Liste des PFE",
+      pfes: pfes
+    })
+  });
+});
+
+router.get("/pfes/new", function(req, res, next) {
+    res.render("stages/pfe", {
+      title: "Nouveau PFE"
+    });
+});
+
+router.post("/pfes", function(req, res, next) {
+  req.app.db.collection("pfes").insert(req.body, function(err, data) {
+    console.log(err);
+    res.redirect("/stages/pfes");
+  });
+});
+
+router.get("/pfes/export", function(req, res, next) {
+  req.app.db.collection("pfes").find().toArray(function(err, pfes) {
+    const styles = {
+      headerDark: {
+        font: {
+          color: {
+            rgb: '00000000'
+          },
+        }
+      },
+      cellPink: {
+        fill: {
+          fgColor: {
+            rgb: 'FFFFCCFF'
+          }
+        }
+      },
+      cellGreen: {
+        fill: {
+          fgColor: {
+            rgb: 'FF00FF00'
+          }
+        }
+      }
+    };
+
+    var specification = {
+      nom_prenom: {
+        displayName: "Nom + prénom",
+        headerStyle: styles.headerDark
+      },
+      societe_ville: {
+        displayName: "Société + ville",
+        headerStyle: styles.headerDark
+      },
+      sujet: {
+        displayName: "Sujet",
+        headerStyle: styles.headerDark
+      },
+      technologies: {
+        displayName: "Technologies utilisées",
+        headerStyle: styles.headerDark
+      },
+      email_encadrant: {
+        displayName: "Email de l'encadrant",
+        headerStyle: styles.headerDark
+      },
+      email_encadrant: {
+        displayName: "Email de l'encadrant",
+        headerStyle: styles.headerDark
+      },
+      email: {
+        displayName: "Email du stagiaire",
+        headerStyle: styles.headerDark
+      }
+    }
+
+    var report = excel.buildExport(
+      [
+        {
+          specification: specification,
+          data: pfes
+        }
+      ]
+    );
+
+    res.setHeader("Content-disposition", "attachment; filename=liste_PFE.xlsx");
+    res.type("xlsx");
+    res.send(report);
+  });
+});
 
 module.exports = router;

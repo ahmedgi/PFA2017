@@ -1,0 +1,50 @@
+extends layout
+
+block content
+  h1= title
+  form.form-horizontal(action="/stages/pfes", method="post")
+    .form-group
+      label.control-label.col-sm-2(for="nom_prenom") Nom + prénom
+      .col-sm-10
+        input#nom_prenom.form-control(
+          type="text",
+          name="nom_prenom",
+        )
+    .form-group
+      label.control-label.col-sm-2(for="societe_ville") Société + ville
+      .col-sm-10
+        input#societe_ville.form-control(
+          type="text",
+          name="societe_ville",
+        )
+    .form-group
+      label.control-label.col-sm-2(for="sujet") Sujet
+      .col-sm-10
+        textarea#sujet.form-control(
+          name="sujet",
+          placeholder="Sujet",
+        )
+    .form-group
+      label.control-label.col-sm-2(for="technologies") Technologies utilisées
+      .col-sm-10
+        textarea#technologies.form-control(
+          name="technologies",
+          placeholder="Technologies utilisées",
+        )
+    .form-group
+      label.control-label.col-sm-2(for="email_encadrant") Email de l'encadrant
+      .col-sm-10
+        input#email_encadrant.form-control(
+          type="text",
+          name="email_encadrant",
+          placeholder="Email de l'encadrant",
+        )
+    .form-group
+      label.control-label.col-sm-2(for="email") Votre email
+      .col-sm-10
+        input#email.form-control(
+          type="text",
+          name="email",
+          placeholder="Votre email",
+        )
+    button.btn.btn-primary(type='submit') Enregistrer
