@@ -10,6 +10,7 @@ block content
         th CNE
         th Nom
         th Prénom
+        th Fiche remplie
     tbody
       each eleve in eleves
         tr
@@ -31,3 +32,4 @@ block content
           td= eleve.cne
           td= eleve.nom
           td= eleve.prenom
+          td= eleve.hasOwnProperty("stage")

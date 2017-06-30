@@ -13,7 +13,7 @@ router.get("/", function(req, res, next) {
   res.redirect("/stages/eleves/importer");
 });
 
-router.get("/eleves/trouver", function(req, res, next) {
+router.get("/eleves/rechercher", function(req, res, next) {
   res.render("stages/rechercher_eleves", {
     title: "Rechercher des élèves"
   });
@@ -61,7 +61,7 @@ router.post("/eleves", function(req, res, next) {
   });
 });
 
-router.post("/eleves/trouver", function(req, res, next) {
+router.post("/eleves/rechercher", function(req, res, next) {
   res.redirect("/stages/eleves/" + req.body.annee_universitaire + "/" + req.body.filiere + "/" + req.body.niveau);
 });
 
@@ -90,16 +90,12 @@ router.get("/eleves/:cne/fiche", function(req, res, next) {
     console.log(err);
     req.app.db.collection("eleves").findOne({
       cne: req.params.cne
-    }, function(err, eleve_document) {
+    }, function(err, eleve) {
       console.log(err);
 
-      if (fiche_document === null) {
-        fiche_document = Object.assign({}, eleve_document);
-      }
-
       res.render("stages/fiche", {
-        title: fiche_document.nom + " " + fiche_document.prenom + " - Fiche",
-        fiche: fiche_document
+        title: eleve.nom + " " + eleve.prenom + " - Fiche",
+        eleve: eleve
       });
     });
   });

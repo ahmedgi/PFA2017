@@ -1,17 +1,28 @@
 extends layout
   
 block content
-  form.form-horizontal#fichier_eleves_form(action="/stages/eleves/trouver", method="post")
+  form.form-horizontal#fichier_eleves_form(action="/stages/eleves/rechercher", method="post")
     .form-group
       label.col-sm-2(for="annee_universitaire") Année universitaire
       .col-sm-10
-        input.form-control#annee_universitaire(name="annee_universitaire")
+        input.form-control#annee_universitaire(name="annee_universitaire", pattern="\\d{4}-\\d{4}", placeholder="2016/2017")
     .form-group
       label.col-sm-2(for="filiere") Filière
       .col-sm-10
-        input.form-control#filiere(name="filiere")
+        select.form-control#filiere(name="filiere")
+          option(value="" disabled selected) Choisir une filière
+          option(value="GC") Génie Civil
+          option(value="GE") Génie Électrique
+          option(value="GI") Génie Informatique
+          option(value="GIndus") Génie Industriel
+          option(value="GSEIR") Génie des Systèmes Électroniques, Informatique et Réseaux
+          option(value="GTR") Génie Télécommunications et Réseaux
     .form-group
       label.col-sm-2(for="niveau") Niveau
       .col-sm-10
-        input.form-control#niveau(name="niveau")
-    button.btn.btn-primary(type="submit") Trouver
+        select.form-control#niveau(name="niveau")
+          option(value="", disabled selected) Choisir un niveau
+          option(value="3") 3ᵉ année
+          option(value="4") 4ᵉ année
+          option(value="5") 5ᵉ année
+    button.btn.btn-primary(type="submit") Rechercher

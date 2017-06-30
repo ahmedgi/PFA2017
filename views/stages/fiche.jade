@@ -1,7 +1,7 @@
 extends layout
 
 block content
-  form.form-horizontal(action="/stages/eleves/" + fiche.cne + "/fiche", method="post")
+  form.form-horizontal(action="/stages/eleves/" + eleve.cne + "/fiche", method="post")
     .panel.panel-default
       .panel-heading: h3.panel-title Élève
       .panel-body
@@ -11,7 +11,8 @@ block content
             input#cne.form-control(
               type="text",
               name="cne",
-              value=fiche.cne,
+              value=eleve.cne,
+              disabled
             )
         .form-group
           label.control-label.col-sm-2(for="nom") Nom
@@ -19,7 +20,8 @@ block content
             input#nom.form-control(
               type="text",
               name="nom",
-              value=fiche.nom,
+              value=eleve.nom,
+              disabled
             )
         .form-group
           label.control-label.col-sm-2(for="prenom") Prénom
@@ -27,7 +29,8 @@ block content
             input#prenom.form-control(
               type="text",
               name="prenom",
-              value=fiche.prenom,
+              value=eleve.prenom,
+              disabled
             )
         .form-group
           label.control-label.col-sm-2(for="filiere") Filière
@@ -35,7 +38,8 @@ block content
             input#filiere.form-control(
               type="text",
               name="filiere",
-              value=fiche.filiere,
+              value=eleve.filiere,
+              disabled
             )
         .form-group
           label.control-label.col-sm-2(for="niveau") Niveau
@@ -43,7 +47,8 @@ block content
             input#niveau.form-control(
               type="text",
               name="niveau",
-              value=fiche.niveau,
+              value=eleve.niveau,
+              disabled
             )
         .form-group
           label.control-label.col-sm-2(for="telephone_eleve") Téléphone
@@ -51,7 +56,7 @@ block content
             input#telephone_eleve.form-control(
               type="text",
               name="telephone_eleve",
-              value=fiche.telephone_eleve,
+              value=eleve.telephone_eleve,
               placeholder="Téléphone",
             )
         .form-group
@@ -60,7 +65,7 @@ block content
             input#email_eleve.form-control(
               type="email",
               name="email_eleve",
-              value=fiche.email_eleve,
+              value=eleve.email_eleve,
               placeholder="Email",
             )
     .panel.panel-default
@@ -73,8 +78,8 @@ block content
             input#nom_societe.form-control(
               type="text",
               name="nom_societe",
-              value=fiche.nom_societe,
               placeholder="Nom de la société",
+              required
             )
         .form-group
           label.control-label.col-sm-2(for="adresse_societe") Adresse
@@ -82,15 +87,14 @@ block content
             textarea#adresse_societe.form-control(
               name="adresse_societe",
               placeholder="Adresse de la société",
+              required
             )
-              = fiche.adresse_societe
         .form-group
           label.control-label.col-sm-2(for="telephone_societe") Téléphone
           .col-sm-10
             input#telephone_societe.form-control(
               type="text",
               name="telephone_societe",
-              value=fiche.telephone_societe,
               placeholder="Téléphone de la société",
             )
         .form-group
@@ -99,7 +103,6 @@ block content
             input#fax_societe.form-control(
               type="text",
               name="fax_societe",
-              value=fiche.fax_societe,
               placeholder="Fax de la société",
             )
         .form-group
@@ -108,8 +111,8 @@ block content
             input#email_societe.form-control(
             type="text",
             name="email_societe",
-            value=fiche.email_societe,
             placeholder="Email de la société",
+            required
             )
     .panel.panel-default
       .panel-heading: h3.panel-title Stage
@@ -120,7 +123,6 @@ block content
               input#sujet.form-control(
               type="text",
               name="sujet",
-              value=fiche.sujet,
               placeholder="Sujet du stage",
             )
         .form-group
@@ -129,7 +131,7 @@ block content
             input#debut.form-control(
               type="date",
               name="debut",
-              value=fiche.debut,
+              required
             )
         .form-group
           label.control-label.col-sm-2(for="fin") Date de fin
@@ -137,7 +139,7 @@ block content
             input#fin.form-control(
               type="date",
               name="fin",
-              value=fiche.fin,
+              required
             )
         .form-group
           label.control-label.col-sm-2(for="encadrant") Encadrant
@@ -145,7 +147,6 @@ block content
             input#encadrant.form-control(
               type="text",
               name="encadrant",
-              value=fiche.encadrant,
               placeholder="Encadrant du stage",
             )
         .form-group
@@ -154,7 +155,6 @@ block content
             input#telephone_encadrant.form-control(
               type="text",
               name="telephone_encadrant",
-              value=fiche.telephone_encadrant,
               placeholder="Téléphone de l'encadrant du stage",
             )
     button.btn.btn-primary(type='submit') Enregistrer
