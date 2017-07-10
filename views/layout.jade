@@ -6,7 +6,7 @@ html
     script(src='//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js')
     script(src='//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js')
   body
-    .navbar.navbar-inverse.navbar-static-top(role='navigation')
+    .navbar.navbar-default.navbar-static-top(role='navigation')
       .container
         .navbar-header
           button.navbar-toggle(type='button', data-toggle='collapse', data-target='.navbar-collapse')
@@ -14,11 +14,11 @@ html
             span.icon-bar
             span.icon-bar
             span.icon-bar
-          a.navbar-brand(href='/') Reset passwd
+          a.navbar-brand(href='#') Changer password
         .collapse.navbar-collapse
           ul.nav.navbar-nav
-            li.active
-              a(href='/') Reset
+            li
+              a(href='/login') Login
             if user
               li
                 a(href='/logout') Logout

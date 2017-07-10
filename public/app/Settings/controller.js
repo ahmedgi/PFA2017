@@ -212,7 +212,6 @@ app
 		if($scope.masks.filliere){$scope.activeObj.security_mask|=2;}
 		if($scope.masks.departement){$scope.activeObj.security_mask|=4;}
 		if($scope.masks.admin){$scope.activeObj.security_mask|=8;}
-  		alert(JSON.stringify($scope.activeObj.security_mask));
   		$http({
 			method:'POST',
 			data:$scope.activeObj,

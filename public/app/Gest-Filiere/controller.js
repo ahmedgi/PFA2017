@@ -211,11 +211,11 @@ app.service('profsList', function (profService, $rootScope, $window) {
   };
 
   var getUser = function () {
-    return user
+    return user;
   }
 
-  var setUser = function (user) {
-    user = user
+  var setUser = function (userr) {
+    user = userr;
   }
 
   return {
@@ -883,6 +883,7 @@ app.controller('m_headerController', function ($scope, $rootScope, moduleNotifLi
 app.controller('m_moduleTableController', function ($scope, $rootScope, moduleService, profService, modulesList, profsList, $window) {
   $scope.selectedItemIndex = modulesList.getSelectedItemIndex;
   $scope.getPermision = modulesList.getPermision;
+
   $scope.moduleTable = {
     items: modulesList.getItems,
     search: '',
@@ -1885,7 +1886,7 @@ app.controller('f_filiereTableController', function ($scope,$window, $rootScope,
         $('#editeModal').modal('show');
       }],
       null,
-      ['Supprimer', function ($itemScope) {
+      ['Archiver', function ($itemScope) {
         $scope.filiereTable.selectedId = $itemScope.filiere._id;
         $('#deleteModal').modal('show');
       }],
@@ -2059,7 +2060,23 @@ app.controller('f_creeController', function ($http,filierearchivelist,$scope, $r
 
 app.controller('gestionFilierController', function ($window, $scope, $rootScope, profService, modulesList, profsList, eModulesList, eModuleNotifList, moduleNotifList, moduleNotifService, eModuleNotifService, filiereList) {
 
-  $scope.modulesList = modulesList.getItems;
+  $scope.list =function(arr, key) {
+      if (!(arr instanceof Array) || key && typeof key !== 'string') {
+          return false;
+      }
+
+      if (key && typeof key === 'string') {
+          return arr.filter((obj, index, arr) => {
+              return arr.map(mapObj => mapObj[key]).indexOf(obj[key]) === index;
+          });
+
+      } else {
+          return arr.filter(function(item, index, arr) {
+              return arr.indexOf(item) == index;
+          });
+      }
+  }
+  $scope.modulesList=modulesList.getItems;
   $scope.eModulesList = eModulesList.getItems;
   $scope.eModuleNotifCount = eModuleNotifList.getCount;
   $scope.moduleNotifCount = moduleNotifList.getCount;

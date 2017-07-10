@@ -1,11 +1,12 @@
 /dist
+/.scannerwork
 /.tmp
 /.sass-cache
 bower_components
 *.bat
 /data
 /public/app/Gest-Filiere/files/*
-/public/app/ComptesUpload/files/*
 *.rar
 /node_modules
 .DS_Store
+sonar-project.properties

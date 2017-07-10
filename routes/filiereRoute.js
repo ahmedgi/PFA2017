@@ -3,6 +3,8 @@ var async = require('async');
 var conEnsure = require('connect-ensure-login');
 var filiere = require('../models/databaseModels').filiere;
 var eModules = require('../models/databaseModels').eModules;
+var eModuleNotif = require('../models/databaseModels').eModuleNotif;
+var moduleNotif = require('../models/databaseModels').moduleNotif;
 var User = require('../models/databaseModels').profs;
 var Docxtemplater = require('docxtemplater');
 var filiereArchive = require('../models/filierearchive.js');
@@ -110,7 +112,13 @@ router.post("/deleteFiliere", conEnsure.ensureLoggedIn(0, "/login_", true), func
     res.setHeader('Content-Type', 'application/json');
 
     console.log("response is : ");
-    filiere.find({_id:req.body.filiereId},function(err,doc){
+    var query=filiere.find({_id:req.body.filiereId});
+    query.populate('annee1.s1');
+    query.populate('annee1.s2');
+    query.populate('annee2.s1');
+    query.populate('annee2.s2');
+    query.populate('annee3.s1');
+    query.exec(function(err,doc){
         if(err)
             console.log("aucun filiere trouver");
         else{
@@ -122,6 +130,49 @@ router.post("/deleteFiliere", conEnsure.ensureLoggedIn(0, "/login_", true), func
                 createdBy:doc[0].createdBy ,
                 responsable: doc[0].responsable,
                 creationDate:doc[0].creationDate,
+            });
+            console.log("suppression des notification");
+            for(var h=1;h<=2;h++){
+                for (var k = 1; k <=2; k++) {
+                    doc[0]["annee"+h]["s"+k].forEach(function(module){
+                        if(module.coordonnateur){
+                            User.findById(module.coordonnateur.toString(),function(err,prof){
+                                if(err){
+                                    console.log("ce coordinateur n'exist pas");
+                                }else{
+                                    console.log(prof);
+                                    if(prof){
+                                        prof.notification.eModuleNotif=[];
+                                        prof.notification.moduleNotif=[];
+                                        prof.save(function(err){
+                                            if(!err){
+                                                console.log("notif profs deleted succefully");
+                                            }
+                                        })
+                                    }
+                                }
+                            });
+                        }
+                    });
+                    
+                }
+            }
+             doc[0].annee3.s1.forEach(function(module){
+                if(module.coordonnateur){
+                    User.findById(module.coordonnateur.toString(),function(err,prof){
+                        if(err){
+                            console.log("ce coordinateur n'exist pas");
+                        }else{
+                            prof.notification.eModuleNotif=[];
+                            prof.notification.moduleNotif=[];
+                            prof.save(function(err){
+                                if(!err){
+                                    console.log("notif profs deleted succefully");
+                                }
+                            })
+                        }
+                    });
+                }
             });
             console.log(filiereArchiv);
             filiereArchiv.save(function(err){

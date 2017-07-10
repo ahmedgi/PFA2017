@@ -26,7 +26,7 @@ router.get('/parametres', function (req, res) {
 // userId : _id }
 router.post("/creeModule", conEnsure.ensureLoggedIn(0, "/login_", true), function (req, res) {
 
-    console.log(req.connection.remoteAddress + " requested " + req.path);
+    console.log("create module");
     console.log("request is : " + JSON.stringify(req.body, null));
     res.setHeader('Content-Type', 'application/json');
 
@@ -42,7 +42,7 @@ router.post("/creeModule", conEnsure.ensureLoggedIn(0, "/login_", true), functio
             },
             function (callback) {
                 var cordid = req.body.cordId;
-                if (cordid==null) {
+                if (!cordid) {
                     cordid = req.body.userId;
                 }
                 ;
@@ -122,11 +122,11 @@ router.post("/creeModule", conEnsure.ensureLoggedIn(0, "/login_", true), functio
         function (err, data) {
             if (err) {
                 res.send(JSON.stringify(err, null, '\t'));
-                console.log(JSON.stringify(err, null, '\t'))
+               
             }
             else {
                 res.send(JSON.stringify({code: "200", message: "", data: data}, null, '\t'));
-                console.log(JSON.stringify({code: "200", message: "", data: data}, null, '\t'))
+                
             }
 
 
@@ -212,7 +212,7 @@ router.post("/shareModule", conEnsure.ensureLoggedIn(0, "/login_", true), functi
 
 //{userId : id,searchQuery : {key : value},responseFields : "filed1 filed2 ..",populate : [{path : '',select:''}]}
 router.post("/getModule", conEnsure.ensureLoggedIn(0, "/login_", true), function (req, res) {
-    console.log("++++++++++++++++++++++++")
+    console.log("++++++++++++++++++++++++");
     res.setHeader('Content-Type', 'application/json');
     //connection a la base de donnée
 
@@ -225,7 +225,7 @@ router.post("/getModule", conEnsure.ensureLoggedIn(0, "/login_", true), function
                 if (req.body.populate)
                     for (var i = 0; i < req.body.populate.length; i++) {
                         query.populate(req.body.populate[i]);
-                        console.log(JSON.stringify(req.body.populate[i]))
+                        //console.log(JSON.stringify(req.body.populate[i]))
                     }
                 //.populate('updatedBy')
                 //.populate({path : 'sendTo.id',select :'nom'})
@@ -243,7 +243,7 @@ router.post("/getModule", conEnsure.ensureLoggedIn(0, "/login_", true), function
             }
             else {
                 res.send(JSON.stringify({code: "200", message: "", data: data[0]}, null, '\t'));
-                console.log(JSON.stringify({code: "200", message: "", data: data[0]}, null, '\t'))
+                //console.log(JSON.stringify({code: "200", message: "", data: data[0]}, null, '\t'))
             }
 
 

@@ -18,7 +18,7 @@
       <li>
         <a ui-sref=".module" class="sideBarItem" data-toggle="offcanvas">Module <span class="badge"
                                                                                       title="Notification">{{moduleNotifCount()}}</span></span>
-          <span class="badge" title="Nombre des modules">{{modulesList().length}}<span></a>
+          <span class="badge" title="Nombre des modules">{{list(modulesList(),"intitulee").length}}<span></a>
       </li>
       <li>
         <a ui-sref=".filiere" class="sideBarItem" data-toggle="offcanvas"

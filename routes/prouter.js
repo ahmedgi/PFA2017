@@ -16,7 +16,6 @@ prouter.get('/list', conEnsure.ensureLoggedIn(1, "/login"), function (req, res) 
     var list = [];
     var niveau = parseInt(req.query.niv);
     var fil = req.query.fil;
-    var liste = [];
     console.log("heeere----------------------------------------------");
     AnneeScolaire.findOne({active: true}, function (err, annee) {
         if (err) res.json({"err": "erroooor"});
