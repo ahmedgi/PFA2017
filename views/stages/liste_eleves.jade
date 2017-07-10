@@ -4,45 +4,32 @@ block content
   h1= title
 
   table.table
-    tr
-      th
-        .btn-group(role="group")
-          button.btn.btn-primary.dropdown-toggle(type="button", data-toggle="dropdown", aria-haspopup="true", aria-expanded="false")
-            span.glyphicon.glyphicon-menu-down
-          ul.dropdown-menu
-            li
-              a(href="/stages/filieres/" + filiere.abrev + "/" + annee + "/toutes_les_demandes") Imprimer toutes les demandes
-            li.divider(role="separator")
-            li
-              a(href="/stages/filieres/" + filiere.abrev + "/" + annee + "/toutes_les_fiches_vides") Imprimer toutes les fiches vides
-            li.divider(role="separator")
-            li
-              a(href="/stages/filieres/" + filiere.abrev + "/" + annee + "/toutes_les_conventions") Imprimer toutes les conventions prêtes
-      th CNE
-      th Nom
-      th Prénom
-    each eleve in eleves
+    thead
       tr
-        td
-          .btn-group(role="group")
-            button.btn.btn-default.dropdown-toggle(
-              type="button",
-              data-toggle="dropdown",
-              aria-haspopup="true",
-              aria-expanded="false"
-            )
-              span.glyphicon.glyphicon-menu-down
-            ul.dropdown-menu
-              li
-                a(href="/stages/eleves/" + eleve.cne + "/demande") Générer une demande
-              li.divider(role="separator")
-              li
-                a(href="/stages/eleves/" + eleve.cne + "/fiche_vide") Imprimer une fiche non remplie
-              li
-                a(href="/stages/eleves/" + eleve.cne + "/fiche") Consulter/modifier la fiche électronique
-              li.divider(role="separator")
-              li
-                a(href="/stages/eleves/" + eleve.cne + "/convention") Générer la convention
-        td= eleve.cne
-        td= eleve.nom
-        td= eleve.prenom
+        th
+        th CNE
+        th Nom
+        th Prénom
+        th Fiche remplie
+    tbody
+      each eleve in eleves
+        tr
+          td
+            .btn-group(role="group")
+              button.btn.btn-default.dropdown-toggle(
+                type="button",
+                data-toggle="dropdown",
+                aria-haspopup="true",
+                aria-expanded="false"
+              )
+                span.glyphicon.glyphicon-menu-down
+              ul.dropdown-menu
+                li: a(href="/stages/eleves/" + eleve.cne + "/demande") Générer une demande
+                li.divider(role="separator")      
+                li: a(href="/stages/eleves/" + eleve.cne + "/fiche") Consulter/modifier la fiche
+                li.divider(role="separator")
+                li: a(href="/stages/eleves/" + eleve.cne + "/convention") Générer la convention
+          td= eleve.cne
+          td= eleve.nom
+          td= eleve.prenom
+          td= eleve.hasOwnProperty("stage")

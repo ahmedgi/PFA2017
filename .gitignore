@@ -1,3 +1,10 @@
+*.tmp
+
+# Word temporary
+~$*.doc*
+
+# Excel temporary
+~$*.xls*
 /dist
 /.scannerwork
 /.tmp
@@ -9,4 +16,8 @@ bower_components
 *.rar
 /node_modules
 .DS_Store
+<<<<<<< HEAD
 sonar-project.properties
+=======
+.scannerwork
+>>>>>>> 3ee36de5eb0aa0b20abe3c1589de8a5387fda81e
