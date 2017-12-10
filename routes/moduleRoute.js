@@ -154,7 +154,11 @@ router.post("/shareModule", conEnsure.ensureLoggedIn(0, "/login_", true), functi
                     else if (doc.length == 0) return callback({code: '003', message: "module not existe!!"});
                     else {
                         oldCordId = doc.coordonnateur;
-                        doc.setAtt('coordonnateur', req.body.cordId);
+                        if(!req.body.cordId){
+                            doc.setAtt('coordonnateur', req.body.userId);
+                        }else{
+                            doc.setAtt('coordonnateur', req.body.cordId);
+                        }
                         doc.save(function (err) {
                             if (err) return callback(err)
                             else callback(null, doc.intitulee, oldCordId);

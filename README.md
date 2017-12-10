@@ -7,26 +7,34 @@
 
 Cloner l'application :
 ```
-$ git clone https://github.com/ahmedgi/PFA2017.git
+$ git clone http://test-gi.ump.ma:81/sfuser/SchoolManager.git
 ```
 Se mettre dans le dossier de l'application :
 ```
-$ cd PFA2017
+$ cd SchoolManager
 ```
 Installer les dépendances de l'application :
 ```
 $ npm install
-$ npm install bower -g
-$ cd public
-$ bower install
+
 ```
+Configuration de l'adress ip et de port utilisés:
+```
+$ nano public/config.json
+puis saisir l'adress ip de votre serveur et le port que vous voulez utiliser.
+```
+
 Démarrer MongoDB quelque part :
 ```
-$ mkdir db
-$ mongod --dbpath db
+Décompresser le Fichier data.tar.gz
+$ tar -zxvf data.tar.gz
+$ sudo service mongod stop
+$ mongod --dbpath data
 ```
 Démarrer l'application :
 ```
+lancer un autre terminal et taper la commande:
 $ node app.js
 ```
-Puis naviguer vers http://localhost:8010.
+Puis naviguer vers http://addressip:port.<br/>
+le fichier : <b>Listes_Des_Comptes.xlsx</b> contient la liste des comptes pour S'authentifié à l'application.

@@ -67,7 +67,7 @@
           </li>
           <li><a ui-sref="Gest-Delib.anneeScolaire"><span class="glyphicon glyphicon-ok"></span> Gestion des
             délibérations</a></li>
-          <li><a href="/stages" ng-if='user().security_mask >= 3 || user().responsablestage==1'><span class="glyphicon glyphicon-folder-open"></span> Gestion des stages</a>
+          <li><a href="/stages" ng-if='user().security_mask >= 3 || user().responsablestage==1'><span class="glyphicon glyphicon-folder-open"></span> Gestion des stages {{json}}</a>
           </li>
 
         </ul>

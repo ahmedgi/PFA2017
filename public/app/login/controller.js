@@ -21,8 +21,8 @@ app.controller("loginController", ["$scope", "$http", "$window", function($scope
       if (res.data.ok == "success") {
         $window.location.href = "/app/";
       }
-      else if (res.data.err) alert(JSON.stringify(res.data.err));
-      else alert(JSON.stringify(res.data.err));
+      else if (res.data.err) console.log(JSON.stringify(res.data.err));
+      else console.log(JSON.stringify(res.data.err));
     }, function err(res) {
       alert(JSON.stringify(res.data.err))
     });

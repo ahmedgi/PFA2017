@@ -1,6 +1,8 @@
 /* global io */
 'use strict';
-var serverip = 'localhost:8010'
+var dataa=$.getJSON( "./../config.json", function(){
+  console.log("success");
+});
 /**
  * @ngdoc overview
  * @name frontpfaApp
@@ -24,7 +26,7 @@ var app = angular.module('pfaApp', [
 ]);
 
 app.run(function ($rootScope) {
-  var socket = io('http://localhost:8010');
+  var socket = io('http://'+dataa.responseJSON.serverip+':'+dataa.responseJSON.port);
 
   $rootScope.socket = socket;
 
@@ -121,7 +123,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
         "check": function (profsList, $window) {
           profsList.getCurrentUser().then(function () {
             if (profsList.getUser().security_mask <= 1)
-              $window.location.href = "http://" + serverip + "/app/";
+              $window.location.href = "http://" + dataa.responseJSON.serverip+':'+dataa.responseJSON.port + "/app/";
           });
         }
       }
@@ -137,7 +139,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
       "check": function (profsList, $window) {
         profsList.getCurrentUser().then(function () {
           if (profsList.getUser().security_mask < 8)
-            $window.location.href = "http://" + serverip + "/app/";
+            $window.location.href = "http://" + dataa.responseJSON.serverip+':'+dataa.responseJSON.port + "/app/";
         });
       }
     }
@@ -162,15 +164,14 @@ app.controller('mainController', function ($scope, $rootScope, $http, $window, p
       eModuleNotifList.load().then(function () {
       })
     })
-  })
-
-
+  });
+  console.log(dataa.responseJSON.serverip+':'+dataa.responseJSON.port);
   $scope.logout = function () {
     $http({
       method: 'GET',
       url: '/logout'
     }, function (response) {
-      $window.location.href = 'http://' + serverip + '/app/login';
+      $window.location.href = 'http://' + dataa.responseJSON.serverip+':'+dataa.responseJSON.port + '/app/login';
     })
   }
 });

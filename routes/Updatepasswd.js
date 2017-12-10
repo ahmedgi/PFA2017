@@ -118,7 +118,7 @@ router.post('/reset/:token', function (req, res) {
                 from: 'passwordreset@demo.com',
                 subject: 'Your password has been changed',
                 text: 'Hello,\n\n' +
-                'Ceci confirme que le mot de passe de votre compte' + user.email + ' Ceci confirme que le mot de passe de votre compte  vient d\'être modifié..\n'
+                'Ceci confirme que le mot de passe de votre compte' + user.email + ' vient d\'être modifié..\n'
             };
             transport.sendMail(mailOptions, function (err) {
                 req.flash('success', 'Success! Votre mot de passe a été changé.');

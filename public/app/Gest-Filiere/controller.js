@@ -1,4 +1,3 @@
-var serverip = 'localhost:8010'
 
 
 //filterres
@@ -63,7 +62,7 @@ app.service('filiereService', function ($http,$window) {
   this.get = function (req) {
     var promise = $http({
       method: 'POST',
-      url: 'http://' + serverip + '/gestionfiliere/filiere/getFiliere',
+      url: 'http://' + dataa.responseJSON.serverip+':'+dataa.responseJSON.port + '/gestionfiliere/filiere/getFiliere',
       data: req
     })
     return promise;
@@ -72,7 +71,7 @@ app.service('filiereService', function ($http,$window) {
   this.cree = function (req) {
     var promise = $http({
       method: 'POST',
-      url: 'http://' + serverip + '/gestionfiliere/filiere/creeFiliere',
+      url: 'http://' + dataa.responseJSON.serverip+':'+dataa.responseJSON.port + '/gestionfiliere/filiere/creeFiliere',
       data: req
     })
     return promise;
@@ -81,7 +80,7 @@ app.service('filiereService', function ($http,$window) {
   this.edite = function (req) {
     var promise = $http({
       method: 'POST',
-      url: 'http://' + serverip + '/gestionfiliere/filiere/editeFiliere',
+      url: 'http://' + dataa.responseJSON.serverip+':'+dataa.responseJSON.port + '/gestionfiliere/filiere/editeFiliere',
       data: req
     })
     return promise;
@@ -89,7 +88,7 @@ app.service('filiereService', function ($http,$window) {
   this.delete = function (req) {
     var promise = $http({
       method: 'POST',
-      url: 'http://' + serverip + '/gestionfiliere/filiere/deleteFiliere',
+      url: 'http://' + dataa.responseJSON.serverip+':'+dataa.responseJSON.port + '/gestionfiliere/filiere/deleteFiliere',
       data: req
     })
     return promise;
@@ -97,12 +96,12 @@ app.service('filiereService', function ($http,$window) {
   this.generateDOC = function (req) {
     var promise = $http({
       method: 'POST',
-      url: 'http://' + serverip + '/gestionfiliere/filiere/generateDOC',
+      url: 'http://' + dataa.responseJSON.serverip+':'+dataa.responseJSON.port + '/gestionfiliere/filiere/generateDOC',
       data: req
     })
     promise.then(function (response) {
       if (response.data.info == 'non_auto') {
-        $window.location.href = 'http://' + serverip + '/app/login';
+        $window.location.href = 'http://' + dataa.responseJSON.serverip+':'+dataa.responseJSON.port + '/app/login';
       }
     })
     return promise;
@@ -154,12 +153,12 @@ app.service('profService', function ($http, $window) {
   this.getProfs = function (req) {
     var promise = $http({
       method: 'POST',
-      url: 'http://' + serverip + '/gestionfiliere/profs/getProf',
+      url: 'http://' + dataa.responseJSON.serverip+':'+dataa.responseJSON.port + '/gestionfiliere/profs/getProf',
       data: req
     })
     promise.then(function (response) {
       if (response.data.info == 'non_auto') {
-        $window.location.href = 'http://' + serverip + '/app/login';
+        $window.location.href = 'http://' + dataa.responseJSON.serverip+':'+dataa.responseJSON.port + '/app/login';
       }
     })
     return promise;
@@ -168,12 +167,12 @@ app.service('profService', function ($http, $window) {
   this.getCurrentUser = function () {
     var promise = $http({
       method: 'POST',
-      url: 'http://' + serverip + '/gestionfiliere/profs/currentUser',
+      url: 'http://' + dataa.responseJSON.serverip+':'+dataa.responseJSON.port + '/gestionfiliere/profs/currentUser',
       data: {}
     });
     promise.then(function (response) {
       if (response.data.info == 'non_auto') {
-        $window.location.href = 'http://' + serverip + '/app/login';
+        $window.location.href = 'http://' + dataa.responseJSON.serverip+':'+dataa.responseJSON.port + '/app/login';
       }
     })
     return promise;
@@ -232,12 +231,12 @@ app.service('moduleService', function ($http, $window) {
   this.cree = function (req) {
     var promise = $http({
       method: 'POST',
-      url: 'http://' + serverip + '/gestionfiliere/modules/creeModule',
+      url: 'http://' + dataa.responseJSON.serverip+':'+dataa.responseJSON.port + '/gestionfiliere/modules/creeModule',
       data: req
     });
     promise.then(function (response) {
       if (response.data.info == 'non_auto') {
-        $window.location.href = 'http://' + serverip + '/app/login';
+        $window.location.href = 'http://' + dataa.responseJSON.serverip+':'+dataa.responseJSON.port + '/app/login';
       }
     })
     return promise;
@@ -246,12 +245,12 @@ app.service('moduleService', function ($http, $window) {
   this.delete = function (req) {
     var promise = $http({
       method: 'POST',
-      url: 'http://' + serverip + '/gestionfiliere/modules/deleteModule',
+      url: 'http://' + dataa.responseJSON.serverip+':'+dataa.responseJSON.port + '/gestionfiliere/modules/deleteModule',
       data: req
     });
     promise.then(function (response) {
       if (response.data.info == 'non_auto') {
-        $window.location.href = 'http://' + serverip + '/app/login';
+        $window.location.href = 'http://' + dataa.responseJSON.serverip+':'+dataa.responseJSON.port + '/app/login';
       }
     })
     return promise;
@@ -260,12 +259,12 @@ app.service('moduleService', function ($http, $window) {
   this.share = function (req) {
     var promise = $http({
       method: 'POST',
-      url: 'http://' + serverip + '/gestionfiliere/modules/shareModule',
+      url: 'http://' + dataa.responseJSON.serverip+':'+dataa.responseJSON.port + '/gestionfiliere/modules/shareModule',
       data: req
     });
     promise.then(function (response) {
       if (response.data.info == 'non_auto') {
-        $window.location.href = 'http://' + serverip + '/app/login';
+        $window.location.href = 'http://' + dataa.responseJSON.serverip+':'+dataa.responseJSON.port + '/app/login';
       }
     })
     return promise;
@@ -274,12 +273,12 @@ app.service('moduleService', function ($http, $window) {
   this.edite = function (req) {
     var promise = $http({
       method: 'POST',
-      url: 'http://' + serverip + '/gestionfiliere/modules/remplireModule',
+      url: 'http://' + dataa.responseJSON.serverip+':'+dataa.responseJSON.port + '/gestionfiliere/modules/remplireModule',
       data: req
     });
     promise.then(function (response) {
       if (response.data.info == 'non_auto') {
-        $window.location.href = 'http://' + serverip + '/app/login';
+        $window.location.href = 'http://' + dataa.responseJSON.serverip+':'+dataa.responseJSON.port + '/app/login';
       }
     })
     return promise;
@@ -288,12 +287,12 @@ app.service('moduleService', function ($http, $window) {
   this.load = function (req) {
     var promise = $http({
       method: 'POST',
-      url: 'http://' + serverip + '/gestionfiliere/modules/getModule',
+      url: 'http://' + dataa.responseJSON.serverip+':'+dataa.responseJSON.port + '/gestionfiliere/modules/getModule',
       data: req
     })
     promise.then(function (response) {
       if (response.data.info == 'non_auto') {
-        $window.location.href = 'http://' + serverip + '/app/login';
+        $window.location.href = 'http://' + dataa.responseJSON.serverip+':'+dataa.responseJSON.port + '/app/login';
       }
     })
     return promise;
@@ -301,12 +300,12 @@ app.service('moduleService', function ($http, $window) {
   this.generatePDF = function (req) {
     var promise = $http({
       method: 'POST',
-      url: 'http://' + serverip + '/gestionfiliere/modules/generatePDF',
+      url: 'http://' + dataa.responseJSON.serverip+':'+dataa.responseJSON.port + '/gestionfiliere/modules/generatePDF',
       data: req
     })
     promise.then(function (response) {
       if (response.data.info == 'non_auto') {
-        $window.location.href = 'http://' + serverip + '/app/login';
+        $window.location.href = 'http://' + dataa.responseJSON.serverip+':'+dataa.responseJSON.port + '/app/login';
       }
     })
     return promise;
@@ -392,12 +391,12 @@ app.service('moduleNotifService', function ($http, $window) {
   this.getNotif = function (req) {
     var promise = $http({
       method: 'POST',
-      url: 'http://' + serverip + '/gestionfiliere/modules/getNotif',
+      url: 'http://' + dataa.responseJSON.serverip+':'+dataa.responseJSON.port + '/gestionfiliere/modules/getNotif',
       data: req
     })
     promise.then(function (response) {
       if (response.data.info == 'non_auto') {
-        $window.location.href = 'http://' + serverip + '/app/login';
+        $window.location.href = 'http://' + dataa.responseJSON.serverip+':'+dataa.responseJSON.port + '/app/login';
       }
     })
     return promise;
@@ -406,12 +405,12 @@ app.service('moduleNotifService', function ($http, $window) {
   this.updateNotif = function (req) {
     var promise = $http({
       method: 'POST',
-      url: 'http://' + serverip + '/gestionfiliere/modules/updateNotif',
+      url: 'http://' + dataa.responseJSON.serverip+':'+dataa.responseJSON.port + '/gestionfiliere/modules/updateNotif',
       data: req
     })
     promise.then(function (response) {
       if (response.data.info == 'non_auto') {
-        $window.location.href = 'http://' + serverip + '/app/login';
+        $window.location.href = 'http://' + dataa.responseJSON.serverip+':'+dataa.responseJSON.port + '/app/login';
       }
     })
     return promise;
@@ -481,12 +480,12 @@ app.service('eModuleService', function ($http, $window) {
   this.cree = function (req) {
     var promise = $http({
       method: 'POST',
-      url: 'http://' + serverip + '/gestionfiliere/eModules/creeEmodule',
+      url: 'http://' + dataa.responseJSON.serverip+':'+dataa.responseJSON.port + '/gestionfiliere/eModules/creeEmodule',
       data: req
     });
     promise.then(function (response) {
       if (response.data.info == 'non_auto') {
-        $window.location.href = 'http://' + serverip + '/app/login';
+        $window.location.href = 'http://' + dataa.responseJSON.serverip+':'+dataa.responseJSON.port + '/app/login';
       }
     })
     return promise;
@@ -495,12 +494,12 @@ app.service('eModuleService', function ($http, $window) {
   this.delete = function (req) {
     var promise = $http({
       method: 'POST',
-      url: 'http://' + serverip + '/gestionfiliere/eModules/deleteEmodule',
+      url: 'http://' + dataa.responseJSON.serverip+':'+dataa.responseJSON.port + '/gestionfiliere/eModules/deleteEmodule',
       data: req
     });
     promise.then(function (response) {
       if (response.data.info == 'non_auto') {
-        $window.location.href = 'http://' + serverip + '/app/login';
+        $window.location.href = 'http://' + dataa.responseJSON.serverip+':'+dataa.responseJSON.port + '/app/login';
       }
     })
     return promise;
@@ -509,12 +508,12 @@ app.service('eModuleService', function ($http, $window) {
   this.share = function (req) {
     var promise = $http({
       method: 'POST',
-      url: 'http://' + serverip + '/gestionfiliere/eModules/shareEmodule',
+      url: 'http://' + dataa.responseJSON.serverip+':'+dataa.responseJSON.port + '/gestionfiliere/eModules/shareEmodule',
       data: req
     });
     promise.then(function (response) {
       if (response.data.info == 'non_auto') {
-        $window.location.href = 'http://' + serverip + '/app/login';
+        $window.location.href = 'http://' + dataa.responseJSON.serverip+':'+dataa.responseJSON.port + '/app/login';
       }
     })
     return promise;
@@ -523,12 +522,12 @@ app.service('eModuleService', function ($http, $window) {
   this.edite = function (req) {
     var promise = $http({
       method: 'POST',
-      url: 'http://' + serverip + '/gestionfiliere/eModules/remplireEmodule',
+      url: 'http://' + dataa.responseJSON.serverip+':'+dataa.responseJSON.port + '/gestionfiliere/eModules/remplireEmodule',
       data: req
     });
     promise.then(function (response) {
       if (response.data.info == 'non_auto') {
-        $window.location.href = 'http://' + serverip + '/app/login';
+        $window.location.href = 'http://' + dataa.responseJSON.serverip+':'+dataa.responseJSON.port + '/app/login';
       }
     })
     return promise;
@@ -537,12 +536,12 @@ app.service('eModuleService', function ($http, $window) {
   this.load = function (req) {
     var promise = $http({
       method: 'POST',
-      url: 'http://' + serverip + '/gestionfiliere/eModules/getEmodule',
+      url: 'http://' + dataa.responseJSON.serverip+':'+dataa.responseJSON.port + '/gestionfiliere/eModules/getEmodule',
       data: req
     })
     promise.then(function (response) {
       if (response.data.info == 'non_auto') {
-        $window.location.href = 'http://' + serverip + '/app/login';
+        $window.location.href = 'http://' + dataa.responseJSON.serverip+':'+dataa.responseJSON.port + '/app/login';
       }
     })
     return promise;
@@ -631,12 +630,12 @@ app.service('eModuleNotifService', function ($http, $window) {
   this.getNotif = function (req) {
     var promise = $http({
       method: 'POST',
-      url: 'http://' + serverip + '/gestionfiliere/eModules/getNotif',
+      url: 'http://' + dataa.responseJSON.serverip+':'+dataa.responseJSON.port + '/gestionfiliere/eModules/getNotif',
       data: req
     });
     promise.then(function (response) {
       if (response.data.info == 'non_auto') {
-        $window.location.href = 'http://' + serverip + '/app/login';
+        $window.location.href = 'http://' + dataa.responseJSON.serverip+':'+dataa.responseJSON.port + '/app/login';
       }
     })
     return promise;
@@ -646,12 +645,12 @@ app.service('eModuleNotifService', function ($http, $window) {
   this.updateNotif = function (req) {
     var promise = $http({
       method: 'POST',
-      url: 'http://' + serverip + '/gestionfiliere/eModules/updateNotif',
+      url: 'http://' + dataa.responseJSON.serverip+':'+dataa.responseJSON.port + '/gestionfiliere/eModules/updateNotif',
       data: req
     });
     promise.then(function (response) {
       if (response.data.info == 'non_auto') {
-        $window.location.href = 'http://' + serverip + '/app/login';
+        $window.location.href = 'http://' + dataa.responseJSON.serverip+':'+dataa.responseJSON.port + '/app/login';
       }
     })
     return promise;
@@ -717,6 +716,7 @@ app.service('eModuleNotifList', function ($rootScope, eModuleNotifService, profS
 //Module Controllers
 app.controller('m_creeModalController', function ($scope, $rootScope, moduleService, profService, modulesList, profsList) {
   $scope.profs = profsList.getItems;
+  console.log(dataa.responseJSON.dataa.responseJSON.serverip+':'+dataa.responseJSON.port);
   $scope.cree = {
     req: {
       userId: '',
@@ -918,7 +918,7 @@ app.controller('m_moduleTableController', function ($scope, $rootScope, moduleSe
         })
           .then(function (response) {
             if (response.data.code = '200') {
-              $window.location.href = 'http://' + serverip + response.data.data.url;
+              $window.location.href = 'http://' + dataa.responseJSON.serverip+':'+dataa.responseJSON.port + response.data.data.url;
             }
             else {
               var notify = {
@@ -961,7 +961,7 @@ app.controller('m_moduleTableController', function ($scope, $rootScope, moduleSe
         })
           .then(function (response) {
             if (response.data.code = '200') {
-              $window.location.href = 'http://' + serverip + response.data.data.url;
+              $window.location.href = 'http://' + dataa.responseJSON.serverip+':'+dataa.responseJSON.port + response.data.data.url;
             }
             else {
               var notify = {
@@ -1183,7 +1183,7 @@ app.controller('m_apercuModalController', function ($scope, $rootScope, moduleSe
     })
       .then(function (response) {
         if (response.data.code = '200') {
-          $window.location.href = 'http://' + serverip + response.data.data.url;
+          $window.location.href = 'http://' + dataa.responseJSON.serverip+':'+dataa.responseJSON.port + response.data.data.url;
           $('#apercuModal').modal('hide');
         }
         else {
@@ -1898,7 +1898,7 @@ app.controller('f_filiereTableController', function ($scope,$window, $rootScope,
         })
           .then(function (response) {
             if (response.data.code = '200') {
-              $window.location.href = 'http://' + serverip + response.data.data.url;
+              $window.location.href = 'http://' + dataa.responseJSON.serverip+':'+dataa.responseJSON.port + response.data.data.url;
             }
             else {
               var notify = {

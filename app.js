@@ -9,7 +9,11 @@ var server = http.createServer(app)
 var io = require('socket.io')(server);
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-server.listen(8010, "localhost");
+var config=require('./public/config.json')
+server.listen(config.port, config.serverip,function(){
+    console.log("the server successfully started ");
+    console.log("application listening on port "+config.port);
+});
 var settings = require('./settings.js');
 var url = settings.url;
 var passport = require('passport'),
@@ -58,7 +62,7 @@ MongoClient.connect('mongodb://127.0.0.1:27017/stages', function (err, db) {
 
 app.use(function (req, res, next) { //allow cross origin requests
     res.setHeader("Access-Control-Allow-Methods", "POST, PUT, OPTIONS, DELETE, GET");
-    res.header("Access-Control-Allow-Origin", "http://localhost");
+    res.header("Access-Control-Allow-Origin", "http://"+config.serverip);
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
